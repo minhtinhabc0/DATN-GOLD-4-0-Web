@@ -1,0 +1,218 @@
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .cart-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+    }
+
+    .cart-header h2 {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        border-radius: 15px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-item {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    .product-item:last-child {
+        border-bottom: none;
+    }
+
+    .product-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .product-image {
+        width: 60px;
+        height: 60px;
+        background-color: #e9ecef;
+        border-radius: 8px;
+        margin-right: 15px;
+    }
+
+    .product-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .product-quantity {
+        display: flex;
+        align-items: center;
+    }
+
+    .product-quantity input {
+        width: 50px;
+        text-align: center;
+        border-radius: 10px;
+        margin: 0 10px;
+        border: 1px solid #ddd;
+    }
+
+    .product-price {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #ff6f61;
+    }
+
+    .delete-btn {
+        color: #ff6f61;
+        cursor: pointer;
+    }
+
+    .delete-btn:hover {
+        color: #ff0000;
+    }
+
+    .summary {
+        font-weight: bold;
+        margin-top: 20px;
+        font-size: 1.1rem;
+    }
+
+    .btn-checkout {
+        background-color: #fff;
+        color: #000;
+        font-size: 1.2rem;
+        padding: 12px 24px;
+        border-radius: 30px;
+        border: 2px solid #000;
+        transition: all 0.3s ease;
+    }
+
+    .btn-checkout:hover {
+        background-color: #000;
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+    .select-all {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .form-check-label {
+        font-weight: bold;
+    }
+</style>
+
+
+<div class="cart-container" style="margin-top: 140px;">
+    <!-- Header -->
+    <div class="cart-header">
+
+        <h2 class="text-center" style="
+        font-family: 'Montserrat', sans-serif;
+        color: #d4d400; /* Màu vàng phù hợp với chủ đề */
+        text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3); /* Bóng chữ */
+        letter-spacing: 2px; /* Khoảng cách giữa các ký tự */
+        background: linear-gradient(30deg, #fdfd02, #f7a100);
+        color: transparent;">GIỎ HÀNG <i class="fa-solid fa-bag-shopping"></i></h2>
+    </div>
+
+    <!-- Product List -->
+    <div class="card">
+        <!-- Select All -->
+        <div class="select-all mb-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="selectAll">
+                <label class="form-check-label" for="selectAll">Tất cả</label>
+            </div>
+        </div>
+
+        <!-- Product Item 1 -->
+        <div class="product-item d-flex justify-content-between align-items-center">
+            <div class="product-info">
+                <input type="checkbox" checked class="form-check-input me-3">
+                <div class="product-image"></div>
+                <div>
+                    <div class="product-title">Item1</div>
+                    <div class="product-description text-muted">Description</div>
+                </div>
+            </div>
+            <div class="product-quantity d-flex align-items-center">
+                <button class="btn btn-outline-secondary btn-sm">-</button>
+                <input type="text" value="1" class="form-control form-control-sm">
+                <button class="btn btn-outline-secondary btn-sm">+</button>
+            </div>
+            <div class="product-price">Price$</div>
+            <i class="delete-btn bi bi-trash"></i>
+        </div>
+
+        <!-- Product Item 2 -->
+        <div class="product-item d-flex justify-content-between align-items-center">
+            <div class="product-info">
+                <input type="checkbox" class="form-check-input me-3">
+                <div class="product-image"></div>
+                <div>
+                    <div class="product-title">Item2</div>
+                    <div class="product-description text-muted">Description</div>
+                </div>
+            </div>
+            <div class="product-quantity d-flex align-items-center">
+                <button class="btn btn-outline-secondary btn-sm">-</button>
+                <input type="text" value="1" class="form-control form-control-sm">
+                <button class="btn btn-outline-secondary btn-sm">+</button>
+            </div>
+            <div class="product-price">Price$</div>
+            <i class="delete-btn bi bi-trash"></i>
+        </div>
+
+        <!-- Product Item 3 -->
+        <div class="product-item d-flex justify-content-between align-items-center">
+            <div class="product-info">
+                <input type="checkbox" class="form-check-input me-3">
+                <div class="product-image"></div>
+                <div>
+                    <div class="product-title">Item3</div>
+                    <div class="product-description text-muted">Description</div>
+                </div>
+            </div>
+            <div class="product-quantity d-flex align-items-center">
+                <button class="btn btn-outline-secondary btn-sm">-</button>
+                <input type="text" value="1" class="form-control form-control-sm">
+                <button class="btn btn-outline-secondary btn-sm">+</button>
+            </div>
+            <div class="product-price">Price$</div>
+            <i class="delete-btn bi bi-trash"></i>
+        </div>
+
+        <!-- Summary -->
+        <div class="row">
+            <div class="col-6 summary">Số lượng: 3</div>
+            <div class="col-3 summary">Tổng tiền: $$$</div>
+            <div class="col-3 summary">Tổng xu: $$$</div>
+        </div>
+
+        <!-- Checkout Button -->
+        <div class="text-end mt-4">
+            <a href="html/paying.html"><button class="btn btn-checkout">Thanh toán</button></a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Select All Checkbox functionality
+    const selectAllCheckbox = document.getElementById('selectAll');
+    selectAllCheckbox.addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('.form-check-input');
+        checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+    });
+</script>

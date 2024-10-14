@@ -1,0 +1,189 @@
+<style>
+    body {
+        background-color: #f5f5f5;
+    }
+
+    .sidebar {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-pills .nav-link {
+        border-radius: 10px;
+        margin-bottom: 10px;
+        color: black;
+        /* Màu chữ mặc định */
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: black;
+        /* Nền đen khi chọn */
+        color: white;
+        /* Màu chữ trắng khi chọn */
+    }
+
+    .nav-pills .nav-link:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        /* Hiệu ứng hover nhẹ */
+        color: black;
+        /* Giữ màu chữ đen khi hover */
+    }
+
+    .tab-content {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        border-radius: 10px;
+    }
+
+    /* Avatar styling */
+    .avatar-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .avatar-container img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-container h3 {
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    .form-section {
+        margin-top: 30px;
+    }
+
+    .password-form {
+        background-color: white;
+        /* Nền trắng */
+        padding: 20px;
+        /* Khoảng cách bên trong */
+        border-radius: 10px;
+        /* Bo góc */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        /* Đổ bóng */
+        transition: all 0.3s ease;
+        /* Hiệu ứng chuyển đổi */
+    }
+</style>
+
+<div class="container-fluid mt-5">
+    <div class="row" style="margin-top: 150px;">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+            <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="pills-info-tab" data-bs-toggle="pill" href="#pills-info" role="tab"
+                        aria-controls="pills-info" aria-selected="true">Thông Tin Tài Khoản <i
+                            class="fa-regular fa-address-card"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-history-tab" data-bs-toggle="pill" href="#pills-history" role="tab"
+                        aria-controls="pills-history" aria-selected="false">Lịch Sử Giao Dịch <i
+                            class="fa-solid fa-clock-rotate-left"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-password-tab" data-bs-toggle="pill" href="#pills-password" role="tab"
+                        aria-controls="pills-password" aria-selected="false">Mật Khẩu & Bảo Mật <i
+                            class="fa-solid fa-shield-halved"></i> </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="tab-content" id="pills-tabContent">
+                <!-- Tab thông tin tài khoản -->
+                <div class="tab-pane fade show active" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
+                    <div class="avatar-container">
+                        <!-- Avatar section -->
+                        <img src="https://via.placeholder.com/150" alt="Avatar">
+                        <h3>$Fullname</h3>
+                    </div>
+                    <div class="form-section">
+                        <form>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Họ tên</label>
+                                <input type="text" class="form-control" id="username" value="$Fullname" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="$Email" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" id="phone" value="$Phonenumber" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="birthday" class="form-label">Ngày sinh</label>
+                                <input type="text" class="form-control" id="birthday" value="$BirthDay" disabled>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab lịch sử giao dịch -->
+                <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
+                    <h2>Lịch sử giao dịch</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>$ItemName</td>
+                                <td>$TotalPrice</td>
+                                <td>$Status</td>
+                                <td><a href="#">Xem chi tiết</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tab mật khẩu & bảo mật -->
+                <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
+                    <h2>Mật Khẩu & Bảo Mật</h2>
+                    <form class="password-form">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Mật Khẩu Hiện Tại</label>
+                            <input type="password" class="form-control" id="currentPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
+                            <input type="password" class="form-control" id="newPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Nhập Lại Mật Khẩu Mới</label>
+                            <input type="password" class="form-control" id="confirmPassword">
+                        </div>
+                        <button type="submit" class="btn btn-dark">Đổi Mật Khẩu</button>
+                    </form>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" value="" id="twoFactorAuth">
+                        <label class="form-check-label" for="twoFactorAuth">
+                            Xác Thực 2 lớp Khi Đăng Nhập
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>

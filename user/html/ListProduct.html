@@ -1,0 +1,153 @@
+<div class="row">
+    <div class="section col-12 ratio ratio-16x9 autoplay-video__media container-fluid">
+        <iframe
+            src="https://www.youtube.com/embed/v5NUp-cY_5M?autoplay=1&controls=0&modestbranding=1&loop=1&playlist=v5NUp-cY_5M"
+            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+        </iframe>
+    </div>
+</div>
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-md-3 p-4 bg-light border-end">
+            <h5>Keywords</h5>
+            <div class="mb-3">
+                <span class="badge bg-secondary me-1">Spring</span>
+                <span class="badge bg-secondary me-1">Smart</span>
+                <span class="badge bg-secondary">Modern</span>
+            </div>
+            <h5>Label</h5>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="label1" checked>
+                <label class="form-check-label" for="label1">Label Description</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="label2" checked>
+                <label class="form-check-label" for="label2">Label Description</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="label3" checked>
+                <label class="form-check-label" for="label3">Label Description</label>
+            </div>
+
+            <h5 class="mt-4">Price</h5>
+            <input type="range" class="form-range" min="0" max="100" value="50" id="priceRange">
+
+            <h5 class="mt-4">Color</h5>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="color1" checked>
+                <label class="form-check-label" for="color1">Label</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="color2" checked>
+                <label class="form-check-label" for="color2">Label</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="color3" checked>
+                <label class="form-check-label" for="color3">Label</label>
+            </div>
+
+            <h5 class="mt-4">Size</h5>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="size1" checked>
+                <label class="form-check-label" for="size1">Label</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="size2" checked>
+                <label class="form-check-label" for="size2">Label</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="size3" checked>
+                <label class="form-check-label" for="size3">Label</label>
+            </div>
+        </div>
+
+        <!-- Product List -->
+        <div class="col-md-9 p-4">
+            <!-- Search and Sort -->
+            <div class="d-flex justify-content-between mb-4">
+                <input type="text" class="form-control w-50" placeholder="Search...">
+                <div>
+                    <button class="btn btn-dark me-2">New</button>
+                    <button class="btn btn-outline-dark me-2">Price ascending</button>
+                    <button class="btn btn-outline-dark me-2">Price descending</button>
+                    <button class="btn btn-outline-dark">Rating</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card h-100">
+                        <a href="#!chitiet"> <img src="https://via.placeholder.com/150" class="card-img-top"
+                                alt="Product Image"></a>
+
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Text</h5>
+                            <p class="card-text">$0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Text</h5>
+                            <p class="card-text">$0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Text</h5>
+                            <p class="card-text">$0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Text</h5>
+                            <p class="card-text">$0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Text</h5>
+                            <p class="card-text">$0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation example" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.card a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            // Cuộn trang lên đầu khi nhấn vào sản phẩm
+            window.scrollTo(0, 0);
+        });
+    });
+</script>

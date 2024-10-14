@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Màu nền và màu chữ của dropdown khi rê chuột vào */
+.dropdown-menu {
+    background-color: black;
+    /* Giữ màu nền đen cho dropdown */
+}
+
+.dropdown-menu .dropdown-item {
+    color: white;
+    /* Màu chữ trắng cho các mục dropdown */
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #343a40;
+    /* Đổi màu nền khi rê chuột vào mục dropdown */
+    color: #f4f489;
+    /* Đổi màu chữ vàng khi rê chuột vào */
+}

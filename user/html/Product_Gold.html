@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Thông Tin Mua Bán Vàng</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fffbe6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .uk-input,
+        .form-control {
+            border-radius: 12px;
+            border: 2px solid #d4b964;
+            padding: 12px;
+            font-size: 1rem;
+            color: #333;
+            transition: border-color 0.3s;
+        }
+
+        .uk-input:focus,
+        .form-control:focus {
+            border-color: #f0ad4e;
+            box-shadow: 0 0 5px rgba(240, 173, 78, 0.5);
+        }
+
+        .btn-primary {
+            background-color: #f0ad4e;
+            border-color: #eea236;
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #eea236;
+        }
+
+        .uk-card {
+            margin-top: 30px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #2f2f2f;
+            color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        th {
+            background-color: #d4b964;
+            color: black;
+            font-weight: bold;
+        }
+
+        td {
+            color: white;
+        }
+
+        thead {
+            border-bottom: 2px solid #d4b964;
+        }
+
+        tbody {
+            background-color: #3d3d3d;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .conversion-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #d4b964;
+        }
+
+        .conversion-section .form-control {
+            text-align: right;
+        }
+
+        .conversion-section span {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 15px;
+            color: #333;
+        }
+
+        .uk-text-center {
+            font-weight: bold;
+        }
+
+        .coin-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .price-highlight {
+            color: #00ff00;
+        }
+
+        .negative-change {
+            color: #ff0000;
+        }
+
+        .section-title {
+            background-color: #d4b964;
+            color: black;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+        .price-up {
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .price-down {
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .header-section {
+            background-color: #d4b964;
+            text-align: left;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .highlight-row {
+            background-color: #3d3d3d;
+        }
+
+        .right-align {
+            text-align: right;
+        }
+
+        .left-align {
+            text-align: left;
+        }
+
+        .arrow {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="margin-top: 140px;">
+        <div class="text-right coin-amount">
+            Số Vàng Hiện Có: <span id="coinAmount">$Coin chỉ</span>
+        </div>
+
+        <h2 class="text-center" style="
+        font-family: 'Montserrat', sans-serif;
+        color: #d4d400; /* Màu vàng phù hợp với chủ đề */
+        text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3); /* Bóng chữ */
+        letter-spacing: 2px; /* Khoảng cách giữa các ký tự */
+        background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
+        color: transparent;">Quy Đổi Giá Vàng</h2>
+
+        <div class=" conversion-section row mb-4">
+            <div class="col">
+                <label>Số Vàng Cần Mua</label>
+                <input class="form-control" type="text" placeholder="Chỉ" id="goldAmount">
+            </div>
+            <div class="col d-flex align-items-center justify-content-center">
+                <div class="arrow" style="margin-top: 20px;"><i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+            <div class="col">
+                <label>Số Tiền Thanh Toán</label>
+                <input class="form-control" type="text" placeholder="VNĐ" id="totalAmount">
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <button class="btn btn-primary">Thanh Toán</button>
+        </div>
+
+
+
+        <h3 class="card-title text-center">Bảng Giá Vàng Hôm Nay</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2" rowspan="2">Hạng Mục</th>
+                    <th colspan="2">Giá Chốt Phiên 16/09</th>
+                    <th colspan="2">Giá Chốt Phiên Hôm Nay</th>
+                    <th rowspan="2">Biên Độ Mua - Bán</th>
+                </tr>
+                <tr>
+                    <th>Mua vào</th>
+                    <th>Bán ra</th>
+                    <th>Mua vào</th>
+                    <th>Bán ra</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7"></td>
+                </tr>
+                <tr class="header-section">
+                    <td colspan="7" class="section-title">GIÁ VÀNG THẾ GIỚI</td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" class="left-align">KITCO (Giá quy đổi VND)</td>
+                    <td class="price-up">▲ 75.91</td>
+                    <td class="price-up">▲ 75.94</td>
+                    <td class="price-up">▲ 76.12</td>
+                    <td class="price-up">▲ 76.15</td>
+                    <td class="price-up">0.03</td>
+                </tr>
+                <tr class="header-section">
+                    <td colspan="7" class="section-title">GIÁ VÀNG MIẾNG SJC</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="left-align">SJC</td>
+                    <td class="price-up">▲ 78.50</td>
+                    <td class="price-up">▲ 80.50</td>
+                    <td class="price-up">▲ 80.00</td>
+                    <td class="price-up">▲ 82.00</td>
+                    <td class="price-up">2</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="left-align">DOJI</td>
+                    <td class="price-up">▲ 78.50</td>
+                    <td class="price-up">▲ 80.50</td>
+                    <td class="price-up">▲ 80.00</td>
+                    <td class="price-up">▲ 82.00</td>
+                    <td class="price-up">2</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="left-align">PNJ</td>
+                    <td class="price-up">▲ 78.50</td>
+                    <td class="price-up">▲ 80.50</td>
+                    <td class="price-up">▲ 80.00</td>
+                    <td class="price-up">▲ 82.00</td>
+                    <td class="price-up">2</td>
+                </tr>
+                <tr class="header-section">
+                    <td colspan="7" class="section-title">VÀNG THƯƠNG HIỆU</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="left-align">Vàng 24K</td>
+                    <td class="price-up">▲ 77.00</td>
+                    <td class="price-up">▲ 79.00</td>
+                    <td class="price-up">▲ 78.00</td>
+                    <td class="price-up">▲ 80.00</td>
+                    <td class="price-up">2</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="left-align">Vàng 18K</td>
+                    <td class="price-down">▼ 56.00</td>
+                    <td class="price-down">▼ 58.00</td>
+                    <td class="price-down">▼ 57.00</td>
+                    <td class="price-down">▼ 59.00</td>
+                    <td class="price-down">2</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="left-align">Vàng 14K</td>
+                    <td class="price-down">▼ 45.00</td>
+                    <td class="price-down">▼ 47.00</td>
+                    <td class="price-down">▼ 46.00</td>
+                    <td class="price-down">▼ 48.00</td>
+                    <td class="price-down">2</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+</body>
+
+</html>

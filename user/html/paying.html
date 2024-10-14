@@ -1,0 +1,304 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+        color: #333;
+        padding: 20px 0;
+        /* Chỉnh padding trên dưới */
+        display: flex;
+        justify-content: center;
+    }
+
+    .container {
+        max-width: 1100px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+        /* Thêm khoảng cách hai bên container */
+        flex-direction: column;
+    }
+
+    .back-button a {
+        text-decoration: none;
+        color: #333;
+        font-size: 18px;
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+
+    hr {
+        border: 0;
+        height: 1px;
+        background: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .content {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        /* Khoảng cách giữa hai phần (shopping cart và payment section) */
+        margin-top: 20px;
+        /* Khoảng cách với phần phía trên */
+    }
+
+    .shopping-cart {
+        flex: 0 0 60%;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #666;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        background-color: #e0e0e0;
+        margin-right: 20px;
+        border-radius: 5px;
+    }
+
+    .item-details {
+        flex-grow: 1;
+    }
+
+    .item-details h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .item-details p {
+        font-size: 14px;
+        color: #777;
+    }
+
+    .item-quantity,
+    .item-price {
+        font-size: 18px;
+    }
+
+    .payment-section {
+        flex: 0 0 35%;
+        background-color: #5362bb;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: white;
+    }
+
+    .payment-section h3,
+    .payment-section p {
+        color: white;
+    }
+
+    .payment-methods-title {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .payment-methods {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .payment-icon {
+        width: 80px;
+        height: 80px;
+        background-color: white;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    .total {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .total-row p {
+        margin: 0;
+        color: white;
+    }
+
+    .payment-button button {
+        width: 100%;
+        background-color: #1dd1a1;
+        color: white;
+        font-size: 18px;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .payment-button button:hover {
+        background-color: #10ac84;
+    }
+
+    .selected {
+        border: 2px solid gold;
+    }
+</style>
+
+<div class="container">
+    <!-- Back button -->
+    <div class="back-button">
+        <a href="#">&larr; Quay Lại</a>
+    </div>
+
+    <!-- Horizontal line -->
+    <hr>
+
+    <!-- Main content section -->
+    <div class="content">
+        <!-- Shopping Cart Section -->
+        <div class="shopping-cart">
+            <h2>Shopping cart</h2>
+            <p>You have 3 items in your cart</p>
+
+            <!-- Cart Items -->
+            <div class="cart-item">
+                <div class="item-image"></div>
+                <div class="item-details">
+                    <h3>Item1</h3>
+                    <p>Description</p>
+                </div>
+                <div class="item-quantity">1</div>
+                <div class="item-price">$100</div>
+            </div>
+
+            <div class="cart-item">
+                <div class="item-image"></div>
+                <div class="item-details">
+                    <h3>Item2</h3>
+                    <p>Description</p>
+                </div>
+                <div class="item-quantity">1</div>
+                <div class="item-price">$150</div>
+            </div>
+
+            <div class="cart-item">
+                <div class="item-image"></div>
+                <div class="item-details">
+                    <h3>Item3</h3>
+                    <p>Description</p>
+                </div>
+                <div class="item-quantity">1</div>
+                <div class="item-price">$200</div>
+            </div>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="payment-section">
+            <h3>Thanh toán bằng thẻ tín dụng</h3>
+
+            <!-- Payment Methods Title -->
+            <p>Hình thức thanh toán</p>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="Momo" class="payment-icon"
+                    data-payment="momo">
+                <img src="https://uploads.commoninja.com/searchengine/wordpress/vietqr.png" alt="VietQR"
+                    class="payment-icon" data-payment="vietqr">
+                <img src="https://png.pngtree.com/png-clipart/20190115/ourmid/pngtree-gold-coin-png-image_317054.jpg"
+                    alt="Coin" class="payment-icon" data-payment="coin">
+            </div>
+
+            <!-- Total -->
+            <div class="total">
+                <p>Tổng giá trị sản phẩm</p>
+                <hr>
+                <div class="total-row">
+                    <p id="total-price">$TotalPrice + (+10% VAT)</p>
+                    <p id="total-vat">Tổng (+10% VAT)</p>
+                </div>
+            </div>
+
+            <!-- Payment Button -->
+            <div class="payment-button">
+                <button id="payment-button">$TotalPrice + (+10%) Thanh toán</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Giá trị sản phẩm
+    const totalPrice = 450; // Tổng giá trị sản phẩm ban đầu (450$)
+    const coinTotal = 450; // Giả sử đây là giá trị quy đổi sang coin
+
+    // Hàm cập nhật giá trị hiển thị và thêm viền vàng cho phương thức thanh toán đã chọn
+    function updateTotal(paymentMethod, selectedElement) {
+        const totalElement = document.getElementById('total-price');
+        const vatElement = document.getElementById('total-vat');
+        const buttonElement = document.getElementById('payment-button');
+        let finalTotal = 0;
+        let vatText = '';
+
+        if (paymentMethod === 'momo' || paymentMethod === 'vietqr') {
+            finalTotal = totalPrice + (totalPrice * 0.10);
+            vatText = 'Tổng (+10% VAT)';
+        } else if (paymentMethod === 'coin') {
+            finalTotal = coinTotal + (coinTotal * 0.05);
+            vatText = 'Tổng (+5% Thuế quy đổi)';
+        }
+
+        totalElement.textContent = `$${finalTotal.toFixed(2)}`;
+        vatElement.textContent = vatText;
+        buttonElement.textContent = `$${finalTotal.toFixed(2)} Thanh toán`;
+
+        // Xóa viền vàng khỏi các phương thức thanh toán khác
+        document.querySelectorAll('.payment-icon').forEach(function (icon) {
+            icon.classList.remove('selected');
+        });
+
+        // Thêm viền vàng cho phương thức thanh toán được chọn
+        selectedElement.classList.add('selected');
+    }
+
+    // Lắng nghe sự thay đổi khi người dùng chọn phương thức thanh toán
+    document.querySelectorAll('.payment-icon').forEach(function (icon) {
+        icon.addEventListener('click', function () {
+            const paymentMethod = this.getAttribute('data-payment');
+            updateTotal(paymentMethod, this);
+        });
+    });
+</script>
