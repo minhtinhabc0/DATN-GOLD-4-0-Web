@@ -99,6 +99,11 @@
                         aria-controls="pills-password" aria-selected="false">Mật Khẩu & Bảo Mật <i
                             class="fa-solid fa-shield-halved"></i> </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-pin-tab" data-bs-toggle="pill" href="#pills-pin" role="tab"
+                        aria-controls="pills-pin" aria-selected="false">Mã Pin <i class="fa-solid fa-shield-halved"></i>
+                    </a>
+                </li>
             </ul>
         </nav>
 
@@ -178,7 +183,27 @@
                     <div class="form-check mt-3">
                         <input class="form-check-input" type="checkbox" value="" id="twoFactorAuth">
                         <label class="form-check-label" for="twoFactorAuth">
-                            Xác Thực 2 lớp Khi Đăng Nhập
+                            Xác Thực 2 Lớp
+                        </label>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-pin" role="tabpanel" aria-labelledby="pills-pin-tab">
+                    <h2>Mã Pin Người Dùng</h2>
+                    <form class="pin-form">
+                        <div class="mb-3">
+                            <label for="currentpin" class="form-label">Mã Pin Hiện Tại</label>
+                            <input type="pin" class="form-control" id="currentpin">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newpin" class="form-label">Mã Pin Mới</label>
+                            <input type="pin" class="form-control" id="newpin">
+                        </div>
+                        <button type="submit" class="btn btn-dark">Đổi Mã Pin</button>
+                    </form>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" value="" id="twoFactorAuth">
+                        <label class="form-check-label" for="twoFactorAuth">
+                            Xác Thực 2 Lớp
                         </label>
                     </div>
                 </div>
