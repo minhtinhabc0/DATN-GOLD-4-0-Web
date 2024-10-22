@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 
 <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body ng-controller="FormController">
     <div class="container-fluid p-0">
         <div class="row g-0">
             <!-- Cột bên trái chứa hình ảnh -->
@@ -20,7 +20,7 @@
             <!-- Cột bên phải chứa form -->
             <div class="col-lg-5 col-md-6 col-12 d-flex flex-column justify-content-center align-items-center">
                 <!-- Tiêu đề GOLD - 4.0 -->
-                <a href="boss.html" style="text-decoration: none;">
+                <a href="/user/index.html" style="text-decoration: none;">
                     <h1 class="text-center" style="
                         font-family: 'Montserrat', sans-serif;
                         margin-top: 20px;
@@ -35,31 +35,37 @@
                 </a>
 
                 <!-- Form Đăng Nhập -->
-                <div class="login-form mt-4 w-75">
+                <div class="login-form mt-4 w-75" ng-submit="submitForm()">
                     <header class="text-center">
                         <h4
                             style="font-family: 'Times New Roman', Times, serif; font-size: 30px; color: #333; letter-spacing: 1px;">
                             Đăng Nhập
                         </h4>
                     </header>
-                    <form class="needs-validation" novalidate>
+                    <form class="needs-validation" novalidate >
                         <div class="mb-3">
-                            <label for="loginEmail" class="form-label"
-                                style="font-family: 'Times New Roman'">Email</label>
-                            <input type="email" class="form-control" id="loginEmail" required>
+                            <label for="username" class="form-label"
+                                style="font-family: 'Times New Roman'">Tài khoản</label>
+                            <input type="text" class="form-control" id="username" ng-model="username" required>
                             <div class="invalid-feedback">
-                                Vui lòng điền Email
+                                Vui lòng điền tên tài khoản
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="loginPassword" class="form-label" style="font-family: 'Times New Roman'">Mật
+                            <label for="password" class="form-label" style="font-family: 'Times New Roman'">Mật
                                 khẩu</label>
-                            <input type="password" class="form-control" id="loginPassword" required>
+                            <input type="password" class="form-control" id="password" ng-model="password" required>
                             <div class="invalid-feedback">
                                 Vui lòng điền mật khẩu
                             </div>
                         </div>
-
+                        
+                        <div class="mb-3">
+                            <div class="g-recaptcha" 
+                                 data-sitekey="{{siteKey}}" 
+                                 data-callback="recaptchaCallback">
+                            </div>
+                        </div>
                         <!-- Thêm nút tick "Lưu mật khẩu" -->
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -68,7 +74,7 @@
                         </div>
 
                         <div class=" mb-3">
-                            <a href="quenmk.html" .html" class="forgot-password-link" style="
+                            <a href="/user/html/forgot_password.html" class="forgot-password-link" style="
                                 font-family: 'Times New Roman';
                                 color: #0c0c0c;
                                 text-decoration: none;
@@ -78,7 +84,7 @@
                                 Quên mật khẩu?
                             </a>
                         </div>
-
+                        
                         <button type="submit" class="btn btn-outline-dark w-100" style="height: 50px;">
                             <span class="button__label" style="
                                 letter-spacing: .0852071047em;
@@ -128,9 +134,21 @@
                 </div>
             </div>
         </div>
+        <div id="toast" class="toast align-items-center text-bg-dark border-0 mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="visibility:hidden; position:fixed; bottom:30px; left:30px;">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Login message
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="/user/js/login.js"></script>
 </body>
 
 </html>

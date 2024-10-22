@@ -1,13 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Đăng Ký - GOLD 4.0</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"></head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/e907e5cd51.js" crossorigin="anonymous"></script>
+   <style>
+        .loading-overlay {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.8);
+          z-index: 9999;
+        }
+        .spinner-border {
+          width: 3rem;
+          height: 3rem;
+        }
+      </style>
+<body ng-controller="MainController">
+      <!-- Loading overlay -->
+  <div ng-show="isLoading" class="loading-overlay">
+    <i class="fa-solid fa-arrows-rotate fa-spin fa-2xl" style="color: #63E6BE;"></i>
+  </div>
+  <div class="container mt-3">
+    <div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="successMessage">
+      {{ successMessage }}
+      <button type="button" class="close" aria-label="Close" ng-click="closeAlert()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
 
-<body>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" ng-show="errorMessage">
+      {{ errorMessage }}
+      <button type="button" class="close" aria-label="Close" ng-click="closeAlert()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
     <div class="container-fluid p-0">
         <div class="row g-0">
             <!-- Cột bên trái chứa hình ảnh -->
@@ -40,27 +79,35 @@
                             Đăng Ký
                         </h4>
                     </header>
-                    <form class="needs-validation" novalidate>
+                    <form class="needs-validation" name="registerForm" ng-submit="submitForm()" novalidate>
                         <div class="mb-3">
                             <label for="username" class="form-label" style="font-family: 'Times New Roman'">Tên tài
                                 khoản</label>
-                            <input type="text" class="form-control" id="username" required>
-                            <div class="invalid-feedback">
+                            <input type="text" class="form-control" id="username" ng-model="user.taikhoan" required>
+                            <div class="invalid-feedback" ng-show="registerForm.username.$dirty && registerForm.username.$error.required">
                                 Vui lòng điền tên tài khoản
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="registerEmail" class="form-label"
                                 style="font-family: 'Times New Roman'">Email</label>
-                            <input type="email" class="form-control" id="registerEmail" required>
+                            <input type="email" class="form-control" id="email" ng-model="user.email" required>
                             <div class="invalid-feedback">
                                 Vui lòng điền Email
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="registerEmail" class="form-label"
+                                style="font-family: 'Times New Roman'">Họ tên</label>
+                            <input type="email" class="form-control" id="hoten" ng-model="user.hoten" required>
+                            <div class="invalid-feedback">
+                                Vui lòng điền Tên của bạn
+                            </div>
+                        </div>
+                        <div class="mb-3">
                             <label for="phoneNumber" class="form-label" style="font-family: 'Times New Roman'">Số điện
                                 thoại</label>
-                            <input type="tel" class="form-control" id="phoneNumber" required>
+                            <input type="tel" class="form-control" id="sdt" ng-model="user.sdt" ng-pattern="/^[0-9]{10}$/" required>
                             <div class="invalid-feedback">
                                 Vui lòng điền số điện thoại
                             </div>
@@ -68,18 +115,31 @@
                         <div class="mb-3">
                             <label for="registerPassword" class="form-label" style="font-family: 'Times New Roman'">Mật
                                 khẩu</label>
-                            <input type="password" class="form-control" id="registerPassword" required>
+                            <input type="password" class="form-control" id="password" ng-model="user.matkhau" 
+                            ng-pattern="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#!$])[A-Za-z0-9@#!$]{8,}$/" required>
                             <div class="invalid-feedback">
                                 Vui lòng điền mật khẩu
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label" style="font-family: 'Times New Roman'">Nhập Lại Mật
+                                khẩu</label>
+                            <input type="password" class="form-control" id="confirmPassword" ng-model="confirmPassword" required>
+                            <div class="invalid-feedback">
+                                Vui lòng điền mật khẩu
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="g-recaptcha" data-sitekey="{{ siteKey }}" data-callback="recaptchaCallback"></div>
+                          </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="terms" required>
                             <label class="form-check-label" for="terms" style="font-family: 'Times New Roman';">Tôi đồng
-                                ý với các điều khoản</label>
+                                ý với các </label>
                             <div class="invalid-feedback">
                                 Bạn phải đồng ý với các điều khoản
                             </div>
+                            <a href="#" class="herf">điều khoản</a>
                         </div>
                         <button type="submit" class="btn btn-outline-dark w-100" style="height: 50px;">
                             <span class="button__label" style="
@@ -131,8 +191,7 @@
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/user/js/register.js"></script>
 </body>
 
 </html>

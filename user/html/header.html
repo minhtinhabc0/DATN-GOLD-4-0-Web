@@ -70,20 +70,20 @@
                 <!-- Đẩy các mục này về phía bên phải -->
                 <li class="nav-item ms-auto"
                     style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" href="#!/user/spyeuthich" style="color: white;">YÊU THÍCH<i
+                    <a class="nav-link" href="#!/user/spyeuthich" style="color: white;" ng-if="userInfo">YÊU THÍCH<i
                             class="fa-solid fa-heart" style="margin-left: 10px;"></i></a>
                 </li>
                 <li class="nav-item"
                     style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" href="#!/user/giohang" style="color: white;">GIỎ HÀNG<i
+                    <a class="nav-link" href="#!/user/giohang" style="color: white;" ng-if="userInfo">GIỎ HÀNG<i
                             class="fa-solid fa-bag-shopping" style="margin-left: 10px;"></i></a>
                 </li>
                 <li class="nav-item"
                     style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" href="html/login.html" style="color: white;">ĐĂNG NHẬP <i
+                    <a class="nav-link" href="html/login.html" style="color: white;" ng-if="!userInfo">ĐĂNG NHẬP <i
                             class="fa-solid fa-right-to-bracket"></i></a>
                 </li>
-                <li class="nav-item dropdown ms-2"
+                <li class="nav-item dropdown ms-2" ng-if="userInfo"
                     style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
                     <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
@@ -92,7 +92,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: black;">
                         <li><a class="dropdown-item" href="#!/user/profileuser"
                                 style="color: white; font-size: 14px;">Thông Tin Tài Khoản<i class="fa-solid fa-address-card"></i></a></li>
-                        <li><a class="dropdown-item" href="#" style="color: white; font-size: 14px;">Đăng Xuất <i
+                        <li><a class="dropdown-item"  href="#"  ng-click="logout()" style="color: white; font-size: 14px;">Đăng Xuất <i
                                     class="fa-solid fa-right-from-bracket"></i></a></li>
                     </ul>
                 </li>
@@ -100,3 +100,4 @@
         </div>
     </div>
 </nav>
+<script src="/user/js/myController.js"></script>

@@ -1,3 +1,5 @@
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    
 <style>
     body {
         background-color: #f5f5f5;
@@ -109,27 +111,37 @@
                 <div class="tab-pane fade show active" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
                     <div class="avatar-container">
                         <!-- Avatar section -->
-                        <img src="https://via.placeholder.com/150" alt="Avatar">
-                        <h3>$Fullname</h3>
+                        <div class="avatar-container">
+                            <img ng-src="{{userInfo.avt}}" alt="User Avatar" class="img-fluid mb-3" style="border-radius: 50%; width: 100px; height: 100px;" />
+                            <input type="file" id="avatar" class="d-none" ng-file-select ng-model="avatarFile" ng-disabled="!isEditing" accept="image/*" ng-change="uploadAvatar()" />
+                            <label for="avatar" class="btn btn-edit" ng-if="isEditing" style="cursor: pointer;">
+                                <i class="fas fa-edit"></i> <!-- Icon chỉnh sửa -->
+                            </label>
+                        </div>
+                        <h3>{{userInfo.hoTen}}</h3>
                     </div>
                     <div class="form-section">
-                        <form>
+                        <form ng-submit="updateProfile()">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Họ tên</label>
-                                <input type="text" class="form-control" id="username" value="$Fullname" disabled>
+                                <input type="text" class="form-control" id="fullName"  ng-model="userInfo.hoTen"  required ng-disabled="!isEditing">
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" value="$Email" disabled>
+                                <input type="email" class="form-control" id="email"  ng-model="userInfo.email" required ng-disabled="!isEditing">
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Số điện thoại</label>
-                                <input type="text" class="form-control" id="phone" value="$Phonenumber" disabled>
+                                <input type="text" class="form-control" id="phoneNumber" ng-model="userInfo.sdt" required ng-disabled="!isEditing">
                             </div>
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label for="birthday" class="form-label">Ngày sinh</label>
                                 <input type="text" class="form-control" id="birthday" value="$BirthDay" disabled>
-                            </div>
+                            </div> -->
+                            <button type="button" class="btn btn-secondary mt-3" ng-click="enableEdit()" ng-if="!isEditing">Chỉnh Sửa Thông Tin</button>
+                            <button type="button" class="btn btn-secondary mt-3" ng-click="disableEdit()" ng-if="isEditing">hủy</button>
+                            <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật thông tin</button>
+                            
                         </form>
                     </div>
                 </div>
@@ -160,18 +172,18 @@
                 <!-- Tab mật khẩu & bảo mật -->
                 <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
                     <h2>Mật Khẩu & Bảo Mật</h2>
-                    <form class="password-form">
+                    <form class="password-form" ng-submit="updatePassword()">
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label">Mật Khẩu Hiện Tại</label>
-                            <input type="password" class="form-control" id="currentPassword">
+                            <input type="password" class="form-control" id="oldPassword" ng-model="oldPassword" required>
                         </div>
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
-                            <input type="password" class="form-control" id="newPassword">
+                            <input type="password" class="form-control" id="newPassword" ng-model="newPassword" required>
                         </div>
                         <div class="mb-3">
                             <label for="confirmPassword" class="form-label">Nhập Lại Mật Khẩu Mới</label>
-                            <input type="password" class="form-control" id="confirmPassword">
+                            <input type="password" class="form-control" id="confirmPassword" ng-model="confirmPassword" required>
                         </div>
                         <button type="submit" class="btn btn-dark">Đổi Mật Khẩu</button>
                     </form>
