@@ -3,20 +3,19 @@
         <a href="#!home" style="text-decoration: none;">
             <h1 style="
                 font-family: 'Montserrat', sans-serif;
-                color: #f4f489; /* Màu vàng phù hợp với chủ đề */
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Bóng chữ */
-                letter-spacing: 2px; /* Khoảng cách giữa các ký tự */
+                color: #f4f489;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+                letter-spacing: 2px;
                 background: linear-gradient(30deg, #ffffff, #FFA500);
                 -webkit-background-clip: text;
-                color: transparent;
-                ">
+                color: transparent;">
                 GOLD - 4.0
             </h1>
         </a>
     </div>
 </div>
-<hr class="container-fluid mb-0" style="color: white; margin-top: 0px;">
-<!-- MENUUUU -->
+<hr class="container-fluid mb-0" style="border-color: white; margin-top: 0px;">
+<!-- MENU -->
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -24,76 +23,55 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mb-2 mb-lg-0" style="width: 100%;">
-                <li class="nav-item ms-2"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" aria-current="page" style="color: white;" href="#!/user/home">TRANG CHỦ</a>
+            <ul class="navbar-nav mb-2 mb-lg-0 w-100">
+                <li class="nav-item ms-2">
+                    <a class="nav-link" style="color: white; font-weight: bold; font-family: 'Times New Roman', serif;" href="#!/user/home">TRANG CHỦ</a>
                 </li>
-                <li class="nav-item dropdown ms-2"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
+                <li class="nav-item dropdown ms-2">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProduct" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                        data-bs-toggle="dropdown" aria-expanded="false" style="color: white; font-weight: bold;">
                         SẢN PHẨM
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownProduct" style="background-color: black;">
-                        <li><a class="dropdown-item" href="#!/user/dssp" style="color: white; font-size: 14px;">Trang
-                                Sức <i class="fa-solid fa-gem"></i></a>
-                        </li>
-                        <li><a class="dropdown-item" href="#!/user/spvang" style="color: white; font-size: 14px;">Vàng
-                                <i class="fa-solid fa-ring"></i></a></li>
+                    <ul class="dropdown-menu" style="background-color: black;">
+                        <li><a class="dropdown-item" href="#!/user/dssp" style="color: white;">Trang Sức <i class="fa-solid fa-gem"></i></a></li>
+                        <li><a class="dropdown-item" href="#!/user/spvang" style="color: white;">Vàng <i class="fa-solid fa-ring"></i></a></li>
                     </ul>
                 </li>
-
-                <li class="nav-item dropdown ms-2"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
+                <li class="nav-item dropdown ms-2">
                     <a class="nav-link dropdown-toggle" href="#!/user/boyfashion" id="navbarDropdownMarket"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white; font-weight: bold;">
                         THỊ TRƯỜNG
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMarket" style="background-color: black;">
-                        <li><a class="dropdown-item" href="#!/user/giavang" style="color: white; font-size: 14px;">Giá
-                                Vàng <i class="fa-solid fa-money-bill-trend-up"></i></a></li>
-                        <li><a class="dropdown-item" href="#" style="color: white; font-size: 14px;">Ngoại Tệ <i
-                                    class="fa-solid fa-dollar-sign"></i></a></li>
+                    <ul class="dropdown-menu" style="background-color: black;">
+                        <li><a class="dropdown-item" href="#!/user/giavang" style="color: white;">Giá Vàng <i class="fa-solid fa-money-bill-trend-up"></i></a></li>
+                        <li><a class="dropdown-item" href="#" style="color: white;">Ngoại Tệ <i class="fa-solid fa-dollar-sign"></i></a></li>
                     </ul>
                 </li>
-
-                <li class="nav-item ms-2"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" href="#" style="color: white;">TIN TỨC</a>
+                <li class="nav-item ms-2">
+                    <a class="nav-link" href="#" style="color: white; font-weight: bold;">TIN TỨC</a>
                 </li>
-                <li class="nav-item ms-2"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" href="#" style="color: white;">HỖ TRỢ</a>
+                <li class="nav-item ms-2">
+                    <a class="nav-link" href="#" style="color: white; font-weight: bold;">HỖ TRỢ</a>
                 </li>
 
-                <!-- Đẩy các mục này về phía bên phải -->
-                <li class="nav-item ms-auto"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" href="#!/user/spyeuthich" style="color: white;" ng-if="userInfo">YÊU THÍCH<i
-                            class="fa-solid fa-heart" style="margin-left: 10px;"></i></a>
+                <!-- Right-aligned items -->
+                <li class="nav-item ms-auto">
+                    <a class="nav-link" href="#!/user/spyeuthich" style="color: white;" ng-if="userInfo">YÊU THÍCH <i class="fa-solid fa-heart ms-2"></i></a>
                 </li>
-                <li class="nav-item"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" href="#!/user/giohang" style="color: white;" ng-if="userInfo">GIỎ HÀNG<i
-                            class="fa-solid fa-bag-shopping" style="margin-left: 10px;"></i></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/user/giohang" style="color: white;" ng-if="userInfo">GIỎ HÀNG <i class="fa-solid fa-bag-shopping ms-2"></i></a>
                 </li>
-                <li class="nav-item"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link" href="html/login.html" style="color: white;" ng-if="!userInfo">ĐĂNG NHẬP <i
-                            class="fa-solid fa-right-to-bracket"></i></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="html/login.html" style="color: white;" ng-if="!userInfo">ĐĂNG NHẬP <i class="fa-solid fa-right-to-bracket ms-2"></i></a>
                 </li>
-                <li class="nav-item dropdown ms-2" ng-if="userInfo"
-                    style="font-family: 'Times New Roman', Times, serif; font-weight: bold; font-size: 14px;">
-                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
+                <li class="nav-item dropdown ms-2" ng-if="userInfo">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAccount" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
-                        TÀI KHOẢN<i class="fa-solid fa-user" style="margin-left: 10px;"></i>
+                        TÀI KHOẢN <i class="fa-solid fa-user ms-2"></i>
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: black;">
-                        <li><a class="dropdown-item" href="#!/user/profileuser"
-                                style="color: white; font-size: 14px;">Thông Tin Tài Khoản<i class="fa-solid fa-address-card"></i></a></li>
-                        <li><a class="dropdown-item"  href="#"  ng-click="logout()" style="color: white; font-size: 14px;">Đăng Xuất <i
-                                    class="fa-solid fa-right-from-bracket"></i></a></li>
+                    <ul class="dropdown-menu" style="background-color: black;">
+                        <li><a class="dropdown-item" href="#!/user/profileuser" style="color: white;">Thông Tin Tài Khoản <i class="fa-solid fa-address-card ms-2"></i></a></li>
+                        <li><a class="dropdown-item" href="#" ng-click="logout()" style="color: white;">Đăng Xuất <i class="fa-solid fa-right-from-bracket ms-2"></i></a></li>
                     </ul>
                 </li>
             </ul>

@@ -1,86 +1,3 @@
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
-    
-<style>
-    body {
-        background-color: #f5f5f5;
-    }
-
-    .sidebar {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-pills .nav-link {
-        border-radius: 10px;
-        margin-bottom: 10px;
-        color: black;
-        /* Màu chữ mặc định */
-    }
-
-    .nav-pills .nav-link.active {
-        background-color: black;
-        /* Nền đen khi chọn */
-        color: white;
-        /* Màu chữ trắng khi chọn */
-    }
-
-    .nav-pills .nav-link:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-        /* Hiệu ứng hover nhẹ */
-        color: black;
-        /* Giữ màu chữ đen khi hover */
-    }
-
-    .tab-content {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 30px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-control {
-        border-radius: 10px;
-    }
-
-    /* Avatar styling */
-    .avatar-container {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .avatar-container img {
-        border-radius: 50%;
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .avatar-container h3 {
-        margin-top: 15px;
-        font-weight: bold;
-    }
-
-    .form-section {
-        margin-top: 30px;
-    }
-
-    .password-form {
-        background-color: white;
-        /* Nền trắng */
-        padding: 20px;
-        /* Khoảng cách bên trong */
-        border-radius: 10px;
-        /* Bo góc */
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        /* Đổ bóng */
-        transition: all 0.3s ease;
-        /* Hiệu ứng chuyển đổi */
-    }
-</style>
-
 <div class="container-fluid mt-5">
     <div class="row" style="margin-top: 150px;">
         <!-- Sidebar -->
@@ -109,44 +26,75 @@
             <div class="tab-content" id="pills-tabContent">
                 <!-- Tab thông tin tài khoản -->
                 <div class="tab-pane fade show active" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
-                    <div class="avatar-container">
-                        <!-- Avatar section -->
-                        <div class="avatar-container">
-                            <img ng-src="{{userInfo.avt}}" alt="User Avatar" class="img-fluid mb-3" style="border-radius: 50%; width: 100px; height: 100px;" />
-                            <input type="file" id="avatar" class="d-none" ng-file-select ng-model="avatarFile" ng-disabled="!isEditing" accept="image/*" ng-change="uploadAvatar()" />
-                            <label for="avatar" class="btn btn-edit" ng-if="isEditing" style="cursor: pointer;">
-                                <i class="fas fa-edit"></i> <!-- Icon chỉnh sửa -->
-                            </label>
+                    <ul class="nav nav-tabs" id="infoTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="user-info-tab" data-bs-toggle="tab" href="#user-info" role="tab">Thông Tin Người Dùng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="asset-info-tab" data-bs-toggle="tab" href="#asset-info" role="tab">Tài Sản</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="infoTabContent">
+                        <!-- Thông Tin Người Dùng -->
+                        <div class="tab-pane fade show active" id="user-info" role="tabpanel">
+                            <div class="avatar-container">
+                                <img ng-src="{{userInfo.avt}}" alt="User Avatar" class="img-fluid mb-3"
+                                    style="border-radius: 50%; width: 100px; height: 100px;" />
+                                <input type="file" id="avatar" class="d-none" ng-file-select ng-model="avatarFile"
+                                    ng-disabled="!isEditing" accept="image/*" ng-change="uploadAvatar()" />
+                                <label for="avatar" class="btn btn-edit" ng-if="isEditing" style="cursor: pointer;">
+                                    <i class="fas fa-edit"></i>
+                                </label>
+                                <h3>{{userInfo.hoTen}}</h3>
+                            </div>
+
+                            <form ng-submit="updateProfile()">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Họ tên</label>
+                                    <input type="text" class="form-control" id="fullName" ng-model="userInfo.hoTen"
+                                        required ng-disabled="!isEditing">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" ng-model="userInfo.email"
+                                        required ng-disabled="!isEditing">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="phoneNumber" ng-model="userInfo.sdt"
+                                        required ng-disabled="!isEditing">
+                                </div>
+                                <button type="button" class="btn btn-secondary mt-3" ng-click="enableEdit()"
+                                    ng-if="!isEditing">Chỉnh Sửa Thông Tin</button>
+                                <button type="button" class="btn btn-secondary mt-3" ng-click="disableEdit()"
+                                    ng-if="isEditing">Hủy</button>
+                                <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật thông tin</button>
+                            </form>
                         </div>
-                        <h3>{{userInfo.hoTen}}</h3>
-                    </div>
-                    <div class="form-section">
-                        <form ng-submit="updateProfile()">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Họ tên</label>
-                                <input type="text" class="form-control" id="fullName"  ng-model="userInfo.hoTen"  required ng-disabled="!isEditing">
+
+                        <!-- Tài Sản -->
+                        <div class="tab-pane fade" id="asset-info" role="tabpanel">
+                            <div class="form-section">
+                                <h4>Tài sản của bạn</h4>
+                                <div class="mb-3">
+                                    <label for="gcoinBalance" class="form-label">Số dư Gcoin:</label>
+                                    <input type="text" class="form-control" id="gcoinBalance" value="{{gcoinBalance}}" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="goldPrice" class="form-label">Giá trị quy đổi ra vàng:</label>
+                                    <input type="text" class="form-control" id="goldPrice"
+                                        value="{{gcoinBalance * goldPrice | currency}}" disabled>
+                                </div>
+                                <div class="mb-3" ng-if="gcoinBalance <= 0">
+                                    <p class="text-warning">Bạn chưa có ví Gcoin. Hãy tạo ví để bắt đầu sử dụng!</p>
+                                    <button class="btn btn-primary" ng-click="createGcoinWallet()">Tạo ví Gcoin</button>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email"  ng-model="userInfo.email" required ng-disabled="!isEditing">
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Số điện thoại</label>
-                                <input type="text" class="form-control" id="phoneNumber" ng-model="userInfo.sdt" required ng-disabled="!isEditing">
-                            </div>
-                            <!-- <div class="mb-3">
-                                <label for="birthday" class="form-label">Ngày sinh</label>
-                                <input type="text" class="form-control" id="birthday" value="$BirthDay" disabled>
-                            </div> -->
-                            <button type="button" class="btn btn-secondary mt-3" ng-click="enableEdit()" ng-if="!isEditing">Chỉnh Sửa Thông Tin</button>
-                            <button type="button" class="btn btn-secondary mt-3" ng-click="disableEdit()" ng-if="isEditing">hủy</button>
-                            <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật thông tin</button>
-                            
-                        </form>
+                        </div>
+                        
                     </div>
                 </div>
-
-                <!-- Tab lịch sử giao dịch -->
+                <!-- TAB LICH SU GIAO DICH -->
                 <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
                     <h2>Lịch sử giao dịch</h2>
                     <table class="table">
@@ -171,31 +119,55 @@
 
                 <!-- Tab mật khẩu & bảo mật -->
                 <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
-                    <h2>Mật Khẩu & Bảo Mật</h2>
-                    <form class="password-form" ng-submit="updatePassword()">
-                        <div class="mb-3">
-                            <label for="currentPassword" class="form-label">Mật Khẩu Hiện Tại</label>
-                            <input type="password" class="form-control" id="oldPassword" ng-model="oldPassword" required>
+                    <ul class="nav nav-tabs" id="securityTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="password-tab" data-bs-toggle="tab" href="#password-content" role="tab">Mật Khẩu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab">Mã PIN</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="securityTabContent">
+                        <!-- Mật Khẩu -->
+                        <div class="tab-pane fade show active" id="password-content" role="tabpanel">
+                            <h2>Đổi Mật Khẩu</h2>
+                            <form class="password-form" ng-submit="updatePassword()">
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">Mật Khẩu Hiện Tại</label>
+                                    <input type="password" class="form-control" id="oldPassword" ng-model="oldPassword"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
+                                    <input type="password" class="form-control" id="newPassword" ng-model="newPassword"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Nhập Lại Mật Khẩu Mới</label>
+                                    <input type="password" class="form-control" id="confirmPassword" ng-model="confirmPassword"
+                                        required>
+                                </div>
+                                <button type="submit" class="btn btn-dark">Đổi Mật Khẩu</button>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
-                            <input type="password" class="form-control" id="newPassword" ng-model="newPassword" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Nhập Lại Mật Khẩu Mới</label>
-                            <input type="password" class="form-control" id="confirmPassword" ng-model="confirmPassword" required>
-                        </div>
-                        <button type="submit" class="btn btn-dark">Đổi Mật Khẩu</button>
-                    </form>
-                    <div class="form-check mt-3">
-                        <input class="form-check-input" type="checkbox" value="" id="twoFactorAuth">
-                        <label class="form-check-label" for="twoFactorAuth">
-                            Xác Thực 2 lớp Khi Đăng Nhập
-                        </label>
-                    </div>
-                </div>
 
-            </div>
-        </main>
-    </div>
-</div>
+                        <!-- Mã PIN -->
+                        <div class="tab-pane fade" id="pin-content" role="tabpanel">
+                            <h2>Thay Đổi Mã PIN</h2>
+                            <form class="password-form" ng-submit="updatePin()">
+                                <div class="mb-3">
+                                    <label for="currentPIN" class="form-label">Mã PIN Hiện Tại</label>
+                                    <input type="password" class="form-control" id="oldPin" ng-model="oldPin" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPIN" class="form-label">Mã PIN Mới</label>
+                                    <input type="password" class="form-control" id="newPin" ng-model="newPin" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPIN" class="form-label">Nhập Lại Mã PIN Mới</label>
+                                    <input type="password" class="form-control" id="confirmNewPin" ng-model="confirmNewPin" required>
+                                </div>
+                                <button type="submit" class="btn btn-dark">Đổi Mã PIN</button>
+                            </form>
+                        </div>
+                    </div
