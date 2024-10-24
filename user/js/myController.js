@@ -68,6 +68,10 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'html/thanhtoan.html',
             controller: 'thanhtoanCtrl'
         })
+        .when('/user/ngoaite', {
+            templateUrl: 'html/ExchangeRate.html',
+            controller: 'ngoaiteCtrl'
+        })
 
         .otherwise({
             redirectTo: '/user/home'
@@ -491,22 +495,62 @@ $scope.disableEdit = function () {
     .controller('thanhtoanCtrl', function ($scope) {
 
     })
+    .service('ExchangeRateService', function($http) {
+        this.getExchangeRates = function() {
+            return $http.get('https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx') // Thay thế với URL API của bạn
+                .then(function(response) {
+                    // Chuyển đổi dữ liệu XML sang JSON
+                    return parseXML(response.data);
+                });
+        };
+    
+        function parseXML(xml) {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xml, "text/xml");
+            const exrates = xmlDoc.getElementsByTagName("Exrate");
+            const rates = [];
+    
+            for (let i = 0; i < exrates.length; i++) {
+                rates.push({
+                    CurrencyCode: exrates[i].getAttribute("CurrencyCode"),
+                    CurrencyName: exrates[i].getAttribute("CurrencyName"),
+                    Buy: exrates[i].getAttribute("Buy"),
+                    Transfer: exrates[i].getAttribute("Transfer"),
+                    Sell: exrates[i].getAttribute("Sell")
+                });
+            }
+    
+            return rates;
+        }
+    })
+    .controller('ngoaiteCtrl', function ($scope, ExchangeRateService) {
+        $scope.exchangeRates = [];
+
+        ExchangeRateService.getExchangeRates().then(function(rates) {
+            $scope.exchangeRates = rates;
+        }).catch(function(error) {
+            console.error("Error fetching exchange rates:", error);
+        });
+    })
 
 
 
-
-    .controller('dsspCtrl', function ($scope,$http) {
-        let host = "http://localhost:9999/api";
-        $scope.items = []
+   .controller('dsspCtrl', function ($scope, $http) {
+    let host = "http://localhost:9999/api";
+    $scope.items = [];
     $scope.filteredItems = []; // Sản phẩm hiển thị trên mỗi trang
     $scope.currentPage = 1; // Trang hiện tại
-    $scope.itemsPerPage = 9; // Số sản phẩm trên mỗi trang
+    $scope.itemsPerPage = 12; // Số sản phẩm trên mỗi trang
     $scope.totalPages = 0;
-    $scope.load_all = function(){
+    $scope.searchText = ''; // Biến để lưu trữ nội dung tìm kiếm
+    $scope.sortByPrice = ''; // Biến để lưu trữ phương thức sắp xếp
+
+    // Hàm tải dữ liệu sản phẩm từ server
+    $scope.load_all = function() {
         var url = `${host}/products`;
         $http.get(url).then(resp => {
             $scope.items = resp.data; // Gán dữ liệu sản phẩm từ server
-            console.log($scope.items)
+            console.log($scope.items);
             $scope.filteredItems = $scope.items; // Khởi tạo filteredItems với toàn bộ sản phẩm
             $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage); // Tính số trang
             $scope.currentPage = 1; // Đặt lại về trang đầu tiên
@@ -516,68 +560,72 @@ $scope.disableEdit = function () {
             console.log("Error", error);
         });
     }
-    
-    $scope.updateFilteredItems = function(){
+
+    // Cập nhật danh sách sản phẩm đã lọc
+    $scope.updateFilteredItems = function() {
         let start = ($scope.currentPage - 1) * $scope.itemsPerPage;
         let end = start + $scope.itemsPerPage;
         
         // Cập nhật filteredItems để hiển thị các sản phẩm trên trang hiện tại
         $scope.filteredItems = $scope.items.slice(start, end);
     }
-    
-    
-    $scope.nextPage = function(){
+
+    // Chức năng chuyển trang
+    $scope.nextPage = function() {
         if ($scope.currentPage < $scope.totalPages) {
             $scope.currentPage++;
             $scope.updateFilteredItems();
         }
     }
-    $scope.previousPage = function(){
+
+    $scope.previousPage = function() {
         if ($scope.currentPage > 1) {
             $scope.currentPage--;
             $scope.updateFilteredItems();
         }
     }
-    $scope.goToPage = function(page){
+
+    $scope.goToPage = function(page) {
         if (page >= 1 && page <= $scope.totalPages) {
             $scope.currentPage = page;
             $scope.updateFilteredItems();
         }
     }
-    $scope.searchItems = function(){
-        var keyword = $scope.searchKeyword ? $scope.searchKeyword.toLowerCase() : ''; 
-        var category = $scope.searchByCategory || '';
-    
-        // Lọc sản phẩm theo từ khóa và loại
-        $scope.filteredItems = $scope.items.filter(item => {
-            let matchKeyword = !keyword || item.tensanpham.toLowerCase().includes(keyword);
-            let matchCategory = !category || item.loaisanpham === category;
-            return matchKeyword && matchCategory;
-        });
-    
-        // Cập nhật số trang dựa trên kết quả tìm kiếm
-        $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage); 
-        $scope.currentPage = 1; // Reset về trang 1
-        $scope.updateFilteredItems(); // Cập nhật sản phẩm hiển thị sau khi tìm kiếm
-    }
-    
-    
-    
-    $scope.sortByPrice = ''; // Sắp xếp theo giá
 
-// Hàm sắp xếp
-    $scope.sortItems = function(){
-        if ($scope.sortByPrice == 'asc') {
+// Chức năng tìm kiếm
+$scope.searchItems = function() {
+    var keyword = $scope.searchText ? $scope.searchText.toLowerCase() : ''; 
+
+    // Lọc sản phẩm theo từ khóa trên toàn bộ sản phẩm
+    $scope.filteredItems = $scope.items.filter(item => {
+        return !keyword || item.tensanpham.toLowerCase().includes(keyword);
+    });
+
+    // Cập nhật số trang dựa trên kết quả tìm kiếm
+    $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
+    $scope.currentPage = 1; // Reset về trang 1
+    $scope.updateFilteredItems(); // Cập nhật sản phẩm hiển thị sau khi tìm kiếm
+}
+
+
+
+    // Hàm sắp xếp theo giá
+    $scope.sortByPrice = function(order) {
+        if (order === 'asc') {
             $scope.items.sort((a, b) => a.gia - b.gia); // Sắp xếp giá tăng dần
-        } else if ($scope.sortByPrice == 'desc') {
-        $scope.items.sort((a, b) => b.gia - a.gia); // Sắp xếp giá giảm dần
+        } else if (order === 'desc') {
+            $scope.items.sort((a, b) => b.gia - a.gia); // Sắp xếp giá giảm dần
         }
-    $scope.updateFilteredItems(); // Cập nhật lại sản phẩm sau khi sắp xếp
+        $scope.currentPage = 1; // Reset về trang 1 sau khi sắp xếp
+        $scope.updateFilteredItems(); // Cập nhật lại sản phẩm sau khi sắp xếp
     }
-    // Thực hiện tải toàn bộ products
-    $scope.load_all();
 
-    })
+    // Thực hiện tải toàn bộ sản phẩm
+    $scope.load_all();
+})
+
+    
+    
     .controller('chitietCtrl', function ($scope, $routeParams, dataService) {
 
 

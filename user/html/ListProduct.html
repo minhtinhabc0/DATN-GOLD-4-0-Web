@@ -1,3 +1,64 @@
+<style>
+    /* Tổng quan bố cục sản phẩm */
+.product-card {
+  border: 1px solid #f0f0f0;
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Hình ảnh sản phẩm */
+.product-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+/* Tên sản phẩm */
+.product-card p:first-of-type {
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Giá sản phẩm */
+.product-card p:nth-of-type(2) {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d0021b;
+  margin-bottom: 15px;
+}
+
+/* Hiệu ứng hover */
+.product-card:hover {
+  transform: scale(1.05);
+}
+
+
+.product-card .rating i {
+  color: #f5a623;
+  margin-right: 5px;
+}
+
+.product-card .sold {
+  color: #777;
+  font-size: 12px;
+  margin-top: 5px;
+}
+/* Thêm khoảng cách giữa sản phẩm và phân trang */
+.row {
+    margin-bottom: 30px; /* Tạo khoảng cách 30px giữa sản phẩm và phân trang */
+}
+
+
+
+</style>
 <div class="row">
     <div class="section col-12 ratio ratio-16x9 autoplay-video__media container-fluid">
         <iframe
@@ -66,26 +127,29 @@
         <div class="col-md-9 p-4">
             <!-- Search and Sort -->
             <div class="d-flex justify-content-between mb-4">
-                <input type="text" class="form-control w-50" placeholder="Search...">
+                <input type="text" class="form-control w-50" placeholder="Search..." ng-model="searchText">
+
                 <div>
-                    <button class="btn btn-dark me-2">New</button>
-                    <button class="btn btn-outline-dark me-2">Price ascending</button>
-                    <button class="btn btn-outline-dark me-2">Price descending</button>
+                    <button class="btn btn-dark me-2" ng-click="sortByPrice('new')">New</button>
+                    <button class="btn btn-outline-dark me-2" ng-click="sortByPrice('asc')">Price ascending</button>
+                    <button class="btn btn-outline-dark me-2" ng-click="sortByPrice('desc')">Price descending</button>
                     <button class="btn btn-outline-dark">Rating</button>
                 </div>
+                
             </div>
 
             <!-- Product Grid -->
-            <div class="row">
-                <div class="col-md-4" ng-repeat="pro in filteredItems">
-                  <div class="product-card">
-                    <img alt="Placeholder image for product" height="150" ng-src="{{pro.hinhAnh}}" width="150"/>
-                    <p>{{pro.tenSanPham}}</p>
-                    <p>{{pro.gia |number:0}} VND</p>
-                  </div>
+            <div class="row g-4">
+                <div class="col-md-3" ng-repeat="pro in filteredItems | filter:{ tenSanPham: searchText }">
+                    <div class="product-card">
+                        <img alt="Placeholder image for product" height="150" ng-src="{{pro.hinhAnh}}" width="150"/>
+                        <p>{{pro.tenSanPham}}</p>
+                        <p>{{pro.gia |number:0}} VND</p>
+                    </div>
                 </div>
-              </div>
-
+            </div>
+            
+            
             <!-- Pagination -->
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
@@ -103,3 +167,11 @@
         </div>
     </div>
 </div>
+<script>
+    app.controller('ProductController', function($scope) {
+    $scope.filteredItems = [...];  // Danh sách sản phẩm đã tải từ DB
+
+    // Khi searchText thay đổi, danh sách sản phẩm sẽ tự động được lọc dựa trên bộ lọc đã thêm ở trên.
+});
+
+</script>

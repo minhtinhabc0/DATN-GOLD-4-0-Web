@@ -22,7 +22,6 @@
         canvas {
             border: 1px solid #ccc;
             margin-top: 20px;
-           
         }
         .error {
             color: red;
@@ -31,12 +30,12 @@
         .chart-container {
             margin-top: 150px; /* Khoảng cách 200px */
         }
-        #goldCanvas {
-            width: 700px;   /* Kích thước hiển thị */
-            height: 500px;  /* Kích thước hiển thị */
+        .canvas{
+            width: 1100px;   /* Kích thước hiển thị nhỏ hơn */
+            height: 570px;  /* Kích thước hiển thị nhỏ hơn */
             border: 1px solid #ccc; /* Nếu bạn muốn có đường viền */
+            margin-left: ;
         }
-        
     </style>
 </head>
 
@@ -50,7 +49,7 @@
         <select id="productSelect" ng-model="selectedProduct" ng-options="product for product in products">
             <option value="">-- Chọn sản phẩm --</option>
         </select>
-        <canvas id="goldCanvas"></canvas>
+        <div class="canvas"><canvas id="goldCanvas"></canvas></div>
         <div ng-if="errorMessage" class="error">{{ errorMessage }}</div>
     </div>
 
