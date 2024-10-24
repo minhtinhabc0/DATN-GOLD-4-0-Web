@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi" ng-app="exchangeRateApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tỷ giá hối đoái</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+ <style>
+  /* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+ </style>
+</head>
+<body>
+    <div ng-controller="ExchangeRateController">
+        <h1>Tỷ giá hối đoái</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã tiền tệ</th>
+                    <th>Tên tiền tệ</th>
+                    <th>Mua</th>
+                    <th>Chuyển khoản</th>
+                    <th>Bán</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="rate in exchangeRates">
+                    <td>{{ rate.CurrencyCode }}</td>
+                    <td>{{ rate.CurrencyName }}</td>
+                    <td>{{ rate.Buy }}</td>
+                    <td>{{ rate.Transfer }}</td>
+                    <td>{{ rate.Sell }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+     // app.js
+var app = angular.module('exchangeRateApp', []);
+
+app.service('ExchangeRateService', function($http) {
+    this.getExchangeRates = function() {
+        return $http.get('https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx') // Thay thế với URL API của bạn
+            .then(function(response) {
+                // Chuyển đổi dữ liệu XML sang JSON
+                return parseXML(response.data);
+            });
+    };
+
+    function parseXML(xml) {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xml, "text/xml");
+        const exrates = xmlDoc.getElementsByTagName("Exrate");
+        const rates = [];
+
+        for (let i = 0; i < exrates.length; i++) {
+            rates.push({
+                CurrencyCode: exrates[i].getAttribute("CurrencyCode"),
+                CurrencyName: exrates[i].getAttribute("CurrencyName"),
+                Buy: exrates[i].getAttribute("Buy"),
+                Transfer: exrates[i].getAttribute("Transfer"),
+                Sell: exrates[i].getAttribute("Sell")
+            });
+        }
+
+        return rates;
+    }
+});
+
+app.controller('ExchangeRateController', function($scope, ExchangeRateService) {
+    $scope.exchangeRates = [];
+
+    ExchangeRateService.getExchangeRates().then(function(rates) {
+        $scope.exchangeRates = rates;
+    }).catch(function(error) {
+        console.error("Error fetching exchange rates:", error);
+    });
+});
+
+
+    </script>
+</body>
+</html>
