@@ -55,13 +55,21 @@ app.controller('MainController', ['$scope', '$http', '$interval', '$timeout', fu
     }
 
     $scope.isLoading = true; // Bắt đầu loading
-
-    $http.post('http://localhost:9999/api/auth/register', {
+    // console.log("Dữ liệu gửi đi:", {
+    //   taikhoan: $scope.user.taikhoan,
+    //   email: $scope.user.email,
+    //   hoten: $scope.user.hoten,
+    //   sdt: $scope.user.sdt,
+    //   matkhau: $scope.user.matkhau,
+    //   vaitro: $scope.user.vaitro,
+    //   recaptchaToken: $scope.recaptchaToken
+    // });
+    $http.post('http://localhost:9999/api/re/register', {
       taikhoan: $scope.user.taikhoan,
-      matkhau: $scope.user.matkhau,
       email: $scope.user.email,
       hoten: $scope.user.hoten,
       sdt: $scope.user.sdt,
+      matkhau: $scope.user.matkhau,
       vaitro: $scope.user.vaitro,
       recaptchaToken: $scope.recaptchaToken
     })
@@ -98,7 +106,7 @@ app.controller('MainController', ['$scope', '$http', '$interval', '$timeout', fu
   // Gửi lại OTP
   $scope.resendOTP = function() {
     $scope.isLoading = true; // Bắt đầu loading
-    $http.post('http://localhost:9999/api/auth/resend-otp', {
+    $http.post('http://localhost:9999/api/re/resend-otp', {
       email: $scope.user.email
     })
     .then(function(response) {
@@ -115,7 +123,7 @@ app.controller('MainController', ['$scope', '$http', '$interval', '$timeout', fu
   // Xác thực OTP
   $scope.verifyOTP = function() {
     $scope.isLoading = true; // Bắt đầu loading
-    $http.post('http://localhost:9999/api/auth/verify-otp', {
+    $http.post('http://localhost:9999/api/re/verify-otp', {
       email: $scope.user.email, 
       otp: $scope.otp
     })

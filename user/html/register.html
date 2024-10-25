@@ -72,14 +72,14 @@
                 </a>
 
                 <!-- Form Đăng Ký -->
-                <div class="register-form mt-4 w-75">
+                <div class="register-form mt-4 w-75" ng-show="isRegistering">
                     <header class="text-center">
                         <h4
                             style="font-family: 'Times New Roman', Times, serif; font-size: 30px; color: #333; letter-spacing: 1px;">
                             Đăng Ký
                         </h4>
                     </header>
-                    <form class="needs-validation" name="registerForm" ng-submit="submitForm()" novalidate>
+                    <form class="needs-validation" name="registerForm" ng-submit="submitForm()" novalidate >
                         <div class="mb-3">
                             <label for="username" class="form-label" style="font-family: 'Times New Roman'">Tên tài
                                 khoản</label>
@@ -99,7 +99,7 @@
                         <div class="mb-3">
                             <label for="registerEmail" class="form-label"
                                 style="font-family: 'Times New Roman'">Họ tên</label>
-                            <input type="email" class="form-control" id="hoten" ng-model="user.hoten" required>
+                            <input type="text" class="form-control" id="hoten" ng-model="user.hoten" required>
                             <div class="invalid-feedback">
                                 Vui lòng điền Tên của bạn
                             </div>
@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="registerPassword" class="form-label" style="font-family: 'Times New Roman'">Mật
+                            <label for="password" class="form-label" style="font-family: 'Times New Roman'">Mật
                                 khẩu</label>
                             <input type="password" class="form-control" id="password" ng-model="user.matkhau" 
                             ng-pattern="/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#!$])[A-Za-z0-9@#!$]{8,}$/" required>
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="registerPassword" class="form-label" style="font-family: 'Times New Roman'">Nhập Lại Mật
+                            <label for="confirmPassword" class="form-label" style="font-family: 'Times New Roman'">Nhập Lại Mật
                                 khẩu</label>
                             <input type="password" class="form-control" id="confirmPassword" ng-model="confirmPassword" required>
                             <div class="invalid-feedback">
@@ -132,15 +132,7 @@
                         <div class="form-group">
                             <div class="g-recaptcha" data-sitekey="{{ siteKey }}" data-callback="recaptchaCallback"></div>
                           </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="terms" required>
-                            <label class="form-check-label" for="terms" style="font-family: 'Times New Roman';">Tôi đồng
-                                ý với các </label>
-                            <div class="invalid-feedback">
-                                Bạn phải đồng ý với các điều khoản
-                            </div>
-                            <a href="#" class="herf">điều khoản</a>
-                        </div>
+                    
                         <button type="submit" class="btn btn-outline-dark w-100" style="height: 50px;">
                             <span class="button__label" style="
                                 letter-spacing: .0852071047em;
@@ -152,7 +144,33 @@
                             </span>
                         </button>
                     </form>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label" for="terms" style="font-family: 'Times New Roman';">Tôi đồng
+                            ý với các </label>
+                        <div class="invalid-feedback">
+                            Bạn phải đồng ý với các điều khoản
+                        </div>
+                        <a href="#" class="herf">điều khoản</a>
+                    </div>
                 </div>
+                <div ng-show="!isRegistering" class="container mt-5">
+                    <form ng-submit="verifyOTP()">
+                      <h2 class="text-center mb-4">Nhập Mã Xác Thực</h2>
+                
+                      <div class="form-group">
+                        <label for="otp">Mã OTP</label>
+                        <input type="text" class="form-control" id="otp" ng-model="otp" maxlength="6" pattern="\d{6}" required title="OTP phải là 6 chữ số">
+                      </div>
+                
+                      <div class="form-group">
+                        <p id="countdown" ng-if="countdownActive">{{ countdown }} giây còn lại</p>
+                        <button type="button" ng-click="resendOTP()" ng-if="!countdownActive" class="btn btn-warning w-100">Gửi lại mã OTP</button>
+                      </div>
+                
+                      <button type="submit" class="btn btn-success w-100">Xác thực</button>
+                    </form>
+                  </div>
 
                 <hr>
 
@@ -175,7 +193,7 @@
 
                     <!-- Thêm dòng điều khoản sử dụng -->
                     <p style="font-size: 16px; font-family: 'Times New Roman'; color: #666; margin-right: 0;">
-                        <a href="terms.html" class="terms-link" style="
+                        <a href="#" class="terms-link" style="
                             font-family: 'Times New Roman';
                             color: #0c0c0c;
                             font-weight: bold;
