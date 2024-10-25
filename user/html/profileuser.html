@@ -1,11 +1,34 @@
-<div class="container-fluid mt-5">
+<style>
+
+/* Ghi đè màu nền cho tab đang hoạt động */
+.nav-pills .nav-link.active {
+    background-color: black !important; /* Màu nền cho tab đang chọn */
+    color: white !important; /* Màu chữ cho tab đang chọn */
+}
+
+/* Đặt màu cho các tab không hoạt động */
+.nav-pills .nav-link {
+    color: rgb(27, 25, 25); /* Màu chữ mặc định cho các tab không hoạt động */
+}
+
+/* Tùy chọn: Kiểu cho hiệu ứng hover */
+.nav-pills .nav-link:hover {
+
+    color: yellow; /* Màu chữ khi di chuột qua */
+}
+.nav-link.active {
+    color: yellow !important;
+    background-color: black !important;
+}
+</style>
+<div class="container-fluid mt-5" style="height: 1000px;">
     <div class="row" style="margin-top: 150px;">
         <!-- Sidebar -->
         <nav class="col-md-3 col-lg-2 d-md-block sidebar">
             <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="pills-info-tab" data-bs-toggle="pill" href="#pills-info" role="tab"
-                        aria-controls="pills-info" aria-selected="true">Thông Tin Tài Khoản <i
+                        aria-controls="pills-info" aria-selected="true" >Thông Tin Tài Khoản <i
                             class="fa-regular fa-address-card"></i></a>
                 </li>
                 <li class="nav-item">
@@ -23,15 +46,17 @@
 
         <!-- Main content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="tab-content" id="pills-tabContent">
+            <div class="tab-content" id="pills-tabContent" >
                 <!-- Tab thông tin tài khoản -->
                 <div class="tab-pane fade show active" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
                     <ul class="nav nav-tabs" id="infoTabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="user-info-tab" data-bs-toggle="tab" href="#user-info" role="tab">Thông Tin Người Dùng</a>
+                            <a class="nav-link active" id="user-info-tab" data-bs-toggle="tab" href="#user-info"
+                                role="tab"style="color: black;">Thông Tin Người Dùng</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="asset-info-tab" data-bs-toggle="tab" href="#asset-info" role="tab">Tài Sản</a>
+                            <a class="nav-link" id="asset-info-tab" data-bs-toggle="tab" href="#asset-info"
+                                role="tab"style="color: black;">Tài Sản</a>
                         </li>
                     </ul>
                     <div class="tab-content mt-3" id="infoTabContent">
@@ -68,7 +93,8 @@
                                     ng-if="!isEditing">Chỉnh Sửa Thông Tin</button>
                                 <button type="button" class="btn btn-secondary mt-3" ng-click="disableEdit()"
                                     ng-if="isEditing">Hủy</button>
-                                <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật thông tin</button>
+                                <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật thông
+                                    tin</button>
                             </form>
                         </div>
 
@@ -78,7 +104,8 @@
                                 <h4>Tài sản của bạn</h4>
                                 <div class="mb-3">
                                     <label for="gcoinBalance" class="form-label">Số dư Gcoin:</label>
-                                    <input type="text" class="form-control" id="gcoinBalance" value="{{gcoinBalance}}" disabled>
+                                    <input type="text" class="form-control" id="gcoinBalance" value="{{gcoinBalance}}"
+                                        disabled>
                                 </div>
                                 <div class="mb-3">
                                     <label for="goldPrice" class="form-label">Giá trị quy đổi ra vàng:</label>
@@ -91,7 +118,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <!-- TAB LICH SU GIAO DICH -->
@@ -121,10 +148,12 @@
                 <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
                     <ul class="nav nav-tabs" id="securityTabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="password-tab" data-bs-toggle="tab" href="#password-content" role="tab">Mật Khẩu</a>
+                            <a class="nav-link active" id="password-tab" data-bs-toggle="tab" href="#password-content"
+                                role="tab">Mật Khẩu</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab">Mã PIN</a>
+                            <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab">Mã
+                                PIN</a>
                         </li>
                     </ul>
                     <div class="tab-content mt-3" id="securityTabContent">
@@ -144,8 +173,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="confirmPassword" class="form-label">Nhập Lại Mật Khẩu Mới</label>
-                                    <input type="password" class="form-control" id="confirmPassword" ng-model="confirmPassword"
-                                        required>
+                                    <input type="password" class="form-control" id="confirmPassword"
+                                        ng-model="confirmPassword" required>
                                 </div>
                                 <button type="submit" class="btn btn-dark">Đổi Mật Khẩu</button>
                             </form>
@@ -165,9 +194,12 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="confirmPIN" class="form-label">Nhập Lại Mã PIN Mới</label>
-                                    <input type="password" class="form-control" id="confirmNewPin" ng-model="confirmNewPin" required>
+                                    <input type="password" class="form-control" id="confirmNewPin"
+                                        ng-model="confirmNewPin" required>
                                 </div>
                                 <button type="submit" class="btn btn-dark">Đổi Mã PIN</button>
                             </form>
                         </div>
-                    </div
+                    </div>
+                    <script>
+                    </script>
