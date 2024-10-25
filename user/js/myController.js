@@ -127,7 +127,6 @@ app.config(['$routeProvider', function ($routeProvider) {
             }
             $scope.updateCarousel();
         }
-<<<<<<< HEAD
     
         // Move to the previous item with circular behavior
         $scope.prevSlide = function() {
@@ -144,61 +143,6 @@ app.config(['$routeProvider', function ($routeProvider) {
             const wrapper = document.querySelector('.product-carousel-wrapper');
             const translateX = -($scope.currentIndex * (100 / $scope.itemsPerPage)); // Calculate shift based on visible items
             wrapper.style.transform = `translateX(${translateX}%)`;
-=======
-    }).then(function (response) {
-        alert('Tạo ví Gcoin thành công!');
-        $scope.loadGcoinData(); // Tải lại dữ liệu Gcoin sau khi tạo ví
-    }).catch(function (error) {
-        console.error('Lỗi khi tạo ví Gcoin:', error);
-        alert('Tạo ví Gcoin không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
-    });
-};
-
-// Hàm hiển thị số dư Gcoin và giá vàng
-$scope.displayGcoinInfo = function () {
-    return `Số dư Gcoin: ${$scope.gcoinBalance} | Giá vàng: ${$scope.goldPrice}`;
-};
-
-// Gọi hàm để kiểm tra ví Gcoin khi cần thiết
-$scope.checkAndCreateGcoinWallet();
-
-
-
-
-// Hàm upload avatar
-$scope.uploadAvatar = function() {
-    var token = localStorage.getItem('token');
-    if (!$scope.avatarFile) {
-        alert('Vui lòng chọn một tệp ảnh để tải lên.');
-        return;
-    }
-
-    // Tạo form data để gửi
-    var formData = new FormData();
-    formData.append('file', $scope.avatarFile);
-    formData.append('upload_preset', 'imgavt1'); // Thay YOUR_UPLOAD_PRESET bằng upload preset của bạn
-
-    // Gọi API của Cloudinary để upload ảnh
-    $http.post('https://api.cloudinary.com/v1_1/dcr0bghdp/image/upload', formData, {
-        headers: {
-            'Content-Type': undefined
-        }
-    }).then(function(response) {
-        // Cập nhật avatar URL trong userInfo
-        $scope.userInfo.avt = response.data.secure_url; // Lấy URL từ phản hồi
-        alert('Tải lên thành công!');
-    }).catch(function(error) {
-        console.error('Lỗi khi tải lên avatar:', error);
-        alert('Tải lên không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
-    });
-};
-
-// Hàm cập nhật thông tin cá nhân
-$scope.updateProfile = function () {
-    $http.put('http://localhost:9999/api/user/profile', $scope.userInfo, {
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
->>>>>>> 3f44c7131d4b00189ef4e89d61aef162d8ba30eb
         }
     
         // Initial load
@@ -314,25 +258,28 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
 
 
     // Hàm upload avatar
-    $scope.uploadAvatar = function () {
+    $scope.uploadAvatar = function() {
+        var token = localStorage.getItem('token');
         if (!$scope.avatarFile) {
             alert('Vui lòng chọn một tệp ảnh để tải lên.');
             return;
         }
 
+        // Tạo form data để gửi
         var formData = new FormData();
         formData.append('file', $scope.avatarFile);
+        formData.append('upload_preset', 'imgavt1'); // Thay YOUR_UPLOAD_PRESET bằng upload preset của bạn
 
-        // Gọi API của backend để upload ảnh
-        $http.post(`http://localhost:9999/api/user/upload/${$scope.userInfo.manguoidung}`, formData, {
+        // Gọi API của Cloudinary để upload ảnh
+        $http.post('https://api.cloudinary.com/v1_1/dcr0bghdp/image/upload', formData, {
             headers: {
-                'Content-Type': undefined,
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Content-Type': undefined
             }
-        }).then(function (response) {
-            $scope.userInfo.avt = response.data; // Cập nhật URL avatar
+        }).then(function(response) {
+            // Cập nhật avatar URL trong userInfo
+            $scope.userInfo.avt = response.data.secure_url; // Lấy URL từ phản hồi
             alert('Tải lên thành công!');
-        }).catch(function (error) {
+        }).catch(function(error) {
             console.error('Lỗi khi tải lên avatar:', error);
             alert('Tải lên không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
         });
