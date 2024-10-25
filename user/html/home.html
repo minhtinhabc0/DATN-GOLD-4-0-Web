@@ -134,8 +134,8 @@
 }
 
 .product-card {
-    min-width: 260px;
-    min-height: 260px;
+    min-width: 233px;
+    min-height: 233px;
     margin: 0 10px;
     text-align: center;
     border: 1px solid #ddd;
@@ -185,6 +185,15 @@
     font-size: 2.5em;
 }
 
+.custom-image {
+margin-top: 20px;
+
+    transition: transform 0.3s ease;
+}
+
+.custom-image:hover {
+    transform: scale(1.05);
+}
 
 </style>
 
@@ -223,7 +232,17 @@
             </div>
         </div>
     </div>
-
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <img src="IMG/ht1.jpg" class="img-fluid rounded custom-image" alt="Hình 1" >
+        </div>
+        <div class="col-md-4">
+            <img src="IMG/ht2.jpg" class="img-fluid rounded custom-image" alt="Hình 2">
+        </div>
+        <div class="col-md-4">
+            <img src="IMG/ht3.jpg" class="img-fluid rounded custom-image" alt="Hình 3">
+        </div>
+    </div>
 
     <div class="container">
 
@@ -253,39 +272,18 @@
             </div>
         </div>
 
-        <!-- First Content Section (Image Left, Text Right) -->
-        <div class="row g-3 align-items-center mb-4">
-            <div class="col-md-6">
-                <div class="box">Hình ảnh</div>
-            </div>
-            <div class="col-md-6">
-                <div class="content">
-                    <h3>Tiêu đề</h3>
-                    <p>Nội dung</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Second Content Section (Image Right, Text Left) -->
-        <div class="row g-3 align-items-center reverse-row">
-            <div class="col-md-6">
-                <div class="box">Hình ảnh</div>
-            </div>
-            <div class="col-md-6">
-                <div class="content">
-                    <h3>Tiêu đề</h3>
-                    <p>Nội dung</p>
-                </div>
-            </div>
-        </div>
 
     </div>
+    <!-- Image Section -->
+
+
+
 
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10 ">
             <h4 style="color: #3645a5;">  Xu hướng tìm kiếm</h4>
-            <div class="product-carousel-container position-relative">
+            <div class="product-carousel-container position-relative" style="margin-top: 30px;">
                 <button class="carousel-arrow left-arrow" ng-click="prevSlide()"><i class="fa-solid fa-angle-left"></i></button>
     
                 <div class="product-carousel-wrapper d-flex">
