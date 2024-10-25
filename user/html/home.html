@@ -23,7 +23,6 @@
         text-align: right;
         border: 2px solid #ffd700;
         border-radius: 8px;
-        padding: 5px 10px;
         margin-top: 5px;
     }
 
@@ -83,15 +82,148 @@
     .reverse-row {
         flex-direction: row-reverse;
     }
+
+    .carousel-item img {
+        margin-top: 139px;
+        height: 500px;
+        object-fit: cover;
+        /* Ensure images cover the carousel without stretching */
+    }
+
+    .carousel-indicators {
+        display: flex;
+        /* Sử dụng flexbox để dễ dàng điều chỉnh khoảng cách */
+        justify-content: center;
+        /* Căn giữa các chỉ báo */
+    }
+
+    .carousel-indicators li {
+        width: 11px !important;
+        /* Đường kính vòng tròn */
+        height: 11px !important;
+        border-radius: 50% !important;
+        /* Hình tròn */
+        background-color: rgb(255, 255, 255) !important;
+        /* Màu đen */
+        border: 1px solid black !important;
+        /* Viền màu đen */
+        opacity: 1 !important;
+        /* Không làm mờ */
+        margin: 0 10px !important;
+        /* Khoảng cách giữa các chỉ báo */
+
+    }
+
+    .carousel-indicators .active {
+        background-color: black !important;
+        /* Màu đen cho chỉ báo đang chọn */
+        opacity: 1 !important;
+        /* Nổi bật chỉ báo đang chọn */
+    }
+
+
+    .product-carousel-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-carousel-wrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.product-card {
+    min-width: 260px;
+    min-height: 260px;
+    margin: 0 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+
+    background-color: rgb(244, 244, 245);
+}
+
+.product-image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none; /* Xóa phông nền */
+    border: none;
+    padding: 0px;
+    cursor: pointer;
+    z-index: 10;
+    color: #babab1; /* Màu mũi tên */
+}
+
+.left-arrow {
+    left: -1px;
+}
+
+.right-arrow {
+    right: -1px;
+}
+
+.carousel-arrow {
+    font-size: 2em; /* Tăng kích thước chữ */
+    padding-right: 20px; /* Tăng vùng bấm */
+}
+
+ .right-arrow {
+    margin-right: 50px;
+    font-size: 2.5em; /* Tăng kích thước riêng cho mũi tên phải */
+}
+.left-arrow{
+    margin-left: 50px;
+    font-size: 2.5em;
+}
+
+
 </style>
 
 <body>
 
     <!-- Video Section -->
-    <div class="ratio ratio-16x9 mb-4">
-        <iframe src="https://www.youtube.com/embed/v5NUp-cY_5M?autoplay=1&controls=0&modestbranding=1&loop=1&playlist=v5NUp-cY_5M"
-            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div id="pnjCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+        <!-- Carousel indicators (dots) -->
+        <ol class="carousel-indicators">
+            <li data-bs-target="#pnjCarousel" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#pnjCarousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#pnjCarousel" data-bs-slide-to="2"></li>
+            <li data-bs-target="#pnjCarousel" data-bs-slide-to="3"></li>
+        </ol>
+
+        <!-- Carousel inner -->
+        <div class="carousel-inner">
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <img src="IMG/slide.jpg" class="d-block w-100" alt="Slide 1">
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <img src="IMG/slide1.jpg" class="d-block w-100" alt="Slide 2">
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <img src="IMG/slide2.jpg" class="d-block w-100" alt="Slide 3">
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="carousel-item">
+                <img src="IMG/slide3.jpg" class="d-block w-100" alt="Slide 4">
+            </div>
+        </div>
     </div>
+
 
     <div class="container">
 
@@ -148,6 +280,27 @@
         </div>
 
     </div>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 ">
+            <h4 style="color: #3645a5;">  Xu hướng tìm kiếm</h4>
+            <div class="product-carousel-container position-relative">
+                <button class="carousel-arrow left-arrow" ng-click="prevSlide()"><i class="fa-solid fa-angle-left"></i></button>
+    
+                <div class="product-carousel-wrapper d-flex">
+                    <div class="product-card" ng-repeat="pro in items">
+                        <img class="product-image img-fluid" alt="Product Image" ng-src="{{pro.hinhAnh}}" />
+                    </div>
+                </div>
+    
+                <button class="carousel-arrow right-arrow" ng-click="nextSlide()"><i class="fa-solid fa-angle-right"></i></button>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    
+    
 
     <!-- Add Bootstrap JS and Font Awesome -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
