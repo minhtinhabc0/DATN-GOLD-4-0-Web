@@ -89,28 +89,30 @@ tr:nth-child(even) {
 </head>
 <body>
     <div class="tieude" >
-        <h1>Tỷ giá hối đoái</h1>
+        <h1>Tỷ giá tiền tệ các nước</h1>
+        
         <table>
             <thead>
                 <tr>
                     <th>Mã tiền tệ</th>
                     <th>Tên tiền tệ</th>
                     <th>Mua bằng tiền mặt</th>
-                    <th>Chuyển khoản</th>
-                    <th>Bán</th>
+                    <th>Mua Bằng Chuyển khoản</th>
+                    <th>Giá Bán</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="rate in exchangeRates">
                     <td>{{ rate.CurrencyCode }}</td>
                     <td>{{ rate.CurrencyName }}</td>
-                    <td style="color: #00ff00;">{{ rate.Buy }}</td>
-                    <td style="color:rgb(225, 225, 58);"> {{ rate.Transfer }}</td>
-                    <td style="color: red;">{{ rate.Sell }}</td>
+                    <td style="color: #00ff00;">{{ rate.Buy }} VNĐ</td>
+                    <td style="color:rgb(225, 225, 58);"> {{ rate.Transfer }} VNĐ</td>
+                    <td style="color: red;">{{ rate.Sell }} VNĐ</td>
                 </tr>
             </tbody>
         </table>
+        <p>Nguồn từ ngân hàng Vietcombank</p>
     </div>
-  
+    
 </body>
 </html>
