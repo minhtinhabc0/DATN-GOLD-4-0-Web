@@ -212,25 +212,28 @@ $scope.checkAndCreateGcoinWallet();
 
 
 // Hàm upload avatar
-$scope.uploadAvatar = function () {
+$scope.uploadAvatar = function() {
+    var token = localStorage.getItem('token');
     if (!$scope.avatarFile) {
         alert('Vui lòng chọn một tệp ảnh để tải lên.');
         return;
     }
 
+    // Tạo form data để gửi
     var formData = new FormData();
     formData.append('file', $scope.avatarFile);
+    formData.append('upload_preset', 'imgavt1'); // Thay YOUR_UPLOAD_PRESET bằng upload preset của bạn
 
-    // Gọi API của backend để upload ảnh
-    $http.post(`http://localhost:9999/api/user/upload/${$scope.userInfo.manguoidung}`, formData, {
+    // Gọi API của Cloudinary để upload ảnh
+    $http.post('https://api.cloudinary.com/v1_1/dcr0bghdp/image/upload', formData, {
         headers: {
-            'Content-Type': undefined,
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
+            'Content-Type': undefined
         }
-    }).then(function (response) {
-        $scope.userInfo.avt = response.data; // Cập nhật URL avatar
+    }).then(function(response) {
+        // Cập nhật avatar URL trong userInfo
+        $scope.userInfo.avt = response.data.secure_url; // Lấy URL từ phản hồi
         alert('Tải lên thành công!');
-    }).catch(function (error) {
+    }).catch(function(error) {
         console.error('Lỗi khi tải lên avatar:', error);
         alert('Tải lên không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
     });
