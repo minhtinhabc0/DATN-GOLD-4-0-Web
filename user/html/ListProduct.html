@@ -1,168 +1,339 @@
 <style>
-    body{
-        padding-top: 100px;
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        color: black !important;
+        margin-top: 100px;
     }
-    /* Tổng quan bố cục sản phẩm */
-.product-card {
-  border: 1px solid #f0f0f0;
-  padding: 20px;
-  text-align: center;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: relative;
-  transition: transform 0.2s ease-in-out;
-}
 
-/* Hình ảnh sản phẩm */
-.product-card img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  margin-bottom: 15px;
-}
+    .container-fluid {
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
 
-/* Tên sản phẩm */
-.product-card p:first-of-type {
-  font-size: 11px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
-}
+    .row:last-child {
+        margin-bottom: 0;
+    }
 
-/* Giá sản phẩm */
-.product-card p:nth-of-type(2) {
-  font-size: 18px;
-  font-weight: bold;
-  color: #d0021b;
-  margin-bottom: 15px;
-}
+    .product-card {
+        width: 270px;
+        height: 350px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0 auto;
+        position: relative;
+        background-color: #eeeeee;
+    }
 
-/* Hiệu ứng hover */
-.product-card:hover {
-  transform: scale(1.05);
-}
+    .product-card img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        margin-bottom: 10px;
+        max-width: 180px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .product-card p:first-of-type {
+        font-size: 15px;
+        margin-bottom: 3px;
+        color: black;
+        text-align: center;
+    }
+
+    .product-card p:nth-of-type(2) {
+        font-size: 18px;
+        color: #c48c46;
+        text-align: center;
+    }
+
+    .product-card .installment {
+        font-size: 10px;
+        font-weight: bold;
+        color: #003b7d;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: white;
+        padding: 4px 8px;
+        border: 1px solid #003b7d;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .product-card .installment span:first-of-type {
+        font-size: 23px;
+        display: block;
+        line-height: 1;
+    }
+
+    .product-card:hover {
+        transform: scale(1.05);
+        transition: 0.3s ease-in-out;
+    }
+
+    .product-card .sold {
+        color: #777;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .row {
+        margin-bottom: 30px;
+    }
 
 
-.product-card .rating i {
-  color: #f5a623;
-  margin-right: 5px;
-}
+    /* Style for the filter section */
+    .filter-section {
+        display: flex;
+        gap: 10px;
+        /* Space between filters */
+        margin-bottom: 20px;
+    }
 
-.product-card .sold {
-  color: #777;
-  font-size: 12px;
-  margin-top: 5px;
-}
-/* Thêm khoảng cách giữa sản phẩm và phân trang */
-.row {
-    margin-bottom: 30px; /* Tạo khoảng cách 30px giữa sản phẩm và phân trang */
-}
+    /* Wrapper for dropdown and icon */
+    .filter-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Style for the dropdown */
+    .filter-wrapper select {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        appearance: none;
+        width: 130px;
+        height: 40px;
+        padding-right: 25px;
+        /* Space for the arrow, reduced for better alignment */
+    }
+
+    /* Style for the down arrow icon */
+    .filter-wrapper .fa-angle-down {
+        position: absolute;
+        right: 5px;
+        /* Move the icon closer by reducing the right margin */
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: #777;
+    }
+
+    /* Dropdown hover effect */
+    .filter-wrapper select:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Add focus style */
+    .filter-wrapper select:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    }
 
 
 
+    /* Style for the search bar */
+    input[type="text"].form-control {
+        width: 100%;
+        /* Ensure full width */
+        max-width: 500px;
+        /* Limit the max width for larger screens */
+        border-radius: 25px;
+        /* Rounded corners */
+        border: 1px solid #ddd;
+        /* Lighter border */
+        padding: 10px 20px;
+        /* Padding for inside space */
+        font-size: 16px;
+        /* Increase font size */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        /* Subtle shadow */
+        transition: all 0.3s ease-in-out;
+        /* Smooth transitions */
+        outline: none;
+        /* Remove default outline */
+    }
+
+    /* Focus state to indicate interaction */
+    input[type="text"].form-control:focus {
+        border-color: #c48c46;
+        /* Border color change on focus */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        /* Stronger shadow on focus */
+        outline: none;
+        /* Remove outline */
+    }
+
+    /* Placeholder text styling */
+    input[type="text"].form-control::placeholder {
+        color: #aaa;
+        /* Lighter placeholder text */
+        font-style: italic;
+        /* Italic for a subtle look */
+    }
+
+    /* Search bar with icon */
+    .search-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        max-width: 500px;
+        /* Ensure the wrapper matches the search input size */
+    }
+
+    /* Search icon inside the input */
+    .search-wrapper i {
+        position: absolute;
+        left: 15px;
+        /* Position icon inside the search bar */
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+        /* Light color for the icon */
+    }
+
+    /* Padding on the input adjusted to account for the icon */
+    .search-wrapper input[type="text"] {
+        padding-left: 45px;
+        /* Padding to ensure space for the icon */
+    }
+
+    /* Đảm bảo phần chứa nội dung chính chiếm đủ chiều cao và cố định thanh phân trang */
+    .col-md-10 {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .pagination-container {
+        margin-top: auto;
+    }
+    
 </style>
-<div class="row">
-</div>
+
 <div class="container-fluid mt-5">
     <div class="row">
-        <div class="col-md-3 p-4 bg-light border-end">
-            <h5>Keywords</h5>
-            <div class="mb-3">
-                <span class="badge bg-secondary me-1">Spring</span>
-                <span class="badge bg-secondary me-1">Smart</span>
-                <span class="badge bg-secondary">Modern</span>
-            </div>
-            <h5>Label</h5>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="label1" checked>
-                <label class="form-check-label" for="label1">Label Description</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="label2" checked>
-                <label class="form-check-label" for="label2">Label Description</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="label3" checked>
-                <label class="form-check-label" for="label3">Label Description</label>
-            </div>
-
-            <h5 class="mt-4">Price</h5>
-            <input type="range" class="form-range" min="0" max="100" value="50" id="priceRange">
-
-            <h5 class="mt-4">Color</h5>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="color1" checked>
-                <label class="form-check-label" for="color1">Label</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="color2" checked>
-                <label class="form-check-label" for="color2">Label</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="color3" checked>
-                <label class="form-check-label" for="color3">Label</label>
-            </div>
-
-            <h5 class="mt-4">Size</h5>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="size1" checked>
-                <label class="form-check-label" for="size1">Label</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="size2" checked>
-                <label class="form-check-label" for="size2">Label</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="size3" checked>
-                <label class="form-check-label" for="size3">Label</label>
-            </div>
-        </div>
-
-        <!-- Product List -->
-        <div class="col-md-9 p-4">
-            <!-- Search and Sort -->
+        <div class="col-md-1"></div>
+        <div class="col-md-10 p-4">
             <div class="d-flex justify-content-between mb-4">
-                <input type="text" class="form-control w-50" placeholder="Search..." ng-model="searchText">
-
-                <div>
-                    <button class="btn btn-dark me-2" ng-click="sortByPrice('new')">New</button>
-                    <button class="btn btn-outline-dark me-2" ng-click="sortByPrice('asc')">Price ascending</button>
-                    <button class="btn btn-outline-dark me-2" ng-click="sortByPrice('desc')">Price descending</button>
-                    <button class="btn btn-outline-dark">Rating</button>
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchText">
                 </div>
+
                 
             </div>
-
-            <!-- Product Grid -->
+            <div class="d-flex justify-content-between">
+                <!-- Phần chứa các bộ lọc -->
+                <div class="filter-section d-flex">
+                    <div class="filter-wrapper">
+                        <select class="form-select">
+                            <option>Thương hiệu</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                    <div class="filter-wrapper">
+                        <select class="form-select">
+                            <option>Giá</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                    <div class="filter-wrapper">
+                        <select class="form-select">
+                            <option>Loại đá chính</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                    <div class="filter-wrapper">
+                        <select class="form-select">
+                            <option>Chất liệu</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                    <div class="filter-wrapper">
+                        <select class="form-select">
+                            <option>Giới tính</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                    <div class="filter-wrapper">
+                        <select class="form-select">
+                            <option>Loại trang sức</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                </div>
+            
+                <!-- Phần sắp xếp nằm tách biệt và sát bên phải -->
+                <div class="filter-wrapper">
+                    <select class="form-select" ng-model="selectedSort" ng-change="sortByPrice(selectedSort)">
+                        <option value="">Sắp xếp</option>
+                        <option value="new">Mới nhất</option>
+                        <option value="asc">Tăng dần theo giá</option>
+                        <option value="desc">Giảm dần theo giá</option>
+                    </select>
+                </div>
+            </div>
+            
+            
+            
             <div class="row g-4">
                 <div class="col-md-3" ng-repeat="pro in filteredItems | filter:{ tenSanPham: searchText }">
                     <div class="product-card">
-                        <img alt="Placeholder image for product" height="150" ng-src="{{pro.hinhAnh}}" width="150"/>
+                        <div class="installment">
+                            <span>0%</span>
+                            <span>Trả góp</span>
+                        </div>
+                        <img alt="Placeholder image for product" ng-src="{{pro.hinhAnh}}" />
                         <p>{{pro.tenSanPham}}</p>
-                        <p>{{pro.gia |number:0}} VND</p>
+                        <p>{{pro.gia | number:0}} VND</p>
                     </div>
                 </div>
             </div>
-            
-            
-            <!-- Pagination -->
-            <nav aria-label="Page navigation example">
+
+            <!-- Thanh phân trang -->
+            <nav class="pagination-container" aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                  <li class="page-item" ng-class="{disabled: currentPage == 1}">
-                    <a class="page-link" href="#" ng-click="previousPage()">Previous</a>
-                  </li>
-                  <li class="page-item" ng-repeat="page in [].constructor(totalPages) track by $index">
-                    <a class="page-link" href="" ng-click="goToPage($index + 1)">{{ $index + 1 }}</a>
-                  </li>
-                  <li class="page-item" ng-class="{disabled: currentPage == totalPages}">
-                    <a class="page-link" href="#" ng-click="nextPage()">Next</a>
-                  </li>
+                    <li class="page-item" ng-class="{disabled: currentPage == 1}">
+                        <a class="page-link" href="#" ng-click="previousPage()">Previous</a>
+                    </li>
+                    <li class="page-item" ng-repeat="page in [].constructor(totalPages) track by $index">
+                        <a class="page-link" href="" ng-click="goToPage($index + 1)">{{ $index + 1 }}</a>
+                    </li>
+                    <li class="page-item" ng-class="{disabled: currentPage == totalPages}">
+                        <a class="page-link" href="#" ng-click="nextPage()">Next</a>
+                    </li>
                 </ul>
-              </nav>
+            </nav>
         </div>
+        <div class="col-md-1"></div>
     </div>
 </div>
-<script>
-
-</script>

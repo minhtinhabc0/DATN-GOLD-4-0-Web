@@ -1,34 +1,12 @@
-<style>
-
-/* Ghi đè màu nền cho tab đang hoạt động */
-.nav-pills .nav-link.active {
-    background-color: black !important; /* Màu nền cho tab đang chọn */
-    color: white !important; /* Màu chữ cho tab đang chọn */
-}
-
-/* Đặt màu cho các tab không hoạt động */
-.nav-pills .nav-link {
-    color: rgb(27, 25, 25); /* Màu chữ mặc định cho các tab không hoạt động */
-}
-
-/* Tùy chọn: Kiểu cho hiệu ứng hover */
-.nav-pills .nav-link:hover {
-
-    color: yellow; /* Màu chữ khi di chuột qua */
-}
-.nav-link.active {
-    color: yellow !important;
-    background-color: black !important;
-}
-</style>
-<div class="container-fluid mt-5" style="height: 1000px;">
+<link rel="stylesheet" href="css/prof.css">
+<div class="container-fluid mt-5" style="height: 700px;">
     <div class="row" style="margin-top: 150px;">
         <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar" style="background-color: black !important;height: 750px; overflow-y: auto; margin-top: -15px;">
             <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="pills-info-tab" data-bs-toggle="pill" href="#pills-info" role="tab"
-                        aria-controls="pills-info" aria-selected="true" >Thông Tin Tài Khoản <i
+                        aria-controls="pills-info" aria-selected="true" style="margin-top: 50px;">Thông Tin Tài Khoản <i
                             class="fa-regular fa-address-card"></i></a>
                 </li>
                 <li class="nav-item">
@@ -52,65 +30,63 @@
                     <ul class="nav nav-tabs" id="infoTabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="user-info-tab" data-bs-toggle="tab" href="#user-info"
-                                role="tab"style="color: black;">Thông Tin Người Dùng</a>
+                                role="tab"style="color: white;">Thông Tin Người Dùng</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="asset-info-tab" data-bs-toggle="tab" href="#asset-info"
-                                role="tab"style="color: black;">Tài Sản</a>
+                                role="tab"style="color: white;">Tài Sản</a>
                         </li>
                     </ul>
                     <div class="tab-content mt-3" id="infoTabContent">
                         <!-- Thông Tin Người Dùng -->
                         <div class="tab-pane fade show active" id="user-info" role="tabpanel">
-                            <div class="avatar-container">
-                                <img ng-src="{{userInfo.avt}}" alt="User Avatar" class="img-fluid mb-3"
-                                    style="border-radius: 50%; width: 100px; height: 100px;" />
-                                <input type="file" id="avatar" class="d-none" ng-file-select ng-model="avatarFile"
-                                    ng-disabled="!isEditing" accept="image/*" ng-change="uploadAvatar()" />
-                                <label for="avatar" class="btn btn-edit" ng-if="isEditing" style="cursor: pointer;">
-                                    <i class="fas fa-edit"></i>
-                                </label>
-                                <h3>{{userInfo.hoTen}}</h3>
+                            <div class="user-info-container">
+                                <div class="avatar-container">
+                                    <img ng-src="{{userInfo.avt}}" alt="User Avatar" class="img-fluid mb-3"
+                                        style="border-radius: 50%; width: 200px; height: 200px;" />
+                                    <label for="avatar" class="btn btn-edit" ng-if="isEditing" style="cursor: pointer;">
+                                        <i class="fas fa-edit"></i>
+                                    </label>
+                                    <input type="file" id="avatar" class="d-none" ng-file-select ng-model="avatarFile"
+                                        ng-disabled="!isEditing" accept="image/*" ng-change="uploadAvatar()" />
+                                    
+                                </div>
+                            
+                                <form class="user-info-form" ng-submit="updateProfile()">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Họ tên</label>
+                                        <input type="text" class="form-control" id="fullName" ng-model="userInfo.hoTen"
+                                            required ng-disabled="!isEditing">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" ng-model="userInfo.email"
+                                            required ng-disabled="!isEditing">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Số điện thoại</label>
+                                        <input type="text" class="form-control" id="phoneNumber" ng-model="userInfo.sdt"
+                                            required ng-disabled="!isEditing">
+                                    </div>
+                                    <button type="button" class="btn btn-secondary mt-3" ng-click="enableEdit()" ng-if="!isEditing">Chỉnh Sửa Thông Tin</button>
+                                    <button type="button" class="btn btn-secondary mt-3" ng-click="disableEdit()" ng-if="isEditing">Hủy</button>
+                                    <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật thông tin</button>
+                                </form>
                             </div>
-
-                            <form ng-submit="updateProfile()">
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Họ tên</label>
-                                    <input type="text" class="form-control" id="fullName" ng-model="userInfo.hoTen"
-                                        required ng-disabled="!isEditing">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" ng-model="userInfo.email"
-                                        required ng-disabled="!isEditing">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Số điện thoại</label>
-                                    <input type="text" class="form-control" id="phoneNumber" ng-model="userInfo.sdt"
-                                        required ng-disabled="!isEditing">
-                                </div>
-                                <button type="button" class="btn btn-secondary mt-3" ng-click="enableEdit()"
-                                    ng-if="!isEditing">Chỉnh Sửa Thông Tin</button>
-                                <button type="button" class="btn btn-secondary mt-3" ng-click="disableEdit()"
-                                    ng-if="isEditing">Hủy</button>
-                                <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật thông
-                                    tin</button>
-                            </form>
+                            
                         </div>
 
                         <!-- Tài Sản -->
                         <div class="tab-pane fade" id="asset-info" role="tabpanel">
                             <div class="form-section">
-                                <h4>Tài sản của bạn</h4>
+                                <h3>Tài sản của bạn</h3>
                                 <div class="mb-3">
-                                    <label for="gcoinBalance" class="form-label">Số dư Gcoin:</label>
-                                    <input type="text" class="form-control" id="gcoinBalance" value="{{gcoinBalance}}"
-                                        disabled>
+                                    <label for="gcoinBalance" class="form-label" style="color: white;">Số dư Gcoin:</label>
+                                    <h2 style="color: yellow; font-weight: bold;">{{gcoinBalance}}</h2>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="goldPrice" class="form-label">Giá trị quy đổi ra vàng:</label>
-                                    <input type="text" class="form-control" id="goldPrice"
-                                        value="{{gcoinBalance * goldPrice | currency}}" disabled>
+                                    <label for="goldPrice" class="form-label" style="color: white;">Giá trị quy đổi ra vàng:</label>
+                                    <h2 style="color: yellow; font-weight: bold;">{{gcoinBalance * goldPrice | currency}} </h2>
                                 </div>
                                 <div class="mb-3" ng-if="gcoinBalance <= 0">
                                     <p class="text-warning">Bạn chưa có ví Gcoin. Hãy tạo ví để bắt đầu sử dụng!</p>
@@ -149,10 +125,10 @@
                     <ul class="nav nav-tabs" id="securityTabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="password-tab" data-bs-toggle="tab" href="#password-content"
-                                role="tab">Mật Khẩu</a>
+                                role="tab" style="color: white;">Mật Khẩu</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab">Mã
+                            <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab" style="color: white;">Mã
                                 PIN</a>
                         </li>
                     </ul>

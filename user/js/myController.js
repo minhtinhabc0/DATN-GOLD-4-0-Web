@@ -68,6 +68,10 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'html/thanhtoan.html',
             controller: 'thanhtoanCtrl'
         })
+        .when('/user/brand', {
+            templateUrl: 'html/brand.html',
+            controller: 'brandCtrl'
+        })
         .when('/user/ngoaite', {
             templateUrl: 'html/ExchangeRate.html',
             controller: 'ngoaiteCtrl'

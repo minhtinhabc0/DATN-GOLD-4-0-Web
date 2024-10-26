@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLD-4.0 - Thương hiệu vàng của bạn</title>
+    <style>
+        /* Đặt nền tổng thể */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: black !important;
+            color: #333;
+            margin-top: 150px !important;
+        }
+
+        /* Header */
+        .header {
+            background-color: #333;
+            color: #f9b700;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            margin: 10px 0;
+        }
+
+        /* Giới thiệu thương hiệu */
+        .brand-section {
+            padding: 60px 20px;
+            text-align: center;
+            background-image: url('https://example.com/background-gold.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #f9b700;
+        }
+
+        .brand-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .brand-section p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: auto;
+            text-align: justify;
+            color: #fff;
+        }
+
+        /* Đặc điểm nổi bật */
+        .features-section {
+            padding: 60px 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .feature-card {
+            background-color: #333;
+            color: #f9b700;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 1em;
+        }
+
+        /* Đội ngũ chuyên gia */
+        .team-section {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: black;
+        }
+
+        .team-section h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #f9b700;
+        }
+
+        .team-profiles {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .profile-card {
+            background-color: #333;
+            color: #f9b700;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 250px;
+            text-align: center;
+        }
+
+        .profile-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .profile-card h3 {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        /* Đối tác và khách hàng */
+        .partners-section {
+            padding: 60px 20px;
+            background-color: #333;
+            color: #f9b700;
+            text-align: center;
+        }
+
+        .partners-section h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .partners-logos {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .partners-logos img {
+            width: 120px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        /* Liên hệ */
+        .contact-section {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: black;
+        }
+
+        .contact-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .contact-form {
+            max-width: 500px;
+            margin: auto;
+            background-color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            color: #f9b700;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
+
+        .contact-form button {
+            background-color: #f9b700;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #333;
+            color: #f9b700;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>GOLD-4.0</h1>
+        <p>Đỉnh cao của sự sang trọng và giá trị đích thực</p>
+    </div>
+
+    <!-- Giới thiệu thương hiệu -->
+    <section class="brand-section">
+        <h2>Giới Thiệu Về Chúng Tôi</h2>
+        <p>
+            Tại GOLD-4.0, chúng tôi cam kết mang đến cho khách hàng những sản phẩm vàng chất lượng cao nhất,
+            được chế tác tinh xảo và được chứng nhận đẳng cấp quốc tế. Với sự kết hợp của công nghệ tiên tiến và 
+            sự tận tâm trong từng sản phẩm, GOLD-4.0 đã trở thành thương hiệu uy tín hàng đầu trong lĩnh vực vàng bạc đá quý. Chúng tôi có 3 tiêu chí hàng đầu:
+        </p>
+    </section>
+
+    <!-- Đặc điểm nổi bật -->
+    <section class="features-section">
+        <div class="feature-card">
+            <h3>Chất Lượng Đỉnh Cao</h3>
+            <p>Sản phẩm của chúng tôi đều được kiểm tra nghiêm ngặt để đảm bảo độ tinh khiết và sự bền vững theo thời gian.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Công Nghệ Hiện Đại</h3>
+            <p>Ứng dụng công nghệ 4.0 trong chế tác và kinh doanh, chúng tôi đem lại trải nghiệm mua sắm nhanh chóng và dễ dàng.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Đảm Bảo Uy Tín</h3>
+            <p>GOLD-4.0 luôn giữ vững uy tín và sự tin tưởng của khách hàng qua dịch vụ tận tình và chính sách hậu mãi chu đáo.</p>
+        </div>
+    </section>
+
+    <!-- Đội ngũ chuyên gia -->
+    <section class="team-section">
+        <h2>Đội Ngũ Chuyên Gia</h2>
+        <div class="team-profiles">
+            <div class="profile-card">
+                <img src="https://bizweb.dktcdn.net/100/438/408/files/anh-luffy-yody-vn-67.jpg?v=1688806271889" alt="Chuyên gia 1">
+                <h3>Nguyễn Ngọc Minh</h3>
+                <p>Chuyên gia kiểm định vàng</p>
+            </div>
+            <div class="profile-card">
+                <img src="https://i1.sndcdn.com/avatars-000531172320-9cgfu2-t240x240.jpg" alt="Chuyên gia 2">
+                <h3>Bùi Văn Trung</h3>
+                <p>Chuyên gia chế tác trang sức</p>
+            </div>
+            <div class="profile-card">
+                <img src="https://taoanhdep.com/wp-content/uploads/2023/11/hinhnen-jk.jpg" alt="Chuyên gia 3">
+                <h3>Phạm Nhật Hào</h3>
+                <p>Giám đốc kinh doanh</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Đối tác và khách hàng -->
+    <section class="partners-section">
+        <h2>Đối Tác Và Khách Hàng</h2>
+        <div class="partners-logos">
+            <img src="IMG/ht4.jpg" alt="Đối tác 1">
+            <img src="IMG/ht4.jpg" alt="Đối tác 2">
+            <img src="IMG/ht4.jpg" alt="Đối tác 3">
+            <img src="IMG/ht4.jpg" alt="Đối tác 4">
+        </div>
+    </section>
+
+    <!-- Liên hệ -->
+       <!-- Liên hệ -->
+       <section class="contact-section">
+        <h2>Liên Hệ Với Chúng Tôi</h2>
+        <p>Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ, vui lòng điền vào mẫu dưới đây.</p>
+        <form class="contact-form">
+            <input type="text" placeholder="Họ và tên" required>
+            <input type="email" placeholder="Email của bạn" required>
+            <textarea rows="5" placeholder="Nội dung liên hệ" required></textarea>
+            <button type="submit">Gửi Thông Tin</button>
+        </form>
+    </section>
+    
+</body>
+</html>
+

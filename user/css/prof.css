@@ -1,0 +1,187 @@
+body{
+    background-color: rgb(93, 92, 92) !important;
+    color: white !important;
+}
+
+/* Container to align avatar and form side by side */
+.user-info-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* Avatar container styles */
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 30px; /* Space between avatar and form */
+}
+
+/* Form container styles */
+.user-info-form {
+    max-width: 700px; /* Set a fixed width */
+    width: 100%;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-right: 200px;
+}
+
+
+.avatar-container img {
+    border-radius: 50%;
+    width: 130px;
+    height: 130px;
+    border: 4px solid #2863e4;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-right: 50px;
+}
+
+.avatar-container img:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 30px;
+}
+
+/* Edit Button - Positioned Next to Avatar */
+.btn-edit {
+    background: linear-gradient(135deg, #4a90e2, #a4aab1);
+    color: white;
+    padding: 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    margin-top: 10px; /* Space between image and button */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: -50px;
+    margin-left: 100px;
+
+}
+
+.btn-edit:hover {
+    background-color: #0056b3;
+    transform: scale(1.15);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.35);
+}
+
+/* Form Styles */
+form {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+}
+
+.form-control {
+    border-radius: 8px;
+    box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    padding: 12px;
+}
+
+.form-control:focus {
+    box-shadow: 0px 0px 5px rgba(58, 135, 255, 0.5);
+    border-color: #3b5998;
+}
+
+/* Button Styles */
+button {
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    margin-right: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4a90e2, #007bff);
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+/* Asset Info Styles */
+.form-section h4 {
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#asset-info .form-label {
+    color: #444;
+    font-weight: 600;
+}
+
+#asset-info .form-control {
+    background-color: #f5f5f5;
+    border: none;
+    color: #444;
+    border-radius: 8px;
+}
+
+
+
+/* Ghi đè màu nền cho tab đang hoạt động */
+.nav-pills .nav-link.active {
+    background-color: rgb(84, 82, 82) !important; /* Màu nền cho tab đang chọn */
+    color: yellow !important; /* Màu chữ cho tab đang chọn */
+}
+
+/* Đặt màu cho các tab không hoạt động */
+.nav-pills .nav-link {
+    color: white; /* Màu chữ mặc định cho các tab không hoạt động */
+}
+
+/* Tùy chọn: Kiểu cho hiệu ứng hover */
+.nav-pills .nav-link:hover {
+
+    color: yellow; /* Màu chữ khi di chuột qua */
+}
+.nav-link.active {
+    color: yellow !important;
+    background-color: black !important;
+}
