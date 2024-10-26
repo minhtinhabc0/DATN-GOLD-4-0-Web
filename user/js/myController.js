@@ -76,6 +76,10 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'html/ExchangeRate.html',
             controller: 'ngoaiteCtrl'
         })
+        .when('/user/hdkh', {
+            templateUrl: 'html/hdkh.html',
+            controller: 'hdkhCtrl'
+        })
 
         .otherwise({
             redirectTo: '/user/home'
