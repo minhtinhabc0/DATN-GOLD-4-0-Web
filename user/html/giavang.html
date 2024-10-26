@@ -43,14 +43,19 @@
         }
 
         .canvas {
+            color: #f9b700 !;
             width: 1100px;
             /* Kích thước hiển thị nhỏ hơn */
             height: 570px;
             /* Kích thước hiển thị nhỏ hơn */
-            border: 1px solid #f9b700;
+            border: 1px solid #f3c853;
             /* Nếu bạn muốn có đường viền */
-            background-color: rgb(195, 189, 189);
+            background-color: rgba(0, 0, 0, 0.199);
         }
+
+        
+        
+        
     </style>
 </head>
 
@@ -61,7 +66,7 @@
         <h1>Biểu Đồ Giá Vàng</h1>
         <p>{{ getCurrentDate() }}</p>
         <label for="productSelect">Chọn loại vàng:</label>
-        <select id="productSelect" ng-model="selectedProduct" ng-options="product for product in products">
+        <select id="productSelect" ng-model="selectedProduct" ng-options="product for product in products" style="background-color: #f3c853;">
             <option value="">-- Chọn sản phẩm --</option>
         </select>
         <div class="canvas"><canvas id="goldCanvas"></canvas></div>

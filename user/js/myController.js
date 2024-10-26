@@ -495,13 +495,13 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
                         {
                             label: selectedProduct + ' - Giá Mua',
                             data: priceBuyData.length > 0 ? priceBuyData : [0],  // Dữ liệu giá mua
-                            borderColor: 'blue',
+                            borderColor: 'red',
                             fill: false
                         },
                         {
                             label: selectedProduct + ' - Giá Bán',
                             data: priceSellData.length > 0 ? priceSellData : [0],  // Dữ liệu giá bán
-                            borderColor: 'red',
+                            borderColor: 'yellow',
                             fill: false
                         }
                     ]
@@ -511,6 +511,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
                         x: {
                             title: {
                                 display: true,
+                                
                                 text: 'Giờ' // Tiêu đề trục X
                             },
                             ticks: {
@@ -521,6 +522,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
                         y: {
                             title: {
                                 display: true,
+                                
                                 text: 'Giá (VNĐ)'
                             }
                         }

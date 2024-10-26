@@ -88,7 +88,7 @@
                                     <label for="goldPrice" class="form-label" style="color: white;">Giá trị quy đổi ra vàng:</label>
                                     <h2 style="color: yellow; font-weight: bold;">{{gcoinBalance * goldPrice | currency}} </h2>
                                 </div>
-                                <div class="mb-3" ng-if="gcoinBalance <= 0">
+                                <div class="mb-3" ng-if="gcoinBalance == null">
                                     <p class="text-warning">Bạn chưa có ví Gcoin. Hãy tạo ví để bắt đầu sử dụng!</p>
                                     <button class="btn btn-primary" ng-click="createGcoinWallet()">Tạo ví Gcoin</button>
                                 </div>
@@ -160,7 +160,7 @@
                         <div class="tab-pane fade" id="pin-content" role="tabpanel">
                             <h2>Thay Đổi Mã PIN</h2>
                             <form class="password-form" ng-submit="updatePin()">
-                                <div class="mb-3">
+                                <div class="mb-3" ng-show="userInfo.pin == null">
                                     <label for="currentPIN" class="form-label">Mã PIN Hiện Tại</label>
                                     <input type="password" class="form-control" id="oldPin" ng-model="oldPin" required>
                                 </div>
