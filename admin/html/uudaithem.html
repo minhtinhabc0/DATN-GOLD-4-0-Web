@@ -1,0 +1,115 @@
+<style>
+    body {
+        background-color: #3b3b3b;
+        color: #fff;
+        margin: 0;
+    }
+
+    .content-wrapper {
+        background-color: #fff;
+        border-radius: 15px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        color: #000;
+        margin-right: 30px;
+        margin-top: 60px;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+
+    .add-discount-btn {
+        float: right;
+        background-color: #28a745;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .add-discount-btn:hover {
+        opacity: 0.8;
+    }
+
+    .cancel-btn {
+        background-color: #6c757d;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .cancel-btn:hover {
+        opacity: 0.8;
+    }
+</style>
+
+<body>
+
+    <div class="content-wrapper">
+        <h2>Thêm ưu đãi mới</h2>
+
+        <div class="form-group">
+            <label for="discountCode">Mã giảm giá</label>
+            <input type="text" id="discountCode" placeholder="Nhập mã giảm giá">
+        </div>
+
+        <div class="form-group">
+            <label for="productName">Tên sản phẩm</label>
+            <select id="productName">
+                <option selected>Chọn sản phẩm</option>
+                <option value="product1">Sản phẩm 1</option>
+                <option value="product2">Sản phẩm 2</option>
+                <option value="product3">Sản phẩm 3</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="discountValue">Giá trị giảm giá (%)</label>
+            <input type="number" id="discountValue" placeholder="Nhập giá trị giảm">
+        </div>
+
+        <div class="form-group">
+            <label for="startDate">Ngày bắt đầu</label>
+            <input type="date" id="startDate">
+        </div>
+
+        <div class="form-group">
+            <label for="endDate">Ngày kết thúc</label>
+            <input type="date" id="endDate">
+        </div>
+
+        <div class="form-group" style="display: flex; justify-content: space-between;">
+            <a href="#!/admin/uudai">
+                <button class="cancel-btn">Hủy</button>
+            </a>
+            <button class="add-discount-btn">Thêm ưu đãi</button>
+        </div>
+    </div>
+
+</body>

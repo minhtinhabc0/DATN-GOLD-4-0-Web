@@ -1,0 +1,174 @@
+<style>
+    body {
+        background-color: #3b3b3b;
+        color: #fff;
+        margin: 0;
+    }
+
+    .content-wrapper {
+        background-color: #fff;
+        border-radius: 15px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        color: #000;
+        margin-right: 30px;
+        margin-top: 60px;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+    }
+
+    .product-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        color: #fff;
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+    }
+
+    .pagination {
+        justify-content: center;
+    }
+
+    .add-product-btn {
+        float: right;
+        background-color: #28a745;
+        color: white;
+        border-radius: 10px;
+    }
+
+    .search-bar {
+        margin-bottom: 20px;
+    }
+
+    table {
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="content-wrapper">
+        <h2>Quản lý ưu đãi</h2>
+        <div class="row search-bar">
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Tìm kiếm theo mã giảm giá" aria-label="Search product">
+            </div>
+            <div class="col-md-3 offset-md-3">
+                <select class="form-select">
+                    <option selected>Sắp xếp theo</option>
+                    <option value="1">Tên sản phẩm</option>
+                    <option value="2">Giá</option>
+                    <option value="3">Số lượng</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã giảm giá</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá trị</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>$Discountid</td>
+                        <td>$ProductName</td>
+                        <td>$Price</td>
+                        <td>$Quantity</td>
+                        <td>$DistributorName</td>
+                        <td>
+                            
+                            <a href="#!/admin/quanlysanphamsua">
+                                <button class="btn btn-outline-secondary">Xóa</button>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>$Discountid</td>
+                        <td>$ProductName</td>
+                        <td>$Price</td>
+                        <td>$Quantity</td>
+                        <td>$DistributorName</td>
+                        <td>
+                            <button class="btn btn-outline-secondary">Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>$Discountid</td>
+                        <td>$ProductName</td>
+                        <td>$Price</td>
+                        <td>$Quantity</td>
+                        <td>$DistributorName</td>
+                        <td>
+                            <button class="btn btn-outline-secondary">Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>$Discountid</td>
+                        <td>$ProductName</td>
+                        <td>$Price</td>
+                        <td>$Quantity</td>
+                        <td>$DistributorName</td>
+                        <td>
+                            <button class="btn btn-outline-secondary">Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>$Discountid</td>
+                        <td>$ProductName</td>
+                        <td>$Price</td>
+                        <td>$Quantity</td>
+                        <td>$DistributorName</td>
+                        <td>
+                           <a href="#!quanlysanpham"><button class="btn btn-outline-secondary" >Xóa</button></a> 
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <a href="#!/admin/uudaithem">
+                <button class="btn add-product-btn">Thêm ưu đãi</button>
+            </a>
+             
+        </div>
+    </div>
+</body>

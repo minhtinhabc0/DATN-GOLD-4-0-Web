@@ -1,0 +1,88 @@
+
+body {
+    background-color: #3b3b3b;
+    color: #fff;
+}
+
+.sidebar {
+    background-color: #151515;
+    height: 100vh;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    color: #ffc107;
+    text-decoration: none;
+    font-size: 1.2rem;
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.sidebar a:hover {
+    background-color: #333;
+}
+
+.dashboard-content {
+    padding: 30px;
+}
+
+.card-info {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 10px;
+}
+
+.card-info h5, .card-info p {
+    color: #000;
+}
+
+.chart {
+    background-color: #fff;
+    height: 300px;
+}
+
+.profile-icon {
+    background-color: #e9d9d9;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-icon img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.chart-title, .product-title {
+    color: #fff;
+    padding-bottom: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: #3b3b3b;
+}
+
+.user-profile {
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.user-profile span {
+    margin-right: 10px;
+}
+
+.user-profile img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}

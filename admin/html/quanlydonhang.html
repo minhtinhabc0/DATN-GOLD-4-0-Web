@@ -1,0 +1,222 @@
+<style>
+    body {
+        background-color: black;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .content-wrapper {
+        background-color: #fff;
+        border-radius: 15px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        color: #000;
+        margin-right: 30px;
+        margin-top: 60px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        font-size: 24px;
+    }
+
+    .summary {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .summary-box {
+        flex: 1;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        color: black;
+        margin: 0 10px;
+    }
+
+    .summary-box:first-child {
+        background-color: #28a745;
+    }
+
+    .summary-box:nth-child(2) {
+        background-color: #ffc107;
+    }
+
+    .summary-box:nth-child(3) {
+        background-color: #007bff;
+    }
+
+    .summary-box h3 {
+        font-size: 36px;
+        margin: 0;
+    }
+
+    .summary-box p {
+        font-size: 18px;
+        margin: 10px 0 0 0;
+    }
+
+    .search-section {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .search-section input,
+    .search-section select {
+        width: 32%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        color: #000;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    td a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    td a:hover {
+        text-decoration: underline;
+    }
+
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .pagination a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<body>
+
+    <div class="content-wrapper">
+        <h2>Quản lý đơn hàng</h2>
+
+        <!-- Summary boxes -->
+        <div class="summary">
+            <div class="summary-box">
+                <h3>15</h3>
+                <p>Đơn hàng mới</p>
+            </div>
+            <div class="summary-box">
+                <h3>28</h3>
+                <p>Đang xử lý</p>
+            </div>
+            <div class="summary-box">
+                <h3>125.5M đ</h3>
+                <p>Tổng doanh thu</p>
+            </div>
+        </div>
+
+        <!-- Search section -->
+        <div class="search-section">
+            <input type="text" placeholder="Tìm kiếm mã đơn hàng">
+            <select>
+                <option selected>Trạng thái</option>
+                <option value="1">Mới</option>
+                <option value="2">Đang xử lý</option>
+                <option value="3">Hoàn thành</option>
+            </select>
+            <select>
+                <option selected>Sắp xếp theo...</option>
+                <option value="1">Thời gian</option>
+                <option value="2">Giá trị đơn hàng</option>
+            </select>
+        </div>
+
+        <!-- Order table -->
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã đơn hàng</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thời gian</th>
+                        <th>Trạng thái</th>
+                        <th>Tổng tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DH001</td>
+                        <td>Sản phẩm 1</td>
+                        <td>2</td>
+                        <td>500.000 đ</td>
+                        <td>12/10/2024</td>
+                        <td>Mới</td>
+                        <td>1.000.000 đ</td>
+                        <td><a href="#">Xem chi tiết</a></td>
+                    </tr>
+                    <tr>
+                        <td>DH002</td>
+                        <td>Sản phẩm 2</td>
+                        <td>1</td>
+                        <td>1.200.000 đ</td>
+                        <td>12/10/2024</td>
+                        <td>Đang xử lý</td>
+                        <td>1.200.000 đ</td>
+                        <td><a href="#">Xem chi tiết</a></td>
+                    </tr>
+                    <tr>
+                        <td>DH003</td>
+                        <td>Sản phẩm 3</td>
+                        <td>3</td>
+                        <td>300.000 đ</td>
+                        <td>12/10/2024</td>
+                        <td>Mới</td>
+                        <td>900.000 đ</td>
+                        <td><a href="#">Xem chi tiết</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">&raquo;</a>
+        </div>
+    </div>
+
+</body>
