@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi" ng-app="newsApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Tin Tức</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+        /* Thêm một ít CSS cho trang tin tức */
+        .news-article {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .title {
+            font-weight: bold;
+            font-size: 20px;
+            color: #2c3e50;
+        }
+        .meta-info {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        .maincontent {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body ng-controller="newsController">
+
+    <h1>Trang Tin Tức</h1>
+
+    <div class="news-article" ng-repeat="article in news">
+        <a class="title" href="{{ article.url }}">{{ article.title }}</a>
+        <div class="meta-info">
+            Nguồn: {{ article.sourcenews }} | Ngày đăng: {{ article.datepost }} | Cập nhật: {{ article.time }}
+        </div>
+        <p class="maincontent">{{ article.maincontent }}</p>
+    </div>
+
+    <script>
+        // Khởi tạo AngularJS App
+        var app = angular.module('newsApp', []);
+
+        // Tạo Controller cho App
+        app.controller('newsController', function($scope, $http) {
+            // Dữ liệu JSON mẫu
+            $scope.news = [];
+
+       
+            
+            $http.get('https://wifeed.vn/api/tin-tuc/thi-truong?apikey=demo&page=1&limit=10')
+                .then(function(response) {
+                    $scope.news = response.data;
+                })
+                .catch(function(error) {
+                    console.error('Lỗi khi lấy dữ liệu:', error);
+                });
+            
+        });
+    </script>
+</body>
+</html>
