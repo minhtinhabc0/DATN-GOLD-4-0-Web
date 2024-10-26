@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold 4.0 Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #3b3b3b;
+            color: white;
+            margin: 0;
+        }
+
+        .sidebar {
+            background-color: #151515;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+        }
+
+        .sidebar a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #333;
+            color: yellow;
+            text-decoration: none;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #3b3b3b;
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .user-icon img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+        }
+
+        .dashboard-content {
+            margin-left: 250px;
+            padding: 30px;
+            padding-top: 50px;
+            margin-top: 60px;
+        }
+
+        h1,
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ffc107;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar">
+                <h2 class="text-center" style="color: yellow;">Gold 4.0</h2>
+                <nav>
+                    <ul class="list-unstyled">
+                        <li><a href="#!/admin/bangdieukhien"><i class="fa-solid fa-house"></i> Bảng điều khiển</a></li>
+                        <li><a href="#!/admin/quanlysanpham"><i class="fa-solid fa-rectangle-list"></i> Quản lý sản
+                                phẩm</a></li>
+                        <li><a href="#!/admin/quanlydonhang"><i class="fa-solid fa-shop"></i> Quản lý đơn hàng</a></li>
+                        <li><a href="#!/admin/quanlytaikhoan"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a></li>
+                        <li><a href="#!/admin/baocao"><i class="fa-solid fa-file-circle-xmark"></i> Báo cáo</a></li>
+                        <li><a href="#!/admin/uudai"><i class="fa-solid fa-fire-flame-curved"></i> Ưu đãi</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-md-10">
+                <div class="header">
+                    <div class="user-icon">
+                        Welcome to the Gold 4.0 Admin
+                        <img src="https://via.placeholder.com/40" alt="User Icon">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

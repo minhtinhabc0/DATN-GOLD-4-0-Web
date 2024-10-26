@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm sản phẩm</title>
+    <style>
+        body {
+            background-color: #3b3b3b;
+            color: #fff;
+            margin: 0;
+        }
+
+
+        .content-wrapper {
+        background-color: #fff;
+        border-radius: 15px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 10px;
+        color: #000;
+        margin-right: 30px;
+        margin-top: 60px;
+    }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        .product-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px; /* Keep consistent gap */
+        }
+
+        .product-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            color: #fff;
+            margin: 0 auto 10px auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 2px; /* Added margin to separate form fields */
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        input[type="text"], select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 90%;
+        }
+
+        .form-actions {
+            grid-column: span 2;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-add1 {
+            background-color:red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="content-wrapper">
+        <h2>Thêm sản phẩm</h2>
+        <div class="product-img">Image</div>
+        
+        <form class="product-form">
+            <div class="form-group">
+                <label for="productName">Tên sản phẩm</label>
+                <input type="text" id="productName" placeholder="Tên sản phẩm">
+            </div>
+            <div class="form-group">
+                <label for="price">Giá</label>
+                <input type="text" id="price" placeholder="Giá">
+            </div>
+            <div class="form-group">
+                <label for="description">Chi tiết sản phẩm</label>
+                <input type="text" id="description" placeholder="Chi tiết sản phẩm">
+            </div>
+            <div class="form-group">
+                <label for="productType">Loại sản phẩm</label>
+                <input type="text" id="productType" placeholder="Loại sản phẩm">
+            </div>
+            <div class="form-group">
+                <label for="size">Kích cỡ</label>
+                <input type="text" id="size" placeholder="Kích cỡ">
+            </div>
+            <div class="form-group">
+                <label for="goldType">Loại vàng</label>
+                <input type="text" id="goldType" placeholder="Loại vàng">
+            </div>
+            <div class="form-group">
+                <label for="weight">Trọng lượng</label>
+                <input type="text" id="weight" placeholder="Trọng lượng">
+            </div>
+            <div class="form-group">
+                <label for="gemstoneType">Loại đá</label>
+                <input type="text" id="gemstoneType" placeholder="Loại đá">
+            </div>
+            <div class="form-group">
+                <label for="catalogId">Danh mục</label>
+                <select id="catalogId">
+                    <option value="1">Danh mục 1</option>
+                    <option value="2">Danh mục 2</option>
+                    <option value="3">Danh mục 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="distributorId">Nhà phân phối</label>
+                <select id="distributorId">
+                    <option value="1">Nhà phân phối 1</option>
+                    <option value="2">Nhà phân phối 2</option>
+                    <option value="3">Nhà phân phối 3</option>
+                </select>
+            </div>
+            
+            <div class="form-actions">
+                <a href="#!/admin/quanlysanpham">
+                    <button type="button" class="btn btn-cancel">Hủy</button>
+                </a>
+                <button type="submit" class="btn btn-add1">Xóa</button>
+                <button type="submit" class="btn btn-add">Sửa</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
