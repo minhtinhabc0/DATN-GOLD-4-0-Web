@@ -14,37 +14,52 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-image: url('https://img6.thuthuatphanmem.vn/uploads/2022/03/15/background-den-vang-doc-dao_082939998.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+
         }
+
         .container {
             margin-top: 40px;
             text-align: center;
         }
+
         canvas {
-            border: 1px solid #ccc;
+            border: 1px solid #f9b700;
             margin-top: 20px;
         }
+
         .error {
-            color: red;
+            color: red !important;
         }
+
         /* Thêm khoảng cách 200px ở phía trên */
         .chart-container {
-            margin-top: 150px; /* Khoảng cách 200px */
+            margin-top: 150px;
+            /* Khoảng cách 200px */
         }
-        .canvas{
-            width: 1100px;   /* Kích thước hiển thị nhỏ hơn */
-            height: 570px;  /* Kích thước hiển thị nhỏ hơn */
-            border: 1px solid #ccc; /* Nếu bạn muốn có đường viền */
-            
+
+        .canvas {
+            width: 1100px;
+            /* Kích thước hiển thị nhỏ hơn */
+            height: 570px;
+            /* Kích thước hiển thị nhỏ hơn */
+            border: 1px solid #f9b700;
+            /* Nếu bạn muốn có đường viền */
+            background-color: white;
         }
     </style>
 </head>
 
 <body>
-    
-    <div class="chart-container">
-       
-    <h1>Biểu Đồ Giá Vàng</h1>
-    <p>{{ getCurrentDate() }}</p>
+
+    <div class="chart-container" style=" color: #f9b700 !important; margin-left: 110px !important;height: 720px;">
+
+        <h1>Biểu Đồ Giá Vàng</h1>
+        <p>{{ getCurrentDate() }}</p>
         <label for="productSelect">Chọn loại vàng:</label>
         <select id="productSelect" ng-model="selectedProduct" ng-options="product for product in products">
             <option value="">-- Chọn sản phẩm --</option>
