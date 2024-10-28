@@ -85,7 +85,8 @@ app.config(['$routeProvider', function ($routeProvider) {
             redirectTo: '/user/home'
         });
 }])
-
+//controller chính của website
+//=====================================================================================================
     .controller('MainController', function ($scope, $location, $window) {
 
         const userInfo = localStorage.getItem('userInfo');
@@ -97,6 +98,8 @@ app.config(['$routeProvider', function ($routeProvider) {
         };
 
     })
+//=====================================================================================================
+//controller home
 
     .controller('homeCtrl', function($scope, $http) {
         const userInfo = localStorage.getItem('userInfo');
@@ -112,7 +115,6 @@ app.config(['$routeProvider', function ($routeProvider) {
             var url = `${host}/products`;
             $http.get(url).then(resp => {
                 $scope.items = resp.data.slice(0, 15); // Limit to 10 items
-                console.log("Success", resp);
             }).catch(error => {
                 console.log("Error", error);
             });
@@ -143,21 +145,27 @@ app.config(['$routeProvider', function ($routeProvider) {
             } else {
                 $scope.currentIndex = Math.max(0, $scope.items.length - $scope.itemsPerPage); // Go to end if at start
             }
-            $scope.updateCarousel();
+          
         }
     
         // Function to update the carousel by translating it
-        $scope.updateCarousel = function() {
-            const wrapper = document.querySelector('.product-carousel-wrapper');
-            const translateX = -($scope.currentIndex * (100 / $scope.itemsPerPage)); // Calculate shift based on visible items
-            wrapper.style.transform = `translateX(${translateX}%)`;
-        }
+      $scope.updateCarousel = function() {
+    const wrapper = document.querySelector('.product-carousel-wrapper');
+    if (wrapper) { // Kiểm tra nếu wrapper tồn tại
+        const translateX = -($scope.currentIndex * (100 / $scope.itemsPerPage)); // Tính toán dịch chuyển
+        wrapper.style.transform = `translateX(${translateX}%)`;
+    } else {
+       console.log("Khum phải lỗi đâu tại trang này không có .product-carousel-wrapper thui hihihi");
+    }
+};
+
     
         // Initial load
         $scope.load_all();
     })
+//======================================================================================================
     
-    
+// Upload avatar
 
 app.directive('ngFileSelect', function () {
     return {
@@ -174,7 +182,26 @@ app.directive('ngFileSelect', function () {
         }
     };
 });
-app.controller('profileuserCtrl', function ($scope, $window, $http) {
+
+// service load giá vàng
+//================================================================================================
+app.service('GoldPriceBuyService', function ($http) {
+    this.fetchGoldPricesBuy = function () {
+        const apiUrl = 'http://localhost:9999/api/gold-prices'; // Đường dẫn API
+
+        return $http.get(apiUrl).then(function (response) {
+            return response.data.DataList.Data; // Giả sử cấu trúc dữ liệu API
+        }).catch(function (error) {
+            console.error('Error fetching gold prices:', error);
+            throw new Error('Có lỗi xảy ra khi tải dữ liệu giá vàng.');
+        });
+    };
+});
+
+
+//===============================================================================================
+//controller profile
+app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceService) {
     // Khởi tạo biến cho thông tin người dùng
     $scope.userInfo = {};
     $scope.oldPassword = '';
@@ -183,15 +210,17 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
     $scope.oldPin = '';
     $scope.newPin = '';
     $scope.confirmNewPin = '';
-    $scope.isEditing = false; // Khởi tạo chế độ chỉnh sửa là false
-    $scope.gcoinBalance = 0; // Biến lưu số dư Gcoin
-    $scope.goldPrice = 0; // Biến lưu giá vàng
+    $scope.isEditing = false; // Chế độ chỉnh sửa
+    $scope.gcoinBalance = 0; // Số dư Gcoin
+    $scope.goldPrices = []; // Lưu trữ danh sách giá vàng
+    $scope.firstProduct = null;
+    $scope.totalGcoinValue = 0; // Giá trị Gcoin
 
     // Lấy thông tin người dùng từ localStorage
     const userInfo = localStorage.getItem('userInfo');
     $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
 
-    // Kiểm tra xem có thông tin người dùng không
+    // Kiểm tra thông tin người dùng
     if (!$scope.userInfo) {
         $window.location.href = '/html/login.html'; // Chuyển hướng đến trang đăng nhập
     }
@@ -204,19 +233,30 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
     }).then(function (response) {
         $scope.userInfo = response.data;
         localStorage.setItem('userInfo', JSON.stringify($scope.userInfo)); // Lưu thông tin vào localStorage
-
-
     }).catch(function (error) {
         console.error('Lỗi khi lấy thông tin người dùng:', error);
         alert('Lỗi khi tải thông tin người dùng!');
         logout();
         $window.location.href = 'home.html'; // Chuyển hướng nếu có lỗi
     });
+    
+    // Tải giá vàng
+    $scope.loadPrices = function () {
+        GoldPriceService.fetchGoldPrices().then(function (data) {
+            $scope.goldPrices = data.goldPrices; // Lưu trữ dữ liệu vào scope
+            $scope.firstProduct = $scope.goldPrices[0]; // Lưu sản phẩm đầu tiên
+            $scope.calculateGcoinValue(); // Tính giá trị Gcoin
+        });
+    };
+    
+    // Tính toán giá trị Gcoin
+    $scope.calculateGcoinValue = function () {
+        if ($scope.firstProduct) {
+            $scope.totalGcoinValue = $scope.gcoinBalance * $scope.firstProduct.priceBuy;
+        }
+    };
 
     // Hàm tải số dư Gcoin và giá vàng
-
-
-
     $scope.checkAndCreateGcoinWallet = function () {
         const apiUrl = `http://localhost:9999/api/user/profile/gcoin`;
 
@@ -225,45 +265,34 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         }).then(function (response) {
-            if (response.data.hasWallet) {
-                // Nếu đã có ví, hiển thị số dư
-                $scope.gcoinBalance = response.data.balance; // Lấy số dư từ phản hồi
-
-            } else {
-                // Nếu không có ví, tạo ví mới
-                $scope.createGcoinWallet();
-            }
+            // Hiển thị số dư
+            $scope.gcoinBalance = response.data.balance; // Lấy số dư từ phản hồi
+            $scope.loadPrices(); // Tải giá vàng
         }).catch(function (error) {
-            console.error('Lỗi khi kiểm tra ví Gcoin:', error);
-            alert('Có lỗi xảy ra khi kiểm tra ví Gcoin: ' + (error.data && error.data.message ? error.data.message : ''));
+            console.error('Lỗi khi tải số dư Gcoin:', error);
         });
     };
 
-    // Chỉnh sửa hàm tạo ví Gcoin
+    // Hàm tạo ví Gcoin
     $scope.createGcoinWallet = function () {
-        $http.post(`http://localhost:9999/api/user/profile/create-gcoin`, {}, {
+        const apiUrl = `http://localhost:9999/api/user/profile/create-gcoin`;
+
+        $http.post(apiUrl, {}, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
+            
         }).then(function (response) {
-            alert('Tạo ví Gcoin thành công!');
-            $scope.loadGcoinData(); // Tải lại dữ liệu Gcoin sau khi tạo ví
+            alert(response.data.message); // Hiển thị thông báo thành công
+            $scope.checkAndCreateGcoinWallet(); // Tải lại số dư Gcoin
         }).catch(function (error) {
             console.error('Lỗi khi tạo ví Gcoin:', error);
-            alert('Tạo ví Gcoin không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
+            alert('Không thể tạo ví Gcoin: ' + (error.data || ''));
         });
     };
-
-    // Hàm hiển thị số dư Gcoin và giá vàng
-    $scope.displayGcoinInfo = function () {
-        return `Số dư Gcoin: ${$scope.gcoinBalance} | Giá vàng: ${$scope.goldPrice}`;
-    };
-
+    
     // Gọi hàm để kiểm tra ví Gcoin khi cần thiết
     $scope.checkAndCreateGcoinWallet();
-
-
-
 
     // Hàm upload avatar
     $scope.uploadAvatar = function() {
@@ -286,10 +315,8 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
         }).then(function(response) {
             // Cập nhật avatar URL trong userInfo
             $scope.userInfo.avt = response.data.secure_url; // Lấy URL từ phản hồi
-            alert('Tải lên thành công!');
         }).catch(function(error) {
             console.error('Lỗi khi tải lên avatar:', error);
-            alert('Tải lên không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
         });
     };
 
@@ -367,193 +394,199 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
         $scope.isEditing = false; // Tắt chế độ chỉnh sửa
     };
 
+    // Khởi động hàm tải dữ liệu
+    $scope.loadPrices(); // Tải giá vàng khi khởi động
 })
+
+
     .controller('spyeuthichCtrl', function ($scope) {
 
     })
     .controller('spvangCtrl', function ($scope) {
 
     })
-    .controller('giavangCtrl', function ($scope, $http) {
-        $scope.goldPrices = [];
-        $scope.selectedProduct = null; // Sản phẩm được chọn
-        $scope.products = []; // Danh sách sản phẩm vàng
-        // ngày 
-        $scope.getCurrentDate = function () {
-            const today = new Date();
-            return today.toLocaleDateString('vi-VN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                weekday: 'long' // Hiển thị thứ trong tuần
-            });
-        };
+//====================================================================================================
+    
+    
+//trống
 
+//====================================================================================================
+// Khai báo service
+app.service('GoldPriceService', function ($http) {
+    this.fetchGoldPrices = function () {
+        const apiUrl = 'http://localhost:9999/api/gold-prices';
 
-        $scope.fetchGoldPrices = function () {
-            const apiUrl = 'http://localhost:9999/api/gold-prices';
+        return $http.get(apiUrl).then(function (response) {
+            const dataList = response.data.DataList.Data;
+            const goldPrices = [];
+            const products = [];
 
-            $http.get(apiUrl)
-                .then(function (response) {
-                    const dataList = response.data.DataList.Data; // Giả sử cấu trúc dữ liệu API
-                    $scope.goldPrices = [];
-                    $scope.products = []; // Reset danh sách sản phẩm
+            if (Array.isArray(dataList)) {
+                for (let i = 0; i < dataList.length; i++) {
+                    const dataItem = dataList[i];
+                    const name = dataItem['@n_' + (i + 1)] || 'Unknown';
+                    const priceBuy = parseFloat(dataItem['@pb_' + (i + 1)]) || 0;
+                    const priceSell = parseFloat(dataItem['@ps_' + (i + 1)]) || 0;
+                    const dateStr = dataItem['@d_' + (i + 1)] || 'N/A';
 
-                    if (Array.isArray(dataList)) {
-                        for (let i = 0; i < dataList.length; i++) {
-                            const dataItem = dataList[i];
+                    const parts = dateStr.split(' ');
+                    const dateParts = parts[0].split('/');
+                    const timeParts = parts[1].split(':');
 
-                            const name = dataItem['@n_' + (i + 1)] || 'Unknown';
-                            const priceBuy = parseFloat(dataItem['@pb_' + (i + 1)]) || 0; // Giá mua
-                            const priceSell = parseFloat(dataItem['@ps_' + (i + 1)]) || 0; // Giá bán
-                            const dateStr = dataItem['@d_' + (i + 1)] || 'N/A'; // Thời gian
+                    const isoDateStr = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${timeParts[0]}:${timeParts[1]}:00`;
+                    const date = new Date(isoDateStr);
 
-
-                            // Convert the date string "dd/mm/yyyy HH:MM" to ISO format
-                            const parts = dateStr.split(' '); // Split date and time
-                            const dateParts = parts[0].split('/'); // Split date into day, month, year
-                            const timeParts = parts[1].split(':'); // Split time into hours, minutes
-
-                            // Create a new date string in ISO format
-                            const isoDateStr = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${timeParts[0]}:${timeParts[1]}:00`;
-
-                            // Chuyển đổi isoDateStr thành object Date
-                            const date = new Date(isoDateStr);
-                            if (isNaN(date.getTime())) {
-                                console.error('Invalid date format for date string:', dateStr); // Log invalid formats
-                                continue; // Skip this entry if the date is invalid
-                            }
-
-                            // Thêm dữ liệu vào mảng goldPrices
-                            $scope.goldPrices.push({
-                                name: name,
-                                priceBuy: priceBuy,
-                                priceSell: priceSell,
-                                date: date // Giữ nguyên object Date
-                            });
-
-                            // Thêm sản phẩm vào danh sách nếu chưa có
-                            if (!$scope.products.includes(name)) {
-                                $scope.products.push(name);
-                            }
-                        }
+                    if (isNaN(date.getTime())) {
+                        console.error('Invalid date format for date string:', dateStr);
+                        continue;
                     }
 
-                    // Chọn sản phẩm đầu tiên làm mặc định
-                    if ($scope.products.length > 0) {
-                        $scope.selectedProduct = $scope.products[0];
-                        $scope.updateChart($scope.selectedProduct);
+                    goldPrices.push({
+                        name: name,
+                        priceBuy: priceBuy,
+                        priceSell: priceSell,
+                        date: date
+                    });
+
+                    if (!products.includes(name)) {
+                        products.push(name);
                     }
-
-                    $scope.errorMessage = '';
-                    if ($scope.goldPrices.length === 0) {
-                        $scope.errorMessage = 'Không có dữ liệu giá vàng hiện có.';
-                    }
-                })
-                .catch(function (error) {
-                    console.error('Error fetching gold prices:', error);
-                    $scope.errorMessage = 'Có lỗi xảy ra khi tải dữ liệu giá vàng. Vui lòng thử lại sau.';
-                });
-        };
-
-
-        // Gọi hàm để lấy giá vàng
-        $scope.fetchGoldPrices();
-
-        // Hàm để vẽ biểu đồ khi chọn sản phẩm
-        $scope.updateChart = function (selectedProduct) {
-            var ctx = document.getElementById('goldCanvas').getContext('2d');
-
-            // Lấy nhãn là giờ từ dữ liệu
-            var filteredPrices = $scope.goldPrices.filter(price => price.name === selectedProduct);
-
-            // Sắp xếp các giá theo thời gian
-            filteredPrices.sort((a, b) => a.date - b.date);
-
-            // Lấy nhãn giờ từ các giá đã sắp xếp
-            var labels = filteredPrices.map(function (price) {
-                var date = price.date;
-                // Chỉ lấy giờ và phút
-                return date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0'); // Định dạng giờ:phút
-            });
-
-            var priceBuyData = filteredPrices.map(function (price) {
-                return price.priceBuy;
-            });
-
-            var priceSellData = filteredPrices.map(function (price) {
-                return price.priceSell;
-            });
-
-            // Nếu đã có biểu đồ trước đó, hãy hủy biểu đồ cũ
-            if ($scope.chart) {
-                $scope.chart.destroy();
+                }
             }
 
-            // Tạo biểu đồ mới với cả giá mua và giá bán
-            $scope.chart = new Chart(ctx, {
-                type: 'line',  // Loại biểu đồ
-                data: {
-                    labels: labels.length > 0 ? labels : ['Không có dữ liệu'],  // Trục X là giờ
-                    datasets: [
-                        {
-                            label: selectedProduct + ' - Giá Mua',
-                            data: priceBuyData.length > 0 ? priceBuyData : [0],  // Dữ liệu giá mua
-                            borderColor: 'red',
-                            fill: false
+            return { goldPrices: goldPrices, products: products };
+        }).catch(function (error) {
+            console.error('Error fetching gold prices:', error);
+            throw new Error('Có lỗi xảy ra khi tải dữ liệu giá vàng. Vui lòng thử lại sau.');
+        });
+    };
+});
+//====================================================================================================
+
+// Khai báo controller giá vàng
+app.controller('giavangCtrl', function ($scope, GoldPriceService) {
+    $scope.goldPrices = [];
+    $scope.selectedProduct = null;
+    $scope.products = [];
+    $scope.errorMessage = '';
+
+    // Hàm để lấy ngày hiện tại
+    $scope.getCurrentDate = function () {
+        const today = new Date();
+        return today.toLocaleDateString('vi-VN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long'
+        });
+    };
+
+    // Gọi hàm từ service để lấy dữ liệu giá vàng
+    $scope.fetchGoldPrices = function () {
+        GoldPriceService.fetchGoldPrices().then(function (data) {
+            $scope.goldPrices = data.goldPrices;
+            $scope.products = data.products;
+
+            if ($scope.products.length > 0) {
+                $scope.selectedProduct = $scope.products[0];
+                $scope.updateChart($scope.selectedProduct);
+            } else {
+                $scope.errorMessage = 'Không có dữ liệu giá vàng hiện có.';
+            }
+        }).catch(function (error) {
+            $scope.errorMessage = error.message;
+        });
+    };
+
+    // Gọi hàm fetchGoldPrices khi khởi tạo controller
+    $scope.fetchGoldPrices();
+
+    // Hàm để vẽ biểu đồ khi chọn sản phẩm
+    $scope.updateChart = function (selectedProduct) {
+        var ctx = document.getElementById('goldCanvas').getContext('2d');
+        var filteredPrices = $scope.goldPrices.filter(price => price.name === selectedProduct);
+        filteredPrices.sort((a, b) => a.date - b.date);
+
+        var labels = filteredPrices.map(function (price) {
+            var date = price.date;
+            return date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
+        });
+
+        var priceBuyData = filteredPrices.map(function (price) {
+            return price.priceBuy;
+        });
+
+        var priceSellData = filteredPrices.map(function (price) {
+            return price.priceSell;
+        });
+
+        if ($scope.chart) {
+            $scope.chart.destroy();
+        }
+
+        $scope.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels.length > 0 ? labels : ['Không có dữ liệu'],
+                datasets: [
+                    {
+                        label: selectedProduct + ' - Giá Mua',
+                        data: priceBuyData.length > 0 ? priceBuyData : [0],
+                        borderColor: 'red',
+                        fill: false
+                    },
+                    {
+                        label: selectedProduct + ' - Giá Bán',
+                        data: priceSellData.length > 0 ? priceSellData : [0],
+                        borderColor: 'yellow',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Giờ'
                         },
-                        {
-                            label: selectedProduct + ' - Giá Bán',
-                            data: priceSellData.length > 0 ? priceSellData : [0],  // Dữ liệu giá bán
-                            borderColor: 'yellow',
-                            fill: false
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 10
                         }
-                    ]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                
-                                text: 'Giờ' // Tiêu đề trục X
-                            },
-                            ticks: {
-                                autoSkip: true,  // Tự động bỏ qua nhãn
-                                maxTicksLimit: 10 // Giới hạn số nhãn hiển thị
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                
-                                text: 'Giá (VNĐ)'
-                            }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Giá (VNĐ)'
                         }
                     }
                 }
-            });
-        };
-
-
-        // Theo dõi thay đổi khi chọn sản phẩm
-        $scope.$watch('selectedProduct', function (newVal, oldVal) {
-            if (newVal) {
-                $scope.updateChart(newVal);
             }
         });
+    };
+
+    // Theo dõi thay đổi khi chọn sản phẩm
+    $scope.$watch('selectedProduct', function (newVal) {
+        if (newVal) {
+            $scope.updateChart(newVal);
+        }
+    });
+})
+    //====================================================================================================
 
 
-
-    })
-
-
+    // Khào báo controller giỏ hàng
     .controller('giohangCtrl', function ($scope) {
 
     })
+    //================================================================================================
+    // Khào báo controller thanh toán
     .controller('thanhtoanCtrl', function ($scope) {
 
     })
+    //================================================================================================
+    // Khào báo service tỉ giá tiền tệ
     .service('ExchangeRateService', function ($http) {
         this.getExchangeRates = function () {
             return $http.get('https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx') // Thay thế với URL API của bạn
@@ -582,6 +615,8 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
             return rates;
         }
     })
+    //================================================================================================
+    // Khào báo controller tiền tệ
     .controller('ngoaiteCtrl', function ($scope, ExchangeRateService) {
         $scope.exchangeRates = [];
 
@@ -591,8 +626,9 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
             console.error("Error fetching exchange rates:", error);
         });
     })
+    //================================================================================================
 
-
+    // Khào báo controller dssp
     .controller('dsspCtrl', function ($scope, $http) {
         let host = "http://localhost:9999/api";
         $scope.items = [];
@@ -608,12 +644,10 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
             var url = `${host}/products`;
             $http.get(url).then(resp => {
                 $scope.items = resp.data; // Gán dữ liệu sản phẩm từ server
-                console.log($scope.items);
                 $scope.filteredItems = $scope.items; // Khởi tạo filteredItems với toàn bộ sản phẩm
                 $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage); // Tính số trang
                 $scope.currentPage = 1; // Đặt lại về trang đầu tiên
                 $scope.updateFilteredItems(); // Hiển thị sản phẩm của trang đầu tiên
-                console.log("Success", resp);
             }).catch(error => {
                 console.log("Error", error);
             });
@@ -681,13 +715,16 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
         // Thực hiện tải toàn bộ sản phẩm
         $scope.load_all();
     })
+    //========================================================================
 
 
-
+    //khai báo controller chitiet san pham
     .controller('chitietCtrl', function ($scope, $routeParams, dataService) {
 
 
     })
+    //========================================================================
+
     .controller('CARTCtrl', function ($scope, $rootScope) {
 
     })
@@ -695,6 +732,8 @@ app.controller('profileuserCtrl', function ($scope, $window, $http) {
 
 
     })
-function goBack() {
-    window.history.back();
+    //========================================================================
+    //quay lai trang truoc
+    function goBack() {
+     window.history.back();
 }
