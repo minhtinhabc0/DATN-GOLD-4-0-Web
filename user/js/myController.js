@@ -255,7 +255,9 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             $scope.totalGcoinValue = $scope.gcoinBalance * $scope.firstProduct.priceBuy;
         }
     };
-
+    $scope.hasPin = function() {
+        return !!$scope.userInfo.pin; // Trả về true nếu có mã PIN
+    };
     // Hàm tải số dư Gcoin và giá vàng
     $scope.checkAndCreateGcoinWallet = function () {
         const apiUrl = `http://localhost:9999/api/user/profile/gcoin`;
@@ -268,6 +270,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             // Hiển thị số dư
             $scope.gcoinBalance = response.data.balance; // Lấy số dư từ phản hồi
             $scope.loadPrices(); // Tải giá vàng
+            $scope.hasPin();
         }).catch(function (error) {
             console.error('Lỗi khi tải số dư Gcoin:', error);
         });
@@ -362,14 +365,17 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
 
     // Hàm cập nhật mã PIN
     $scope.updatePin = function () {
-        if ($scope.newPin !== $scope.confirmNewPin) {
+        if ($scope.hasPin() && $scope.newPin !== $scope.confirmNewPin) {
             alert('Mã PIN mới không khớp!');
             return;
         }
-        $http.put('http://localhost:9999/api/user/profile/pin', {
-            oldPin: $scope.oldPin,
+    
+        const payload = {
+            oldPin: $scope.hasPin() ? $scope.oldPin : undefined, // Gửi oldPin chỉ khi đã có PIN
             newPin: $scope.newPin
-        }, {
+        };
+    
+        $http.put('http://localhost:9999/api/user/profile/pin', payload, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
@@ -384,6 +390,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             alert('Cập nhật mã PIN không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
         });
     };
+    
 
     // Hàm kích hoạt chế độ chỉnh sửa
     $scope.enableEdit = function () {
