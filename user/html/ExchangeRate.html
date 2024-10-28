@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tỷ giá hối đoái</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
  <style>
   /* style.css */
 body {
@@ -31,24 +31,17 @@ table {
 }
 th {
     background-color: #d4b257; /* Gold-like color */
-    color: black;
+    color: rgb(255, 255, 255) !important;
     border: 1px solid #ddd;
     padding: 10px;
     font-weight: bold;
 }
 
-/* Row and cell styles */
 td {
-    background-color: #0e0e0e;
-    border: 1px solid #dddddd;
-color: white;
+    border: 1px solid #ddd;
     padding: 10px;
     font-weight: bold;
-}
-
-/* Background for even rows */
-tr:nth-child(even) {
-    background-color: #f9f9f9;
+    
 }
 
 /* Section headers like "Giá vàng thế giới" */
@@ -94,7 +87,7 @@ tr:nth-child(even) {
     <div class="tieude"  >
         <h1 style="color: #f9b700;">TỶ GIÁ NGOẠI TỆ CÁC NƯỚC</h1>
         
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Mã tiền tệ</th>
@@ -106,8 +99,10 @@ tr:nth-child(even) {
             </thead>
             <tbody>
                 <tr ng-repeat="rate in exchangeRates">
-                    <td>{{ rate.CurrencyCode }}</td>
-                    <td>{{ rate.CurrencyName }}</td>
+                    <td style="color: white;">
+                        {{ rate.CurrencyCode }}
+                    </td>
+                    <td style="color: white;">{{ rate.CurrencyName }}</td>
                     <td style="color: #00ff00;">{{ rate.Buy }} VNĐ</td>
                     <td style="color:rgb(225, 225, 58);"> {{ rate.Transfer }} VNĐ</td>
                     <td style="color: red;">{{ rate.Sell }} VNĐ</td>

@@ -474,7 +474,10 @@ app.service('GoldPriceService', function ($http) {
 app.controller('giavangCtrl', function ($scope, GoldPriceService) {
     $scope.goldPrices = [];
     $scope.selectedProduct = null;
+    $scope.selectedView = null;
     $scope.products = [];
+    $scope.views = ['Biểu Đồ', 'Bảng Giá'];
+    $scope.filteredGoldPrices = []; // Thêm biến này để lưu trữ giá vàng đã lọc
     $scope.errorMessage = '';
 
     // Hàm để lấy ngày hiện tại
@@ -497,6 +500,7 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
             if ($scope.products.length > 0) {
                 $scope.selectedProduct = $scope.products[0];
                 $scope.updateChart($scope.selectedProduct);
+                $scope.filteredGoldPrices = $scope.goldPrices; // Hiển thị tất cả giá vàng khi khởi tạo
             } else {
                 $scope.errorMessage = 'Không có dữ liệu giá vàng hiện có.';
             }
@@ -510,73 +514,90 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
 
     // Hàm để vẽ biểu đồ khi chọn sản phẩm
     $scope.updateChart = function (selectedProduct) {
-        var ctx = document.getElementById('goldCanvas').getContext('2d');
-        var filteredPrices = $scope.goldPrices.filter(price => price.name === selectedProduct);
-        filteredPrices.sort((a, b) => a.date - b.date);
+        if ($scope.selectedView === 'Biểu Đồ') {
+            var ctx = document.getElementById('goldCanvas').getContext('2d');
+            var filteredPrices = selectedProduct === 'Tất cả' 
+                ? $scope.goldPrices 
+                : $scope.goldPrices.filter(price => price.name === selectedProduct);
 
-        var labels = filteredPrices.map(function (price) {
-            var date = price.date;
-            return date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
-        });
+            filteredPrices.sort((a, b) => a.date - b.date);
 
-        var priceBuyData = filteredPrices.map(function (price) {
-            return price.priceBuy;
-        });
+            var labels = filteredPrices.map(function (price) {
+                var date = price.date;
+                return date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
+            });
 
-        var priceSellData = filteredPrices.map(function (price) {
-            return price.priceSell;
-        });
+            var priceBuyData = filteredPrices.map(function (price) {
+                return price.priceBuy;
+            });
 
-        if ($scope.chart) {
-            $scope.chart.destroy();
-        }
+            var priceSellData = filteredPrices.map(function (price) {
+                return price.priceSell;
+            });
 
-        $scope.chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels.length > 0 ? labels : ['Không có dữ liệu'],
-                datasets: [
-                    {
-                        label: selectedProduct + ' - Giá Mua',
-                        data: priceBuyData.length > 0 ? priceBuyData : [0],
-                        borderColor: 'red',
-                        fill: false
-                    },
-                    {
-                        label: selectedProduct + ' - Giá Bán',
-                        data: priceSellData.length > 0 ? priceSellData : [0],
-                        borderColor: 'yellow',
-                        fill: false
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Giờ'
+            if ($scope.chart) {
+                $scope.chart.destroy();
+            }
+
+            $scope.chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels.length > 0 ? labels : ['Không có dữ liệu'],
+                    datasets: [
+                        {
+                            label: selectedProduct + ' - Giá Mua',
+                            data: priceBuyData.length > 0 ? priceBuyData : [0],
+                            borderColor: 'red',
+                            fill: false
                         },
-                        ticks: {
-                            autoSkip: true,
-                            maxTicksLimit: 10
+                        {
+                            label: selectedProduct + ' - Giá Bán',
+                            data: priceSellData.length > 0 ? priceSellData : [0],
+                            borderColor: 'yellow',
+                            fill: false
                         }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Giá (VNĐ)'
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Giờ'
+                            },
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 10
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Giá (VNĐ)'
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
+
+        // Cập nhật bảng giá
+        $scope.filteredGoldPrices = selectedProduct === 'Tất cả' 
+            ? $scope.goldPrices 
+            : $scope.goldPrices.filter(price => price.name === selectedProduct);
     };
 
-    // Theo dõi thay đổi khi chọn sản phẩm
-    $scope.$watch('selectedProduct', function (newVal) {
-        if (newVal) {
-            $scope.updateChart(newVal);
+    // Theo dõi sự thay đổi của selectedView để cập nhật chart hoặc bảng
+    $scope.$watch('selectedView', function(newValue) {
+        if (newValue) {
+            $scope.updateChart($scope.selectedProduct);
+        }
+    });
+
+    // Theo dõi sự thay đổi của selectedProduct để cập nhật chart và bảng
+    $scope.$watch('selectedProduct', function(newValue) {
+        if (newValue) {
+            $scope.updateChart(newValue);
         }
     });
 })
@@ -735,9 +756,13 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
     .controller('CARTCtrl', function ($scope, $rootScope) {
 
     })
-    .controller('trangthanhtoanCtrl', function ($scope, $http, $location) {
+    app.controller('hdkhCtrl', function ($scope) {
 
 
+    })
+ 
+    app.controller('brandCtrl', function ($scope, $http) {
+        
     })
     //========================================================================
     //quay lai trang truoc
