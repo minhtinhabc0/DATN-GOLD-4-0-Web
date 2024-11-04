@@ -1,0 +1,110 @@
+<div>
+    <div class="container-fluid py-4">
+        <h3 class="fw-bold">Báo cáo</h3>
+        <div class="row">
+            <!-- Doanh thu Chart -->
+            <div class="col-md-8 mb-4">
+                <div class="bg-white p-3 rounded-3 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Doanh thu</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Năm
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="#">2022</a></li>
+                                <li><a class="dropdown-item" href="#">2023</a></li>
+                                <li><a class="dropdown-item" href="#">2024</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="chart-container" style="height: 300px;">
+                        <!-- Placeholder for chart -->
+                        <canvas id="revenueChart1"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tổng doanh thu và thông tin khác -->
+            <div class="col-md-4">
+                <div class="bg-white p-3 mb-4 rounded-3 shadow-sm">
+                    <h6 class="fw-bold">Tổng doanh thu</h6>
+                    <h4>5 triệu tỷ VND</h4>
+                    <small>Tăng 10% so với tháng trước</small>
+                </div>
+
+                <div class="bg-white p-3 mb-4 rounded-3 shadow-sm">
+                    <h6 class="fw-bold">Tổng sản phẩm được bán</h6>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Loại sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Doanh thu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sản phẩm A</td>
+                                <td>100</td>
+                                <td>2 triệu</td>
+                            </tr>
+                            <tr>
+                                <td>Sản phẩm B</td>
+                                <td>150</td>
+                                <td>3 triệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-white p-3 rounded-3 shadow-sm">
+                    <h6 class="fw-bold">Tổng lợi nhuận</h6>
+                    <p>Lợi nhuận: 1 triệu</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Buttons -->
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-outline-secondary me-2">Xuất ra PDF</button>
+            <button class="btn btn-outline-secondary">Xuất ra Excel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm mã JavaScript cho biểu đồ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx1 = document.getElementById('revenueChart1').getContext('2d');
+        const revenueChart1 = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: [30, 50, 20, 60, 90, 40, 50, 80, 30, 100, 60, 80],
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    fill: false
+                }, {
+                    label: 'Chi phí',
+                    data: [20, 40, 10, 50, 70, 30, 40, 70, 20, 90, 50, 70],
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>

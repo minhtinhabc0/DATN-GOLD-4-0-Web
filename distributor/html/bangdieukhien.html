@@ -1,0 +1,114 @@
+<div class="tab-pane fade show active" id="pills-dashboard" role="tabpanel" aria-labelledby="pills-dashboard-tab">
+    <div class="container-fluid py-4">
+        <div class="row g-3">
+            <!-- Product Count -->
+            <div class="col-md-3">
+                <div class="card bg-light shadow-sm p-3">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <i class="fa-solid fa-cube" style="font-size: xx-large;"></i>
+                        </div>
+                        <div class="ms-3">
+                            <p class="mb-1 fw-bold">Số lượng sản phẩm</p>
+                            <h4 class="mb-0">10</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gcoin Exchange Rate -->
+            <div class="col-md-3">
+                <div class="card bg-light shadow-sm p-3">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <i class="fa-solid fa-sack-dollar" style="font-size: xx-large;"></i>
+                        </div>
+                        <div class="ms-3">
+                            <p class="mb-1 fw-bold">Tỉ giá Gcoin</p>
+                            <h4 class="mb-0">1 Gcoin = $$$$</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-3">
+            <!-- Revenue Chart -->
+            <div class="col-md-8">
+                <div class="card bg-light shadow-sm p-3">
+                    <h5 class="fw-bold">Doanh thu</h5>
+                    <canvas id="revenueChart" style="height: 300px;"></canvas>
+                </div>
+            </div>
+
+            <!-- Product List -->
+            <div class="col-md-4">
+                <div class="card bg-light shadow-sm p-3">
+                    <h5 class="fw-bold">Sản phẩm trên sàn</h5>
+                    <hr>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượt bán</th>
+                                <th>Giá sản phẩm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tên sản phẩm</td>
+                                <td>10 lần</td>
+                                <td>1 Gcoin</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm mã JavaScript cho biểu đồ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: [100, 200, 150, 300, 400, 350, 450, 500, 600, 700, 800, 900], // Dữ liệu doanh thu giả
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    fill: false
+                }, {
+                    label: 'Chi phí',
+                    data: [50, 100, 75, 150, 200, 175, 225, 250, 300, 350, 400, 450], // Dữ liệu chi phí giả
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'VND' // Đơn vị tiền tệ
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Tháng' // Tiêu đề cho trục x
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
