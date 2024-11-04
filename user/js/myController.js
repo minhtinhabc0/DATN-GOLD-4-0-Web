@@ -189,7 +189,7 @@ app.config(['$routeProvider', function ($routeProvider) {
                 $scope.total_price = ''; // Reset nếu không hợp lệ
             }
         };
-        
+
 
         // Initial load
         $scope.load_all();
