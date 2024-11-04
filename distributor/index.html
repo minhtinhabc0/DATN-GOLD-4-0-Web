@@ -1,0 +1,70 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nha Phan Phoi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/nhaphanphoi.css">
+</head>
+
+<body ng-app="myapp" ng-controller="MainController" style="background-color: #3b3b3b;">
+    <div id="welcome-message" class="alert alert-success fixed-top text-center mx-auto"
+        style=" width: 400px; display: none;">
+        Trang Nhà Phân Phối !
+    </div>
+    <div class="logo-container">
+        <img src="https://via.placeholder.com/150" alt="Avatar">
+    </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2 class="text-center" style="color: yellow;">Gold 4.0</h2>
+        <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" href="#!/distributor/bangdieukhien" role="tab">Bảng điều khiển</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#!/distributor/quanlysanpham" role="tab">Danh sách sản
+                    phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#!/distributor/quanlydonhang" role="tab">Quản lý đơn
+                    hàng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#!/distributor/baocao" role="tab">Báo cáo</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="content">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="container-view">
+                <ng-view></ng-view>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/7ac34e99b9.js" crossorigin="anonymous"></script>
+    <script src="js/myController.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/css/uikit.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/js/uikit-icons.min.js"></script>
+    <script src="https://kit.fontawesome.com/7ac34e99b9.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#welcome-message').fadeIn(); // Hiện thông báo
+            setTimeout(function () {
+                $('#welcome-message').fadeOut();
+            }, 3000);
+        });
+    </script>
+</body>
+
+</html>
