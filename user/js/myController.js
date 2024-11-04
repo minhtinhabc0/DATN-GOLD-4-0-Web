@@ -85,8 +85,8 @@ app.config(['$routeProvider', function ($routeProvider) {
             redirectTo: '/user/home'
         });
 }])
-//controller chính của website
-//=====================================================================================================
+    //controller chính của website
+    //=====================================================================================================
     .controller('MainController', function ($scope, $location, $window) {
 
         const userInfo = localStorage.getItem('userInfo');
@@ -98,20 +98,24 @@ app.config(['$routeProvider', function ($routeProvider) {
         };
 
     })
-//=====================================================================================================
-//controller home
+    //=====================================================================================================
+    //controller home
 
-    .controller('homeCtrl', function($scope, $http) {
+    .controller('homeCtrl', function ($scope, $http, GoldPriceService) {
         const userInfo = localStorage.getItem('userInfo');
         $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
         let host = "http://localhost:9999/api";
-    
+
         $scope.items = [];
         $scope.currentIndex = 0;
         $scope.itemsPerPage = 5; // Number of items visible at once
-    
+        $scope.goldPrices = [];
+        $scope.SJCPrices = null;
+        $scope.total_price = null; // Khởi tạo với giá trị hợp lệ
+        $scope.gold_quantity = null; // Khởi tạo với giá trị hợp lệ
+
         // Load all products and limit to 10 items
-        $scope.load_all = function() {
+        $scope.load_all = function () {
             var url = `${host}/products`;
             $http.get(url).then(resp => {
                 $scope.items = resp.data.slice(0, 15); // Limit to 10 items
@@ -119,16 +123,16 @@ app.config(['$routeProvider', function ($routeProvider) {
                 console.log("Error", error);
             });
         }
-        $scope.startAutoSlide = function() {
+        $scope.startAutoSlide = function () {
             setInterval(() => {
                 $scope.nextSlide();
             }, 3000); // Chuyển đổi sau mỗi 2000ms (2 giây)
         }
         $scope.startAutoSlide();
-    
-    
+
+
         // Move to the next item with circular behavior
-        $scope.nextSlide = function() {
+        $scope.nextSlide = function () {
             // Ensure that currentIndex + itemsPerPage doesn't exceed item count
             if ($scope.currentIndex + $scope.itemsPerPage < $scope.items.length) {
                 $scope.currentIndex += 1;
@@ -137,34 +141,62 @@ app.config(['$routeProvider', function ($routeProvider) {
             }
             $scope.updateCarousel();
         }
-    
+
         // Move to the previous item with circular behavior
-        $scope.prevSlide = function() {
+        $scope.prevSlide = function () {
             if ($scope.currentIndex > 0) {
                 $scope.currentIndex -= 1;
             } else {
                 $scope.currentIndex = Math.max(0, $scope.items.length - $scope.itemsPerPage); // Go to end if at start
             }
-          
-        }
-    
-        // Function to update the carousel by translating it
-      $scope.updateCarousel = function() {
-    const wrapper = document.querySelector('.product-carousel-wrapper');
-    if (wrapper) { // Kiểm tra nếu wrapper tồn tại
-        const translateX = -($scope.currentIndex * (100 / $scope.itemsPerPage)); // Tính toán dịch chuyển
-        wrapper.style.transform = `translateX(${translateX}%)`;
-    } else {
-       console.log("Khum phải lỗi đâu tại trang này không có .product-carousel-wrapper thui hihihi");
-    }
-};
 
-    
+        }
+
+        // Function to update the carousel by translating it
+        $scope.updateCarousel = function () {
+            const wrapper = document.querySelector('.product-carousel-wrapper');
+            if (wrapper) { // Kiểm tra nếu wrapper tồn tại
+                const translateX = -($scope.currentIndex * (100 / $scope.itemsPerPage)); // Tính toán dịch chuyển
+                wrapper.style.transform = `translateX(${translateX}%)`;
+            } else {
+                console.log("Khum phải lỗi đâu tại trang này không có .product-carousel-wrapper thui hihihi");
+            }
+        };
+
+        // Tải giá vàng
+        $scope.loadPrices = function () {
+            GoldPriceService.fetchGoldPrices().then(function (data) {
+                $scope.goldPrices = data.goldPrices; // Lưu trữ dữ liệu vào scope
+                $scope.SJCPrices = $scope.goldPrices[5]; // Lưu giá vàng SJC
+                console.log("SJCPrices:", $scope.SJCPrices); // Kiểm tra giá trị
+            });
+        };
+        // Thay đổi ô số vàng cần mua khi nhập số tiền thanh toán
+        $scope.calculateGcoins = function () {
+            const total_price = parseFloat($scope.total_price);
+            if (!isNaN(total_price) && $scope.SJCPrices) {
+                $scope.gold_quantity = (total_price / $scope.SJCPrices.priceBuy).toFixed(5);
+            } else {
+                $scope.gold_quantity = ''; // Reset nếu không hợp lệ
+            }
+        };
+        // Thay đổi ô số tiền thanh toán khi nhập số vàng cần mua
+        $scope.calculateMoney = function () {
+            const gold_quantity = parseFloat($scope.gold_quantity);
+            if (!isNaN(gold_quantity) && $scope.SJCPrices) {
+                $scope.total_price = (gold_quantity * $scope.SJCPrices.priceBuy);
+            } else {
+                $scope.total_price = ''; // Reset nếu không hợp lệ
+            }
+        };
+        
+
         // Initial load
         $scope.load_all();
+        $scope.loadPrices();
     })
 //======================================================================================================
-    
+
 // Upload avatar
 
 app.directive('ngFileSelect', function () {
@@ -239,23 +271,23 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         logout();
         $window.location.href = 'home.html'; // Chuyển hướng nếu có lỗi
     });
-    
+
     // Tải giá vàng
     $scope.loadPrices = function () {
         GoldPriceService.fetchGoldPrices().then(function (data) {
             $scope.goldPrices = data.goldPrices; // Lưu trữ dữ liệu vào scope
-            $scope.firstProduct = $scope.goldPrices[0]; // Lưu sản phẩm đầu tiên
+            $scope.firstProduct = $scope.goldPrices[5]; // Lưu sản phẩm đầu tiên
             $scope.calculateGcoinValue(); // Tính giá trị Gcoin
         });
     };
-    
+
     // Tính toán giá trị Gcoin
     $scope.calculateGcoinValue = function () {
         if ($scope.firstProduct) {
             $scope.totalGcoinValue = $scope.gcoinBalance * $scope.firstProduct.priceBuy;
         }
     };
-    $scope.hasPin = function() {
+    $scope.hasPin = function () {
         return !!$scope.userInfo.pin; // Trả về true nếu có mã PIN
     };
     // Hàm tải số dư Gcoin và giá vàng
@@ -284,7 +316,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-            
+
         }).then(function (response) {
             alert(response.data.message); // Hiển thị thông báo thành công
             $scope.checkAndCreateGcoinWallet(); // Tải lại số dư Gcoin
@@ -293,12 +325,12 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             alert('Không thể tạo ví Gcoin: ' + (error.data || ''));
         });
     };
-    
+
     // Gọi hàm để kiểm tra ví Gcoin khi cần thiết
     $scope.checkAndCreateGcoinWallet();
 
     // Hàm upload avatar
-    $scope.uploadAvatar = function() {
+    $scope.uploadAvatar = function () {
         var token = localStorage.getItem('token');
         if (!$scope.avatarFile) {
             alert('Vui lòng chọn một tệp ảnh để tải lên.');
@@ -315,10 +347,10 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             headers: {
                 'Content-Type': undefined
             }
-        }).then(function(response) {
+        }).then(function (response) {
             // Cập nhật avatar URL trong userInfo
             $scope.userInfo.avt = response.data.secure_url; // Lấy URL từ phản hồi
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.error('Lỗi khi tải lên avatar:', error);
         });
     };
@@ -369,12 +401,12 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             alert('Mã PIN mới không khớp!');
             return;
         }
-    
+
         const payload = {
             oldPin: $scope.hasPin() ? $scope.oldPin : undefined, // Gửi oldPin chỉ khi đã có PIN
             newPin: $scope.newPin
         };
-    
+
         $http.put('http://localhost:9999/api/user/profile/pin', payload, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -390,7 +422,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             alert('Cập nhật mã PIN không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
         });
     };
-    
+
 
     // Hàm kích hoạt chế độ chỉnh sửa
     $scope.enableEdit = function () {
@@ -413,8 +445,8 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
 
     })
 //====================================================================================================
-    
-    
+
+
 //trống
 
 //====================================================================================================
@@ -516,8 +548,8 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
     $scope.updateChart = function (selectedProduct) {
         if ($scope.selectedView === 'Biểu Đồ') {
             var ctx = document.getElementById('goldCanvas').getContext('2d');
-            var filteredPrices = selectedProduct === 'Tất cả' 
-                ? $scope.goldPrices 
+            var filteredPrices = selectedProduct === 'Tất cả'
+                ? $scope.goldPrices
                 : $scope.goldPrices.filter(price => price.name === selectedProduct);
 
             filteredPrices.sort((a, b) => a.date - b.date);
@@ -582,20 +614,20 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
         }
 
         // Cập nhật bảng giá
-        $scope.filteredGoldPrices = selectedProduct === 'Tất cả' 
-            ? $scope.goldPrices 
+        $scope.filteredGoldPrices = selectedProduct === 'Tất cả'
+            ? $scope.goldPrices
             : $scope.goldPrices.filter(price => price.name === selectedProduct);
     };
 
     // Theo dõi sự thay đổi của selectedView để cập nhật chart hoặc bảng
-    $scope.$watch('selectedView', function(newValue) {
+    $scope.$watch('selectedView', function (newValue) {
         if (newValue) {
             $scope.updateChart($scope.selectedProduct);
         }
     });
 
     // Theo dõi sự thay đổi của selectedProduct để cập nhật chart và bảng
-    $scope.$watch('selectedProduct', function(newValue) {
+    $scope.$watch('selectedProduct', function (newValue) {
         if (newValue) {
             $scope.updateChart(newValue);
         }
@@ -756,16 +788,16 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
     .controller('CARTCtrl', function ($scope, $rootScope) {
 
     })
-    app.controller('hdkhCtrl', function ($scope) {
+app.controller('hdkhCtrl', function ($scope) {
 
 
-    })
- 
-    app.controller('brandCtrl', function ($scope, $http) {
-        
-    })
-    //========================================================================
-    //quay lai trang truoc
-    function goBack() {
-     window.history.back();
+})
+
+app.controller('brandCtrl', function ($scope, $http) {
+
+})
+//========================================================================
+//quay lai trang truoc
+function goBack() {
+    window.history.back();
 }
