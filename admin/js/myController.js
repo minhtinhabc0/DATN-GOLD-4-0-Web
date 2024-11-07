@@ -86,9 +86,12 @@ app.config(['$routeProvider', function ($routeProvider) {
 }])
 
     .controller('MainController', function ($scope, $location) {
+        
     })
 
-    .controller('bangdieukhienCtrl', function ($scope) { })
+    .controller('bangdieukhienCtrl', function ($scope) {
+
+     })
     .controller('quanlysanphamCtrl', function ($scope) { })
     .controller('quanlysanphamthemCtrl', function ($scope) { })
     .controller('quanlysanphamsuaCtrl', function ($scope) { })
