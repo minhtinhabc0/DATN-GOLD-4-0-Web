@@ -224,7 +224,120 @@
     .pagination-container {
         margin-top: auto;
     }
-    
+
+
+
+    /* Style for the "Add to Cart" button */
+    .product-card button {
+        background-color: white;
+        font-size: 15px;
+        font-weight: bold;
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+
+    }
+
+    .product-card button:hover {
+        border-color: #c48c46;
+        color: #c48c46;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        outline: none;
+
+    }
+
+    .pagination-container {
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .page-item {
+        margin: 0 5px;
+    }
+
+    .page-link {
+        display: inline-block;
+        padding: 8px 16px;
+        font-size: 16px;
+        color: black !important;
+        /* Màu chữ mặc định */
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    /* Hiệu ứng hover: màu chữ vàng và nền xám nhẹ */
+    .page-link:hover {
+        color: white;
+        /* Màu chữ trắng khi hover */
+        background-color: #c48c46;
+        /* Nền màu vàng nhẹ khi hover */
+        border-color: #4c3d0480;
+        /* Đổi màu viền khi hover */
+        transform: scale(1.1);
+        /* Hiệu ứng zoom nhẹ khi hover */
+    }
+
+    /* Trang hiện tại (active): nền màu #c48c46, chữ trắng */
+    .page-item.active .page-link {
+        background-color: #c48c46;
+        /* Màu nền khi trang hiện tại */
+        color: white !important;
+        /* Màu chữ khi trang hiện tại */
+        border-color: #c48c46;
+        /* Màu viền của trang hiện tại */
+        transform: scale(1.05);
+        /* Zoom nhẹ cho trang hiện tại */
+    }
+
+
+    /* Trang bị disabled (không thể chọn): màu xám nhạt */
+    .page-item.disabled .page-link {
+        color: #aaa;
+        /* Màu chữ xám khi trang không thể chọn */
+        background-color: #f8f8f8;
+        /* Màu nền xám nhạt khi không thể chọn */
+        border-color: #f8f8f8;
+        /* Màu viền của trang không thể chọn */
+        cursor: not-allowed;
+        /* Không thể click vào */
+    }
+
+    /* Icon trong phân trang */
+    .page-link i {
+        font-size: 18px;
+    }
+
+    /* Hiệu ứng focus cho các nút phân trang */
+    .page-link:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(192, 140, 70, 0.5);
+        /* Tạo hiệu ứng khi người dùng focus vào nút */
+    }
+
+    /* Media query cho các thiết bị di động */
+    @media (max-width: 576px) {
+        .page-link {
+            font-size: 14px;
+            /* Giảm kích thước chữ trên thiết bị di động */
+            padding: 6px 12px;
+            /* Điều chỉnh padding cho các thiết bị di động */
+        }
+    }
 </style>
 
 <div class="container-fluid mt-5">
@@ -237,76 +350,72 @@
                     <input type="text" class="form-control" placeholder="Search..." ng-model="searchText">
                 </div>
 
-                
+
             </div>
             <div class="d-flex justify-content-between">
                 <!-- Phần chứa các bộ lọc -->
                 <div class="filter-section d-flex">
                     <div class="filter-wrapper">
-                        <select class="form-select">
-                            <option>Thương hiệu</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+                        <select class="form-select" ng-model="selectedBrand" ng-change="filterByBrand()">
+                            <option value="">Thương hiệu</option>
+                            <option value="Thương hiệu : PNJ">PNJ</option>
+                            <option value="Thương hiệu : SANRIO">SANRIO</option>
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select">
-                            <option>Giá</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+                        <select class="form-select" ng-model="selectedMainStone"
+                            ng-change="filterByMainStone(selectedMainStone)">
+                            <option value="">Loại đá chính</option>
+                            <option value="Không gắn đá">Không gắn đá</option>
+                            <option value="xoàn mỹ">xoàn mỹ</option>
+                            <option value="Ruby">Ruby</option>
+                            <option value="Freshwater Pearl">Freshwater Pearl</option>
+                            <option value="Citrine">Citrine</option>
+                            <option value="Diamond">Diamond</option>
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select">
-                            <option>Loại đá chính</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+                        <select class="form-select" ng-model="selectedGender" ng-change="filterByGender()">
+                            <option value="">Đối Tượng</option>
+                            <option value="nam">Nam</option>
+                            <option value="nữ">Nữ</option>
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select">
-                            <option>Chất liệu</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+                        <select class="form-select" ng-model="selectedGoldType" ng-change="filterByGoldType()">
+                            <option value="">Loại Vàng</option>
+                            <option value="10K">10K</option>
+                            <option value="14K">14K</option>
+                            <option value="18K">18K</option>
+                            <option value="24K">24K</option>
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select">
-                            <option>Giới tính</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                    </div>
-                    <div class="filter-wrapper">
-                        <select class="form-select">
-                            <option>Loại trang sức</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+                        <select class="form-select" ng-model="selectedJewelryType" ng-change="filterByJewelryType()">
+                            <option value="">Loại Trang Sức</option>
+                            <option value="Dây">Dây</option>
+                            <option value="Nhẫn">Nhẫn</option>
+                            <option value="Lắc">Lắc</option>
+                            <option value="Vòng">Vòng</option>
                         </select>
                     </div>
                 </div>
-            
+
+
                 <!-- Phần sắp xếp nằm tách biệt và sát bên phải -->
                 <div class="filter-wrapper">
                     <select class="form-select" ng-model="selectedSort" ng-change="sortByPrice(selectedSort)">
                         <option value="">Sắp xếp</option>
-                        <option value="new">Mới nhất</option>
                         <option value="asc">Tăng dần theo giá</option>
                         <option value="desc">Giảm dần theo giá</option>
                     </select>
                 </div>
             </div>
-            
-            
-            
+
+
+
             <div class="row g-4">
-                <div class="col-md-3" ng-repeat="pro in filteredItems | filter:{ tenSanPham: searchText }">
+                <div class="col-md-3" ng-repeat="pro in displayedItems | filter:{ tenSanPham: searchText }">
                     <div class="product-card">
                         <div class="installment">
                             <span>0%</span>
@@ -315,6 +424,7 @@
                         <img alt="Placeholder image for product" ng-src="{{pro.hinhAnh}}" />
                         <p>{{pro.tenSanPham}}</p>
                         <p>{{pro.gia | number:0}} VND</p>
+                        <button>Thêm Vào Giỏ Hàng</button>
                     </div>
                 </div>
             </div>
@@ -322,17 +432,31 @@
             <!-- Thanh phân trang -->
             <nav class="pagination-container" aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
+                    <!-- Nút Previous -->
                     <li class="page-item" ng-class="{disabled: currentPage == 1}">
-                        <a class="page-link" href="#" ng-click="previousPage()">Previous</a>
+                        <a class="page-link" href="" ng-click="previousPage()">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </a>
                     </li>
-                    <li class="page-item" ng-repeat="page in [].constructor(totalPages) track by $index">
-                        <a class="page-link" href="" ng-click="goToPage($index + 1)">{{ $index + 1 }}</a>
+
+                    <!-- Các trang -->
+                    <li class="page-item" ng-repeat="page in [].constructor(totalPages) track by $index"
+                        ng-class="{active: currentPage == $index + 1}">
+                        <a class="page-link" href="" ng-click="goToPage($index + 1)">
+                            {{ $index + 1 }}
+                        </a>
                     </li>
+
+                    <!-- Nút Next -->
                     <li class="page-item" ng-class="{disabled: currentPage == totalPages}">
-                        <a class="page-link" href="#" ng-click="nextPage()">Next</a>
+                        <a class="page-link" href="" ng-click="nextPage()">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </a>
                     </li>
                 </ul>
             </nav>
+
+
         </div>
         <div class="col-md-1"></div>
     </div>
