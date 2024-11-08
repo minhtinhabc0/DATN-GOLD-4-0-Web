@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi" ng-app="adminApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký Admin</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.angularjs.org/1.8.2/angular.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body ng-controller="RegisterAdminController">
+
+    <div class="container mt-5">
+        <h2 class="text-center">Đăng ký tài khoản Admin</h2>
+
+        <div class="alert alert-info" ng-if="message">{{message}}</div>
+
+        <form name="registerForm" ng-submit="registerAdmin()">
+            <div class="form-group">
+                <label for="taikhoan">Tài khoản</label>
+                <input type="text" class="form-control" id="taikhoan" ng-model="formData.taikhoan" required>
+            </div>
+
+            <div class="form-group">
+                <label for="matkhau">Mật khẩu</label>
+                <input type="password" class="form-control" id="matkhau" ng-model="formData.matkhau" required>
+            </div>
+
+            <div class="form-group">
+                <label for="matkhauNhapLai">Nhập lại mật khẩu</label>
+                <input type="password" class="form-control" id="matkhauNhapLai" ng-model="formData.matkhauNhapLai"
+                    required>
+                <div class="text-danger" ng-if="formData.matkhau !== formData.matkhauNhapLai">Mật khẩu nhập lại không
+                    khớp.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" ng-model="formData.email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="hoten">Họ tên</label>
+                <input type="text" class="form-control" id="hoten" ng-model="formData.hoten" required>
+            </div>
+
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6LexVlgqAAAAACJbJFXNT64FwRl5purGdSfnGJtp"
+                    data-callback="recaptchaCallback"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary"
+                ng-disabled="formData.matkhau !== formData.matkhauNhapLai">Đăng ký</button>
+        </form>
+
+        <div class="mt-3" ng-if="showOtpSection">
+            <h4>Nhập mã OTP đã gửi đến email của bạn</h4>
+            <form ng-submit="verifyOtp()">
+                <div class="form-group">
+                    <label for="otp">Mã OTP</label>
+                    <input type="text" class="form-control" id="otp" ng-model="formData.otp" required>
+                </div>
+                <button type="submit" class="btn btn-success">Xác nhận OTP</button>
+                <button type="button" class="btn btn-link" ng-click="resendOtp()">Gửi lại OTP</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        angular.module('adminApp', [])
+            .controller('RegisterAdminController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
+
+                $scope.formData = {};
+                $scope.message = '';
+                $scope.showOtpSection = false;
+
+                // Kiểm tra tài khoản admin trước khi vào trang đăng ký
+                $scope.checkAdminAccount = function () {
+                    $http.get('http://localhost:9999/api/ad/check-admin-account')
+                        .then(function (response) {
+                            // Kiểm tra xem response.data và response.data.message có tồn tại không
+                            if (response.data && response.data.message) {
+                                // Nếu có thông báo từ server, hiển thị thông báo
+                                console.log("Phản hồi từ server:", response.data.message);
+                                $scope.message = response.data.message;
+                            } else {
+                                // Nếu không có thông báo trong phản hồi, hiển thị thông báo mặc định
+                                console.log("Không có thông báo trong phản hồi");
+                                $scope.message = "Không có thông tin để hiển thị.";
+                            }
+                        }, function (error) {
+                            // Nếu API trả về lỗi, kiểm tra error.data
+                            if (error.data && error.data.message) {
+                                console.log("Phản hồi lỗi từ server:", error.data.message);
+                                $scope.message = error.data.message;
+                            } else {
+                                console.log("Không có thông báo lỗi từ server");
+                                $scope.message = "Lỗi không xác định.";
+                            }
+                
+                            // Điều hướng khi có lỗi 400
+                            if (error.status === 400) {
+                                $window.location.href = '/admin/index.html';
+                            }
+                        });
+                };
+                
+                
+
+                // Gọi hàm kiểm tra tài khoản admin khi trang được tải
+                $scope.checkAdminAccount();
+
+                // Đăng ký Admin
+                $scope.registerAdmin = function () {
+                    if ($scope.formData.matkhau !== $scope.formData.matkhauNhapLai) {
+                        $scope.message = "Mật khẩu và mật khẩu nhập lại không khớp.";
+                        return;
+                    }
+
+                    const data = {
+                        taikhoan: $scope.formData.taikhoan,
+                        matkhau: $scope.formData.matkhau,
+                        email: $scope.formData.email,
+                        hoten: $scope.formData.hoten,
+                        recaptchaToken: $scope.recaptchaToken
+                    };
+
+                    $http.post('http://localhost:9999/api/ad/registerad', data)
+                        .then(function (response) {
+                            $scope.message = response.data.message;
+                            $scope.showOtpSection = true;
+                        }, function (error) {
+                            $scope.message = error.data.message;
+                        });
+                };
+
+                window.recaptchaCallback = function (response) {
+                    $scope.recaptchaToken = response;
+                    $scope.$apply();
+                };
+
+                $scope.verifyOtp = function () {
+                    const data = {
+                        email: $scope.formData.email,
+                        otp: $scope.formData.otp
+                    };
+
+                    $http.post('http://localhost:9999/api/ad/verify-otp', data)
+                        .then(function (response) {
+                            $scope.message = response.data.message;
+                        }, function (error) {
+                            $scope.message = error.data.message;
+                        });
+                };
+
+                $scope.resendOtp = function () {
+                    const data = {
+                        email: $scope.formData.email
+                    };
+
+                    $http.post('http://localhost:9999/api/ad/resend-otp', data)
+                        .then(function (response) {
+                            $scope.message = response.data.message;
+                        }, function (error) {
+                            $scope.message = error.data.message;
+                        });
+                };
+
+            }]);
+    </script>
+
+</body>
+
+</html>
