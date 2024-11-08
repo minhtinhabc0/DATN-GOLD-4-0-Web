@@ -86,9 +86,19 @@ app.config(['$routeProvider', function ($routeProvider) {
 }])
 
     .controller('MainController', function ($scope, $location) {
+        const userInfo = localStorage.getItem('userInfo');
+        $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
+        $scope.logout = function () {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userInfo');
+            $window.location.href = '/admin/index.html';
+            console.log(userInfo);
+        };
     })
 
-    .controller('bangdieukhienCtrl', function ($scope) { })
+    .controller('bangdieukhienCtrl', function ($scope) {
+
+     })
     .controller('quanlysanphamCtrl', function ($scope) { })
     .controller('quanlysanphamthemCtrl', function ($scope) { })
     .controller('quanlysanphamsuaCtrl', function ($scope) { })

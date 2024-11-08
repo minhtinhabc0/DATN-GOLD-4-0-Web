@@ -76,7 +76,7 @@
     </style>
 </head>
 
-<body>
+<body ng-app="myApp" ng-controller="ProfileController">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-2 sidebar">
@@ -84,8 +84,7 @@
                 <nav>
                     <ul class="list-unstyled">
                         <li><a href="#!/admin/bangdieukhien"><i class="fa-solid fa-house"></i> Bảng điều khiển</a></li>
-                        <li><a href="#!/admin/quanlysanpham"><i class="fa-solid fa-rectangle-list"></i> Quản lý sản
-                                phẩm</a></li>
+                        <li><a href="#!/admin/quanlysanpham"><i class="fa-solid fa-rectangle-list"></i> Quản lý sản phẩm</a></li>
                         <li><a href="#!/admin/quanlydonhang"><i class="fa-solid fa-shop"></i> Quản lý đơn hàng</a></li>
                         <li><a href="#!/admin/quanlytaikhoan"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a></li>
                         <li><a href="#!/admin/baocao"><i class="fa-solid fa-file-circle-xmark"></i> Báo cáo</a></li>
@@ -96,9 +95,10 @@
 
             <div class="col-md-10">
                 <div class="header">
+                    <!-- Clickable Name to Show Profile -->
                     <div class="user-icon">
-                        Welcome to the Gold 4.0 Admin
-                        <img src="https://via.placeholder.com/40" alt="User Icon">
+                        <span ng-click="goToProfile()">{{userInfo.hoTen}} (ID: {{userInfo.id}})</span>
+                        <img ng-src="{{userInfo.avatar}}" alt="User Icon">
                     </div>
                 </div>
             </div>
@@ -106,6 +106,40 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        var app = angular.module('myApp', []);
+
+        app.controller('ProfileController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
+            $scope.userInfo = {};
+
+            // Fetch user info from localStorage or API
+            const userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                $scope.userInfo = JSON.parse(userInfo);
+            }
+
+            // Optionally fetch the user data from the backend if not in localStorage
+            if (!$scope.userInfo) {
+                $http.get('http://localhost:9999/api/user/profile', {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                }).then(function (response) {
+                    $scope.userInfo = response.data;
+                    localStorage.setItem('userInfo', JSON.stringify($scope.userInfo)); // Store it locally
+                }).catch(function (error) {
+                    console.error('Error fetching user info:', error);
+                });
+            }
+
+            // Function to go to the profile page
+            $scope.goToProfile = function () {
+                // Redirect to the profile page
+                $window.location.href = '/admin/profile'; // Replace with your actual route
+            };
+        }]);
+    </script>
 </body>
 
 </html>

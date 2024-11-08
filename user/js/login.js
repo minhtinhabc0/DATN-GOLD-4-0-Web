@@ -62,20 +62,3 @@ app.controller('FormController', ['$scope', '$http', function($scope, $http) {
         }, 3000);
     }
 }]);
-
-app.controller('HelloController', ['$scope', '$window', function($scope, $window) {
-    // Lấy thông tin người dùng từ localStorage
-    const userInfo = localStorage.getItem('userInfo');
-    $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
-
-    // Kiểm tra nếu không có thông tin người dùng, chuyển hướng đến trang đăng nhập
-    if (!$scope.userInfo) {
-        $window.location.href = 'index.html'; // Chuyển hướng đến trang đăng nhập nếu không có thông tin
-    }
-
-    $scope.logout = function() {
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('token');
-        $window.location.href = 'index.html';
-    }
-}]);

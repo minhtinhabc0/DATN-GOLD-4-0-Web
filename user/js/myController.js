@@ -167,7 +167,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         $scope.loadPrices = function () {
             GoldPriceService.fetchGoldPrices().then(function (data) {
                 $scope.goldPrices = data.goldPrices; // Lưu trữ dữ liệu vào scope
-                $scope.SJCPrices = $scope.goldPrices[5]; // Lưu giá vàng SJC
+                $scope.SJCPrices = $scope.goldPrices[6]; // Lưu giá vàng SJC
                 console.log("SJCPrices:", $scope.SJCPrices); // Kiểm tra giá trị
             });
         };
@@ -175,7 +175,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         $scope.calculateGcoins = function () {
             const total_price = parseFloat($scope.total_price);
             if (!isNaN(total_price) && $scope.SJCPrices) {
-                $scope.gold_quantity = (total_price / $scope.SJCPrices.priceBuy).toFixed(5);
+                $scope.gold_quantity = (total_price / $scope.SJCPrices.priceSell).toFixed(5);
             } else {
                 $scope.gold_quantity = ''; // Reset nếu không hợp lệ
             }
@@ -184,7 +184,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         $scope.calculateMoney = function () {
             const gold_quantity = parseFloat($scope.gold_quantity);
             if (!isNaN(gold_quantity) && $scope.SJCPrices) {
-                $scope.total_price = (gold_quantity * $scope.SJCPrices.priceBuy);
+                $scope.total_price = (gold_quantity * $scope.SJCPrices.priceSell);
             } else {
                 $scope.total_price = ''; // Reset nếu không hợp lệ
             }
@@ -441,8 +441,41 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
     .controller('spyeuthichCtrl', function ($scope) {
 
     })
-    .controller('spvangCtrl', function ($scope) {
+    .controller('spvangCtrl', function ($scope, GoldPriceService) {
+        $scope.goldPrices = [];
+        $scope.SJCPrices = null;
+        $scope.total_price = null; // Khởi tạo với giá trị hợp lệ
+        $scope.gold_quantity = null; // Khởi tạo với giá trị hợp lệ
 
+        // Tải giá vàng
+        $scope.loadPrices = function () {
+            GoldPriceService.fetchGoldPrices().then(function (data) {
+                $scope.goldPrices = data.goldPrices; // Lưu trữ dữ liệu vào scope
+                $scope.SJCPrices = $scope.goldPrices[6]; // Lưu giá vàng SJC
+                console.log("SJCPrices:", $scope.SJCPrices); // Kiểm tra giá trị
+            });
+        };
+        // Thay đổi ô số vàng cần mua khi nhập số tiền thanh toán
+        $scope.calculateGcoins = function () {
+            const total_price = parseFloat($scope.total_price);
+            if (!isNaN(total_price) && $scope.SJCPrices) {
+                $scope.gold_quantity = (total_price / $scope.SJCPrices.priceSell).toFixed(5);
+            } else {
+                $scope.gold_quantity = ''; // Reset nếu không hợp lệ
+            }
+        };
+        // Thay đổi ô số tiền thanh toán khi nhập số vàng cần mua
+        $scope.calculateMoney = function () {
+            const gold_quantity = parseFloat($scope.gold_quantity);
+            if (!isNaN(gold_quantity) && $scope.SJCPrices) {
+                $scope.total_price = (gold_quantity * $scope.SJCPrices.priceSell);
+            } else {
+                $scope.total_price = ''; // Reset nếu không hợp lệ
+            }
+        };
+
+        // Initial load
+        $scope.loadPrices();
     })
 //====================================================================================================
 
