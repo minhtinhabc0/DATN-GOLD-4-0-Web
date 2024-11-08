@@ -10,15 +10,23 @@
 
 <body ng-app="myapp" ng-controller="MainController" style="background-color: #3b3b3b;">
     <div class="container-fluid">
+        
         <header class="container-fluid fixed-top" ng-include="'html/header.html'">
+            
         </header>
         <div id="welcome-message" class="alert alert-success fixed-top text-center mx-auto"
             style=" width: 400px; display: none;">
-            Chào mừng sếp trở lại!
+            
         </div>
+        
+        
+        
+     
 
         <div class="container-view">
+            
             <ng-view></ng-view>
+         
         </div>
 
     </div>
