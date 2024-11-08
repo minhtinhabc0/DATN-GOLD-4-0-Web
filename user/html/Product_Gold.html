@@ -195,14 +195,14 @@
         <div class=" conversion-section row mb-4" style="color: #f9b700;">
             <div class="col">
                 <label>Số Vàng Cần Mua</label>
-                <input class="form-control" type="text" placeholder="Chỉ" id="goldAmount">
+                <input class="form-control" type="text" placeholder="Chỉ" id="gold_quantity" ng-model="gold_quantity" ng-change="calculateMoney()">
             </div>
             <div class="col d-flex align-items-center justify-content-center">
                 <div class="arrow" style="margin-top: 20px;"><i class="fa-solid fa-arrow-right"></i></div>
             </div>
             <div class="col">
                 <label>Số Tiền Thanh Toán</label>
-                <input class="form-control" type="text" placeholder="VNĐ" id="totalAmount">
+                <input class="form-control" type="text" placeholder="VNĐ" id="total_price" ng-model="total_price" ng-change="calculateGcoins()">
             </div>
         </div>
 
