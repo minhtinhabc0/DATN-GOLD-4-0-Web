@@ -895,9 +895,9 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
 
 
 
-        // Hàm áp dụng tất cả bộ lọc
+        // Cập nhật bộ lọc và hiển thị sản phẩm
         $scope.applyFilters = function () {
-            $scope.filteredItems = $scope.items.filter(item => {
+            let filtered = $scope.items.filter(item => {
                 // Kiểm tra từng bộ lọc và trả về true nếu sản phẩm đáp ứng yêu cầu của tất cả bộ lọc
                 let brandMatch = !$scope.selectedBrand || item.chiTiet === $scope.selectedBrand;
                 let mainStoneMatch = !$scope.selectedMainStone || item.loaiDa === $scope.selectedMainStone;
@@ -911,53 +911,64 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
                 return brandMatch && mainStoneMatch && genderMatch && goldTypeMatch && jewelryTypeMatch;
             });
 
-            // Cập nhật số trang và hiển thị sản phẩm sau khi lọc
+            // Cập nhật lại filteredItems và tính toán số trang
+            $scope.filteredItems = filtered;
+            $scope.totalPages = Math.ceil(filtered.length / $scope.itemsPerPage);
+            $scope.currentPage = 1; // Reset trang về 1 sau khi áp dụng bộ lọc
+            $scope.updateFilteredItems();
+        };
+
+        // Hàm sắp xếp theo giá
+        $scope.sortByPrice = function (order) {
+            if (order === 'asc') {
+                $scope.filteredItems.sort((a, b) => a.gia - b.gia); // Sắp xếp giá tăng dần
+            } else if (order === 'desc') {
+                $scope.filteredItems.sort((a, b) => b.gia - a.gia); // Sắp xếp giá giảm dần
+            }
+            $scope.currentPage = 1; // Reset về trang 1 sau khi sắp xếp
+            $scope.updateFilteredItems(); // Cập nhật lại sản phẩm sau khi sắp xếp
+        }
+
+        // Chức năng tìm kiếm
+        // $scope.searchItems = function () {
+        //     var keyword = $scope.searchText ? $scope.searchText.toLowerCase() : '';
+
+        //     // Lọc sản phẩm theo từ khóa trên toàn bộ sản phẩm
+        //     $scope.filteredItems = $scope.items.filter(item => {
+        //         return !keyword || item.tenSanPham.toLowerCase().includes(keyword);
+        //     });
+
+        //     // Cập nhật số trang dựa trên kết quả tìm kiếm
+        //     $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
+        //     $scope.currentPage = 1; // Reset về trang 1
+        //     $scope.updateFilteredItems(); // Cập nhật sản phẩm hiển thị sau khi tìm kiếm
+        // }
+        // Chức năng tìm kiếm
+        $scope.searchItems = function () {
+            var searchText = $scope.searchText.toLowerCase(); // Chuyển đổi về chữ thường để so sánh
+            $scope.filteredItems = $scope.items.filter(item => {
+                // Tìm kiếm trong tên sản phẩm, loại đá, và mô tả nếu có
+                return item.tenSanPham.toLowerCase().includes(searchText) ||
+                    item.loaiDa.toLowerCase().includes(searchText) ||
+                    item.loaiVang.toLowerCase().includes(searchText);
+            });
+
+            // Cập nhật số trang và hiển thị sản phẩm sau khi tìm kiếm
             $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
             $scope.currentPage = 1;
             $scope.updateFilteredItems();
         };
 
-        // Cập nhật hàm updateFilteredItems để hiển thị sản phẩm của trang hiện tại
-        $scope.updateFilteredItems = function () {
-            let start = ($scope.currentPage - 1) * $scope.itemsPerPage;
-            let end = start + $scope.itemsPerPage;
-            $scope.displayedItems = $scope.filteredItems.slice(start, end);
-        }
-
-        // Gọi applyFilters mỗi khi bộ lọc thay đổi
-        $scope.filterByBrand = $scope.applyFilters;
-        $scope.filterByMainStone = $scope.applyFilters;
-        $scope.filterByGender = $scope.applyFilters;
-        $scope.filterByGoldType = $scope.applyFilters;
-        $scope.filterByJewelryType = $scope.applyFilters;
-
-        // Chức năng tìm kiếm
-        $scope.searchItems = function () {
-            var keyword = $scope.searchText ? $scope.searchText.toLowerCase() : '';
-
-            // Lọc sản phẩm theo từ khóa trên toàn bộ sản phẩm
-            $scope.filteredItems = $scope.items.filter(item => {
-                return !keyword || item.tensanpham.toLowerCase().includes(keyword);
-            });
-
-            // Cập nhật số trang dựa trên kết quả tìm kiếm
-            $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
-            $scope.currentPage = 1; // Reset về trang 1
-            $scope.updateFilteredItems(); // Cập nhật sản phẩm hiển thị sau khi tìm kiếm
-        }
-
-
-
-        // Hàm sắp xếp theo giá
-        $scope.sortByPrice = function (order) {
-            if (order === 'asc') {
-                $scope.items.sort((a, b) => a.gia - b.gia); // Sắp xếp giá tăng dần
-            } else if (order === 'desc') {
-                $scope.items.sort((a, b) => b.gia - a.gia); // Sắp xếp giá giảm dần
-            }
-            $scope.currentPage = 1; // Reset về trang 1 sau khi sắp xếp
-            $scope.updateFilteredItems(); // Cập nhật lại sản phẩm sau khi sắp xếp
-        }
+        // Hàm gọi lại applyFilters sau khi mỗi bộ lọc thay đổi
+        $scope.$watchGroup([
+            'selectedBrand',
+            'selectedMainStone',
+            'selectedGender',
+            'selectedGoldType',
+            'selectedJewelryType'
+        ], function () {
+            $scope.applyFilters();
+        });
 
         // Thực hiện tải toàn bộ sản phẩm
         $scope.load_all();

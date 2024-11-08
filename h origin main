@@ -1,0 +1,12 @@
+[33mcommit 731c38136eb1d3a6c2466911fd701928ee904df5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Merge: f6d0245 2dc238f
+Author: Trung Bui <builun1811@gmail.com>
+Date:   Fri Nov 8 15:20:31 2024 +0700
+
+    Merge branch 'main' of https://github.com/minhtinhabc0/DATN-GOLD-4-0-Web
+
+[33mcommit f6d02458c332b75baddae541236fd0d45643d26a[m
+Author: Trung Bui <builun1811@gmail.com>
+Date:   Fri Nov 8 15:18:25 2024 +0700
+
+    dssp ctrl
