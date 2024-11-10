@@ -50,8 +50,8 @@ app.controller('ProfileController', ['$scope', '$window', '$http', function($sco
     }).catch(function(error) {
         console.error('Lỗi khi lấy thông tin người dùng:', error);
         alert('Lỗi khi tải thông tin người dùng!');
-        logout();
-        $window.location.href = 'home.html'; // Chuyển hướng nếu có lỗi
+        $scope.logout();
+        $window.location.href = '/user/index.html'; // Chuyển hướng nếu có lỗi
     });
 
     // Hàm upload avatar

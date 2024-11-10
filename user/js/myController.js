@@ -91,6 +91,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
         const userInfo = localStorage.getItem('userInfo');
         $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
+   
         $scope.logout = function () {
             localStorage.removeItem('token');
             localStorage.removeItem('userInfo');

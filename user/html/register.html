@@ -28,25 +28,7 @@
         }
       </style>
 <body ng-controller="MainController">
-      <!-- Loading overlay -->
-  <div ng-show="isLoading" class="loading-overlay">
-    <i class="fa-solid fa-arrows-rotate fa-spin fa-2xl" style="color: #63E6BE;"></i>
-  </div>
-  <div class="container mt-3">
-    <div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="successMessage">
-      {{ successMessage }}
-      <button type="button" class="close" aria-label="Close" ng-click="closeAlert()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-
-    <div class="alert alert-danger alert-dismissible fade show" role="alert" ng-show="errorMessage">
-      {{ errorMessage }}
-      <button type="button" class="close" aria-label="Close" ng-click="closeAlert()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  </div>
+    
     <div class="container-fluid p-0">
         <div class="row g-0">
             <!-- Cột bên trái chứa hình ảnh -->
@@ -209,6 +191,7 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/user/js/register.js"></script>
 </body>
 
