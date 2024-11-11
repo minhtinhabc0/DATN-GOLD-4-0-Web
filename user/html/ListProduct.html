@@ -347,7 +347,8 @@
             <div class="d-flex justify-content-between mb-4">
                 <div class="search-wrapper">
                     <i class="fas fa-search"></i>
-                    <input type="text" class="form-control" placeholder="Search..." ng-model="searchText">
+                    <input type="text" class="form-control" ng-model="searchText" ng-change="searchItems()"
+                        placeholder="Tìm kiếm sản phẩm..." />
                 </div>
 
 
@@ -356,14 +357,15 @@
                 <!-- Phần chứa các bộ lọc -->
                 <div class="filter-section d-flex">
                     <div class="filter-wrapper">
-                        <select class="form-select" ng-model="selectedBrand" ng-change="filterByBrand()">
+                        <select class="form-select" style="border-radius: 30px;" ng-model="selectedBrand"
+                            ng-change="filterByBrand()">
                             <option value="">Thương hiệu</option>
                             <option value="Thương hiệu : PNJ">PNJ</option>
                             <option value="Thương hiệu : SANRIO">SANRIO</option>
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select" ng-model="selectedMainStone"
+                        <select class="form-select" style="border-radius: 30px;" ng-model="selectedMainStone"
                             ng-change="filterByMainStone(selectedMainStone)">
                             <option value="">Loại đá chính</option>
                             <option value="Không gắn đá">Không gắn đá</option>
@@ -375,14 +377,16 @@
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select" ng-model="selectedGender" ng-change="filterByGender()">
+                        <select class="form-select" style="border-radius: 30px;" ng-model="selectedGender"
+                            ng-change="filterByGender()">
                             <option value="">Đối Tượng</option>
                             <option value="nam">Nam</option>
                             <option value="nữ">Nữ</option>
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select" ng-model="selectedGoldType" ng-change="filterByGoldType()">
+                        <select class="form-select" style="border-radius: 30px;" ng-model="selectedGoldType"
+                            ng-change="filterByGoldType()">
                             <option value="">Loại Vàng</option>
                             <option value="10K">10K</option>
                             <option value="14K">14K</option>
@@ -391,8 +395,9 @@
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select" ng-model="selectedJewelryType" ng-change="filterByJewelryType()">
-                            <option value="">Loại Trang Sức</option>
+                        <select class="form-select" style="border-radius: 30px;" ng-model="selectedJewelryType"
+                            ng-change="filterByJewelryType()">
+                            <option value="">Loại Trang Sức </option>
                             <option value="Dây">Dây</option>
                             <option value="Nhẫn">Nhẫn</option>
                             <option value="Lắc">Lắc</option>
@@ -404,8 +409,9 @@
 
                 <!-- Phần sắp xếp nằm tách biệt và sát bên phải -->
                 <div class="filter-wrapper">
-                    <select class="form-select" ng-model="selectedSort" ng-change="sortByPrice(selectedSort)">
-                        <option value="">Sắp xếp</option>
+                    <select class="form-select" style="border-radius: 30px;" ng-model="selectedSort"
+                        ng-change="sortByPrice(selectedSort)">
+                        <option value="">Sắp xếp </option>
                         <option value="asc">Tăng dần theo giá</option>
                         <option value="desc">Giảm dần theo giá</option>
                     </select>

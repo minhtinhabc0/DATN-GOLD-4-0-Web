@@ -1,70 +1,185 @@
-<style>
-    body {
-        background-color: #3b3b3b;
-        color: #fff;
-        margin: 0;
-    }
+<!DOCTYPE html>
+<html lang="en">
 
-    .content-wrapper {
-        background-color: #fff;
-        border-radius: 15px;
-        max-width: 1200px;
-        margin: auto;
-        padding: 20px;
-        color: #000;
-        margin-right: 30px;
-        margin-top: 60px;
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tài khoản Nhà phân phối</title>
+    <style>
+        body {
+            background-color: #3b3b3b;
+            color: #fff;
+            margin: 0;
+        }
 
-    h2 {
-        color: #333;
-        text-align: center;
-    }
+        .content-wrapper {
+            background-color: #fff;
+            border-radius: 15px;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            color: #000;
+            margin-right: 30px;
+            margin-top: 60px;
+        }
 
-    .product-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: #e0e0e0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 14px;
-        color: #fff;
-    }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
 
-    .table-responsive {
-        margin-top: 20px;
-    }
+        .table-responsive {
+            margin-top: 20px;
+        }
 
-    .pagination {
-        justify-content: center;
-    }
+        .add-product-btn {
+            float: right;
+            background-color: #28a745;
+            color: white;
+            border-radius: 10px;
+        }
 
-    .add-product-btn {
-        float: right;
-        background-color: #28a745;
-        color: white;
-        border-radius: 10px;
-    }
+        .search-bar {
+            margin-bottom: 20px;
+        }
 
-    .search-bar {
-        margin-bottom: 20px;
-    }
+        table {
+            text-align: center;
+        }
 
-    table {
-        text-align: center;
-    }
-</style>
+        .add-account-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        /* Style cho modal form */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+            color: #000;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-btn:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="content-wrapper">
         <h2>Quản lý tài khoản (Nhà phân phối)</h2>
+
+        <!-- Nút Thêm Tài Khoản -->
+        <button class="add-account-btn" onclick="openForm()">Thêm tài khoản nhà phân phối</button>
+
+        <!-- Form Thêm Tài Khoản -->
+        <div id="accountFormModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeForm()">&times;</span>
+                <div class="container mt-5">
+                    <h2>Tạo tài khoản nhà phân phối</h2>
+                    <form name="distributorForm" ng-submit="createDistributor()">
+                        <!-- Tên tài khoản (Thay đổi từ taikhoan thành username) -->
+                         <label for="username">tên tài khoản:</label>
+                        <input type="text" class="form-control" id="username" ng-model="distributor.username" required>
+
+                        <!-- Mật khẩu (Thêm kiểm tra độ dài mật khẩu) -->
+                         <label for="password">Mât khâu:</label>
+                        <input type="password" class="form-control" id="password" ng-model="distributor.matkhau"
+                            ng-minlength="8" ng-maxlength="16" required>
+
+                        <!-- Thêm phần xác nhận mật khẩu -->
+                        <div class="form-group">
+                            <label for="confirmPassword">Xác nhận mật khẩu:</label>
+                            <input type="password" class="form-control" id="confirmPassword"
+                                ng-model="distributor.confirmPassword" required ng-pattern="distributor.matkhau" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="storeName">Tên cửa hàng:</label>
+                            <input type="text" class="form-control" id="storeName" ng-model="distributor.tenCuaHang"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" ng-model="distributor.email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại:</label>
+                            <input type="text" class="form-control" id="phone" ng-model="distributor.sdt" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Địa chỉ:</label>
+                            <input type="text" class="form-control" id="address" ng-model="distributor.diaChi" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Tạo tài khoản</button>
+                    </form>
+
+                    <!-- Thông báo kết quả -->
+                    <div class="alert alert-success mt-3" ng-if="successMessage">{{ successMessage }}</div>
+                    <div class="alert alert-danger mt-3" ng-if="errorMessage">{{ errorMessage }}</div>
+                </div>
+            </div>
+        </div>
+
         <div class="row search-bar">
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Tìm kiếm " aria-label="Search product">
+                <input type="text" class="form-control" placeholder="Tìm kiếm tài khoản" aria-label="Search product"
+                    ng-model="searchText">
             </div>
         </div>
 
@@ -76,71 +191,26 @@
                         <th>Tên cửa hàng</th>
                         <th>Email</th>
                         <th>Số điện thoại</th>
+                        <th>Địa chỉ</th>
+                        <th>Vai trò</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
+                    <!-- Hiển thị danh sách tài khoản nhà phân phối -->
+                    <tr ng-repeat="account in distributorAccounts | filter:searchText">
+                        <td>{{ account.maNhaPhanPhoi }}</td>
+                        <td>{{ account.storeName }}</td>
+                        <td>{{ account.email }}</td>
+                        <td>{{ account.phone }}</td>
+                        <td>{{ account.address }}</td>
+                        <td>{{ account.role == 2 ? 'Nhà phân phối' : 'Khác' }}</td>
                         <td>
-                            
-                            <a href="#!/admin/chitietnpp">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
+                            <a href="#!/admin/chitietnpp/{{ account.maNhaPhanPhoi }}">
+                                <button class="btn btn-outline-secondary">Chi tiết</button>
                             </a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
-                        <td>
-                            
-                            <a href="#!/admin/chitietnpp">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
-                        <td>
-                            
-                            <a href="#!/admin/chitietnpp">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
-                        <td>
-                            
-                            <a href="#!/admin/chitietnpp">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
-                        <td>
-                            
-                            <a href="#!/admin/chitietnpp">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-
                 </tbody>
             </table>
             <nav>
@@ -167,4 +237,21 @@
             </a>
         </div>
     </div>
+
+    <script>
+        // Hàm mở form
+        function openForm() {
+            document.getElementById("accountFormModal").style.display = "block";
+        }
+
+        // Hàm đóng form
+        function closeForm() {
+            document.getElementById("accountFormModal").style.display = "none";
+        }
+
+
+    </script>
+
 </body>
+
+</html>

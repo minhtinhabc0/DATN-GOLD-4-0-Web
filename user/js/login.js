@@ -8,7 +8,7 @@ app.controller('FormController', ['$scope', '$http', function($scope, $http) {
         $scope.recaptchaToken = response;
     };
 
-    // Load login information from cookies
+    // Load thông tin đăng nhập từ cookies
     const storedUsername = getCookie("username");
     const storedPassword = getCookie("password");
     $scope.username = storedUsername || '';
@@ -21,44 +21,86 @@ app.controller('FormController', ['$scope', '$http', function($scope, $http) {
     }
 
     $scope.submitForm = function() {
+        if (!$scope.username) {
+            Swal.fire({
+                title: 'Lỗi',
+                text: 'Vui lòng nhập tên tài khoản.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+    
+        if (!$scope.password) {
+            Swal.fire({
+                title: 'Lỗi',
+                text: 'Vui lòng nhập mật khẩu.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+    
         if ($scope.recaptchaToken) {
             const loginData = {
                 tenTK: $scope.username,
                 matKhau: $scope.password,
                 recaptchaToken: $scope.recaptchaToken
             };
-
-            console.log('Login Data:', loginData); // Kiểm tra dữ liệu
-
+    
+            // Hiển thị hiệu ứng loading khi đăng nhập
+            Swal.fire({
+                title: 'Đang đăng nhập...',
+                text: 'Vui lòng chờ trong giây lát',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+    
             $http.post('http://localhost:9999/api/auth/login', loginData)
             .then(function(response) {
-                console.log('Success:', response.data);
-                showToast('Đăng nhập thành công! Redirecting...');
+                // Đăng nhập thành công
+                Swal.fire({
+                    title: 'Đăng nhập thành công!',
+                    text: 'Đang chuyển hướng...',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    timer: 2000
+                }).then(() => {
+                    // Lưu thông tin người dùng và token vào localStorage
+                    localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
+                    localStorage.setItem('token', response.data.token);
+    
+                    // Chuyển hướng đến trang chính
+                    window.location.href = '/user/index.html';
+                });
                 grecaptcha.reset();
-
-                // Lưu thông tin người dùng và token vào localStorage
-                localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
-                localStorage.setItem('token', response.data.token);
-
-                // Chuyển hướng đến hello.html
-                window.location.href = '/user/index.html';
             }, function(error) {
-                console.error('Error during login:', error);
-                showToast('Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin.');
+                // Lỗi khi đăng nhập từ máy chủ
+                let errorMessage = 'Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.';
+                if (error.status === 401) {
+                    errorMessage = 'Sai tên tài khoản hoặc mật khẩu. Vui lòng thử lại.';
+                } else if (error.status === 500) {
+                    errorMessage = 'Lỗi hệ thống. Vui lòng thử lại sau.';
+                }
+    
+                Swal.fire({
+                    title: 'Đăng nhập thất bại!',
+                    text: errorMessage,
+                    icon: 'error',
+                    confirmButtonText: 'Thử lại'
+                });
                 grecaptcha.reset();
             });
         } else {
-            showToast('Vui lòng hoàn tất xác thực reCAPTCHA.');
+            Swal.fire({
+                title: 'Thông báo',
+                text: 'Vui lòng hoàn tất xác thực reCAPTCHA.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
         }
     };
-
-    // Function to show toast
-    function showToast(message) {
-        var toast = document.getElementById("toast");
-        toast.innerHTML = message;
-        toast.style.visibility = "visible";
-        setTimeout(function() {
-            toast.style.visibility = "hidden";
-        }, 3000);
-    }
+    
 }]);

@@ -50,8 +50,11 @@
                             <div class="tab-pane fade show active" id="user-info" role="tabpanel">
                                 <div class="user-info-container">
                                     <div class="avatar-container">
-                                        <img ng-src="{{userInfo.avt}}" alt="User Avatar" class="img-fluid mb-3"
-                                            style="border-radius: 50%; width: 200px; height: 200px;" />
+                                        <img ng-src="{{ userInfo.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain' }}" 
+                                        alt="User Avatar" 
+                                        class="img-fluid mb-3"
+                                        style="border-radius: 50%; width: 200px; height: 200px;" />
+                                   
                                         <label for="avatar" class="btn btn-edit" ng-if="isEditing" style="cursor: pointer;">
                                             <i class="fas fa-edit"></i>
                                         </label>
