@@ -89,9 +89,11 @@ app.config(['$routeProvider', function ($routeProvider) {
         const ADInfor = localStorage.getItem('ADInfor');
         $scope.ADInfor = ADInfor ? JSON.parse(ADInfor) : null;
         console.log($scope.ADInfor);
-      
+        if ($scope.ADInfor === null) {
+            $window.location.href = '/admin/loginhome.html';
+        }
 
-     
+   
         $scope.logout = function () {
             Swal.fire({
                 title: 'Thông Báo !',
@@ -110,6 +112,7 @@ app.config(['$routeProvider', function ($routeProvider) {
                 }
             });
         };
+      
     })
 
     .controller('bangdieukhienCtrl', function ($scope) {
@@ -169,53 +172,85 @@ app.config(['$routeProvider', function ($routeProvider) {
                 $scope.errorMessage = "Token không hợp lệ!";
                 return;
             }
-    
+        
             // Kiểm tra mật khẩu và xác nhận mật khẩu có khớp không
             if ($scope.distributor.matkhau !== $scope.distributor.confirmPassword) {
                 $scope.errorMessage = "Mật khẩu và xác nhận mật khẩu không khớp.";
                 return;
             }
-    
-            // Khai báo taiKhoanData từ các trường dữ liệu trong distributor
-            var taiKhoanData = {
-                taikhoan: $scope.distributor.username, // Gán username
-                matkhau: $scope.distributor.matkhau, // Gán password
-                hoTen: $scope.distributor.hoTen, // Gán họ tên
-                email: $scope.distributor.email, // Gán email
-                soDienThoai: $scope.distributor.soDienThoai, // Gán số điện thoại
-                diaChi: $scope.distributor.diaChi // Địa chỉ
-            };
-    
-            // API endpoint
-            const apiEndpoint = 'http://localhost:9999/api/admin/create-distributor';
-    
-            // Gửi yêu cầu POST đến API
-            $http({
-                method: 'POST',
-                url: apiEndpoint,
-                data: taiKhoanData,
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token') // Gửi token trong header
+        
+            // Hiển thị hộp thoại yêu cầu nhập mã PIN
+            Swal.fire({
+                title: 'Xác thực mã PIN',
+                input: 'password',
+                inputLabel: 'Vui lòng nhập mã PIN của tài khoản admin',
+                inputPlaceholder: 'Mã PIN...',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy',
+                inputValidator: (value) => {
+                    return new Promise((resolve, reject) => {
+                        // Kiểm tra mã PIN với server hoặc từ localStorage
+                        var adminPin = localStorage.getItem('adminPin'); // Hoặc gọi API để kiểm tra mã PIN
+                        if (value === adminPin) {
+                            resolve();
+                        } else {
+                            reject('Mã PIN không đúng!');
+                        }
+                    });
                 }
-            })
-            .then(function (response) {
-                // Xử lý khi tạo tài khoản thành công
-                $scope.successMessage = "Tạo tài khoản nhà phân phối thành công.";
-                $scope.errorMessage = null;
-                $scope.distributor = {}; // Xóa dữ liệu sau khi tạo thành công
-            })
-            .catch(function (error) {
-                // Xử lý lỗi khi không có quyền (403) hoặc lỗi khác
-                $scope.successMessage = null;
-                if (error.status === 403) {
-                    $scope.errorMessage = "Bạn không có quyền tạo nhà phân phối. Vui lòng kiểm tra quyền truy cập.";
-                } else {
-                    $scope.errorMessage = error.data || "Đã xảy ra lỗi khi tạo tài khoản.";
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu mã PIN hợp lệ, tiếp tục gửi yêu cầu
+                    var taiKhoanData = {
+                        taikhoan: $scope.distributor.username,
+                        matkhau: $scope.distributor.matkhau,
+                        hoTen: $scope.distributor.hoTen,
+                        email: $scope.distributor.email,
+                        soDienThoai: $scope.distributor.soDienThoai,
+                        diaChi: $scope.distributor.diaChi
+                    };
+        
+                    // API endpoint
+                    const apiEndpoint = 'http://localhost:9999/api/admin/create-distributor';
+        
+                    // Gửi yêu cầu POST đến API
+                    $http({
+                        method: 'POST',
+                        url: apiEndpoint,
+                        data: taiKhoanData,
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'adminPin': result.value // Gửi mã PIN đến server
+                        }
+                    })
+                    .then(function (response) {
+                        $scope.successMessage = "Tạo tài khoản nhà phân phối thành công.";
+                        $scope.errorMessage = null;
+                        $scope.distributor = {}; // Xóa dữ liệu sau khi tạo thành công
+                    })
+                    .catch(function (error) {
+                        $scope.successMessage = null;
+                        if (error.status === 403) {
+                            $scope.errorMessage = "Bạn không có quyền tạo nhà phân phối. Vui lòng kiểm tra quyền truy cập.";
+                        } else {
+                            $scope.errorMessage = error.data || "Đã xảy ra lỗi khi tạo tài khoản.";
+                        }
+                    });
                 }
+            }).catch((error) => {
+                // Hiển thị thông báo nếu mã PIN không đúng
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: error
+                });
             });
         };
+        
     
     }])
+    
     
     
     
