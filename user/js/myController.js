@@ -723,7 +723,7 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
     })
     //================================================================================================
     // Khào báo controller dssp
-    .controller('dsspCtrl', function ($scope, $http) {
+    .controller('dsspCtrl', function ($scope, $http, $location) {
         let host = "http://localhost:9999/api";
         $scope.items = [];
         $scope.filteredItems = []; // Sản phẩm hiển thị trên mỗi trang
@@ -755,11 +755,19 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
             });
         }
 
-    // Chuyển đến trang chi tiết sản phẩm
-    $scope.goToDetail = function(product) {
-        // Chuyển hướng sang trang chi tiết sản phẩm với ID sản phẩm
-        $location.path('/user/product/' + product.id);
-    };
+        $scope.goToDetail = function(product) {
+            if (!product || !product.maSanPham) {
+                console.error("Product ID is undefined:", product);
+                alert("Sản phẩm không có mã hợp lệ.");
+                return;
+            }
+            console.log("Navigating to product detail:", product);
+            $location.path('/user/product/' + product.maSanPham);
+        };
+        
+        
+        
+    
         // Cập nhật danh sách sản phẩm đã lọc
         $scope.updateFilteredItems = function () {
             let start = ($scope.currentPage - 1) * $scope.itemsPerPage;
@@ -991,19 +999,27 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
    // Định nghĩa controller detailsCtrl
  // Assume product ID is available in the route params or scope
  .controller('productDetailCtrl', function($scope, $routeParams, $http) {
-    const productId = $routeParams.id; // Lấy ID sản phẩm từ URL
-    const apiUrl = `http://localhost:9999/api/products/${productId}`;
-    console.log("Gọi API với URL:", apiUrl); // Kiểm tra URL
+    const productId = $routeParams.id; // Lấy maSanPham từ URL
+    console.log("Product ID from URL:", productId);
 
-    $http.get(apiUrl)
+    const apiUrl = `http://localhost:9999/api/products/${productId}`;
+    const token = localStorage.getItem('token');
+
+    const config = token ? { headers: { 'Authorization': 'Bearer ' + token } } : {};
+
+    $http.get(apiUrl, config)
         .then(function(response) {
+            console.log("API Response:", response.data);
             $scope.product = response.data;
         })
         .catch(function(error) {
-            console.error('Lỗi khi tải chi tiết sản phẩm:', error);
-            alert('Không thể tải thông tin sản phẩm. Vui lòng thử lại.');
+            console.error("Error loading product details:", error);
+            alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
         });
 })
+
+
+
 
 
     .controller('CARTCtrl', function ($scope, $rootScope) {

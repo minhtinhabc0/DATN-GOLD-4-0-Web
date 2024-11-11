@@ -340,7 +340,7 @@
     }
 </style>
 
-<div class="container-fluid mt-5">
+<div class="container-fluid mt-5" ng-app="myapp" ng-controller="dsspCtrl">
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10 p-4">
@@ -422,7 +422,7 @@
 
             <div class="row g-4">
                 <div class="col-md-3" ng-repeat="pro in displayedItems | filter:{ tenSanPham: searchText }">
-                    <div class="product-card" ng-click="goToDetail(pro)">
+                    <div class="product-card" ng-click="goToDetail(pro); $event.stopPropagation()">
 
                         <div class="installment">
                             <span>0%</span>
