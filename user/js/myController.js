@@ -40,10 +40,6 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'html/ListProduct.html',
             controller: 'dsspCtrl'
         })
-        .when('/user/chitiet', {
-            templateUrl: 'html/detalproduct.html',
-            controller: 'chitietCtrl'
-        })
         .when('/user/profileuser', {
             templateUrl: 'html/profileuser.html',
             controller: 'profileuserCtrl'
@@ -80,6 +76,11 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'html/hdkh.html',
             controller: 'hdkhCtrl'
         })
+        .when('/user/product/:id', {
+            templateUrl: 'html/product-detail.html',
+            controller: 'productDetailCtrl'
+        })
+        
 
         .otherwise({
             redirectTo: '/user/home'
@@ -753,6 +754,11 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
             });
         }
 
+    // Chuyển đến trang chi tiết sản phẩm
+    $scope.goToDetail = function(product) {
+        // Chuyển hướng sang trang chi tiết sản phẩm với ID sản phẩm
+        $location.path('/user/product/' + product.id);
+    };
         // Cập nhật danh sách sản phẩm đã lọc
         $scope.updateFilteredItems = function () {
             let start = ($scope.currentPage - 1) * $scope.itemsPerPage;
@@ -967,11 +973,26 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
 
 
     //khai báo controller chitiet san pham
-    .controller('chitietCtrl', function ($scope, $routeParams, dataService) {
 
-
-    })
     //========================================================================
+    //chi tiet 
+   // Định nghĩa controller detailsCtrl
+ // Assume product ID is available in the route params or scope
+ .controller('productDetailCtrl', function($scope, $routeParams, $http) {
+    const productId = $routeParams.id; // Lấy ID sản phẩm từ URL
+    const apiUrl = `http://localhost:9999/api/products/${productId}`;
+    console.log("Gọi API với URL:", apiUrl); // Kiểm tra URL
+
+    $http.get(apiUrl)
+        .then(function(response) {
+            $scope.product = response.data;
+        })
+        .catch(function(error) {
+            console.error('Lỗi khi tải chi tiết sản phẩm:', error);
+            alert('Không thể tải thông tin sản phẩm. Vui lòng thử lại.');
+        });
+})
+
 
     .controller('CARTCtrl', function ($scope, $rootScope) {
 
