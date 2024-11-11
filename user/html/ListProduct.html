@@ -340,7 +340,7 @@
     }
 </style>
 
-<div class="container-fluid mt-5">
+<div class="container-fluid mt-5" ng-app="myapp" ng-controller="dsspCtrl">
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10 p-4">
@@ -422,18 +422,22 @@
 
             <div class="row g-4">
                 <div class="col-md-3" ng-repeat="pro in displayedItems | filter:{ tenSanPham: searchText }">
-                    <div class="product-card">
+                    <div class="product-card" ng-click="goToDetail(pro); $event.stopPropagation()">
+
                         <div class="installment">
                             <span>0%</span>
                             <span>Trả góp</span>
                         </div>
-                        <img alt="Placeholder image for product" ng-src="{{pro.hinhAnh}}" />
+                        <img ng-src="{{pro.hinhAnh}}" alt="{{pro.tenSanPham}}" />
                         <p>{{pro.tenSanPham}}</p>
                         <p>{{pro.gia | number:0}} VND</p>
-                        <button>Thêm Vào Giỏ Hàng</button>
+                        <button ng-click="$event.stopPropagation(); addToCart(pro)">Thêm Vào Giỏ Hàng</button>
                     </div>
                 </div>
             </div>
+            
+            
+            
 
             <!-- Thanh phân trang -->
             <nav class="pagination-container" aria-label="Page navigation example">
