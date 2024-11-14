@@ -443,7 +443,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
     .controller('spyeuthichCtrl', function ($scope) {
 
     })
-    .controller('spvangCtrl', function ($scope, GoldPriceService) {
+    .controller('spvangCtrl', function ($scope,$http, GoldPriceService) {
         $scope.goldPrices = [];
         $scope.SJCPrices = null;
         $scope.total_price = null; // Khởi tạo với giá trị hợp lệ
@@ -475,7 +475,30 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
                 $scope.total_price = ''; // Reset nếu không hợp lệ
             }
         };
+        $scope.initiatePayment = function() {
+            console.log("Initiating payment...");
+            const paymentData = {
+                productName: "Vàng SJC",
+                quantity: $scope.gold_quantity,
+                price: $scope.total_price
+            };
 
+            $http({
+                method: 'POST',
+                url: 'http://localhost:9999/api/checkout/create-payment-link',
+                data: paymentData,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function(response) {
+                console.log("Response received:", response.data);
+                const checkoutUrl = response.data.checkoutUrl;  // Lấy checkoutUrl từ JSON
+                window.location.href = checkoutUrl;  // Redirect sang checkoutUrl
+            }).catch(function(error) {
+                console.error('Error creating payment link:', error);
+            });
+        };
         // Initial load
         $scope.loadPrices();
     })
