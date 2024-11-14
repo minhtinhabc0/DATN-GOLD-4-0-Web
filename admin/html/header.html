@@ -160,9 +160,9 @@
                 <div class="header">
                     <!-- Clickable Name to Show Profile -->
                     <div class="user-icon">
-                        <span ng-click="showProfile()"><b>Tên Nhân viên:</b> {{ADInfor.hoTen}}</span>
+                        <span ng-click="showProfile()"><b>Tên Nhân viên:</b> {{adminInfo.hoTen}}</span>
                         <br>
-                        <span><b>ID:</b> {{ADInfor.id}}</span>
+                        <span><b>ID:</b> {{adminInfo.id}}</span>
                     </div>
                 </div>
             </div>
@@ -175,15 +175,15 @@
         var app = angular.module('myApp', []);
 
         app.controller('ProfileController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
-            $scope.ADInfor = {};
+            $scope.adminInfo = {};
 
             // Fetch user info from localStorage or API
-            const ADInfor = localStorage.getItem('ADInfor');
-            if (ADInfor) {
-                $scope.ADInfor = JSON.parse(ADInfor);
+            const adminInfo = localStorage.getItem('adminInfo');
+            if (adminInfo) {
+                $scope.adminInfo = JSON.parse(adminInfo);
             }
-
-            // Logout function with SweetAlert2 confirmation
+            
+           
         }]);
     </script>
 </body>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.angularjs.org/1.8.2/angular-route.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body ng-app="myApp" ng-controller="RegistrationController">
+    <div ng-controller="RegisterController">
+        <form name="registrationForm" ng-submit="registerUser()">
+            <div class="form-group">
+                <label for="taikhoan">Tài Khoản</label>
+                <input type="text" id="taikhoan" ng-model="registrationData.taikhoan" class="form-control" required />
+            </div>
+    
+            <div class="form-group">
+                <label for="matkhau">Mật khẩu</label>
+                <input type="password" id="matkhau" ng-model="registrationData.matkhau" class="form-control" required />
+            </div>
+    
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" ng-model="registrationData.email" class="form-control" required />
+            </div>
+    
+            <div class="form-group">
+                <label for="tencuahang">Tên Cửa Hàng</label>
+                <input type="text" id="tencuahang" ng-model="registrationData.tencuahang" class="form-control" required />
+            </div>
+    
+            <div class="form-group">
+                <label for="diachi">Địa Chỉ</label>
+                <input type="text" id="diachi" ng-model="registrationData.diachi" class="form-control" required />
+            </div>
+    
+            <div class="form-group">
+                <label for="sdt">Số Điện Thoại</label>
+                <input type="text" id="sdt" ng-model="registrationData.sdt" class="form-control" required />
+            </div>
+    
+     
+    
+            <button type="submit" class="btn btn-primary">Đăng ký</button>
+        </form>
+    
+        <div ng-if="showOtpField">
+            <hr />
+            <form name="otpForm" ng-submit="verifyOtp()">
+                <div class="form-group">
+                    <label for="otp">Mã OTP</label>
+                    <input type="text" id="otp" ng-model="otp" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-success">Xác nhận OTP</button>
+            </form>
+        </div>
+    </div>
+    
+
+    <script>
+        var app = angular.module('myApp', [])
+        .controller('RegisterController', function($scope, $http) {
+            $scope.registrationData = {};
+            $scope.otp = "";
+            $scope.showOtpField = false;  // Initially hide the OTP field
+        
+            // Register user and send OTP
+            $scope.registerUser = function() {
+                // Send registration data to the backend
+                $http.post('http://localhost:9999/api/npp/register', $scope.registrationData, {
+                    headers: { 'Content-Type': undefined }
+                }).then(function(response) {
+                    // On success, show the OTP input field
+                    alert('Đã gửi mã OTP vào email của bạn. Vui lòng kiểm tra và nhập mã OTP.');
+                    $scope.showOtpField = true;
+                }).catch(function(error) {
+                    alert('Đã xảy ra lỗi trong quá trình đăng ký: ' + error.data.message);
+                });
+            };
+        
+            // Verify OTP and complete registration
+            $scope.verifyOtp = function() {
+                const otpData = {
+                    email: $scope.registrationData.email,
+                    otp: $scope.otp
+                };
+        
+                // Send OTP verification request
+                $http.post('http://localhost:9999/api/npp/verify-otp', otpData)
+                    .then(function(response) {
+                        alert('Đăng ký thành công!');
+                        // Redirect to the login page after successful registration
+                        window.location.href = "/login";
+                    })
+                    .catch(function(error) {
+                        alert('Mã OTP không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.');
+                    });
+            };
+        });
+        
+    </script>
+</body>
+</html>

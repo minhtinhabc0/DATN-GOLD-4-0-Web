@@ -160,7 +160,7 @@
                             timer: 2000,
                             willClose: () => {
                                 // Lưu thông tin người dùng và token vào localStorage
-                                localStorage.setItem('ADInfor', JSON.stringify(response.data.ADInfor));
+                                localStorage.setItem('adminInfo', JSON.stringify(response.data.adminInfo));
                                 localStorage.setItem('token', response.data.token);
                                 window.location.href = response.data.redirectUrl;
                             }

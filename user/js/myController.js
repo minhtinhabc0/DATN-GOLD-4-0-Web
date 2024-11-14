@@ -1,3 +1,27 @@
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//            Phật phù hộ, không bao giờ BUG
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (() => {
     "use strict";
@@ -27,6 +51,9 @@ app.controller("MainController", '$scope', '$window', function ($scope, $locatio
     $scope.changeRoute = function (route) {
         $location.path(route);
     };
+
+
+   
 });
 // Định nghĩa các route
 
@@ -98,6 +125,9 @@ app.config(['$routeProvider', function ($routeProvider) {
             localStorage.removeItem('userInfo');
             $window.location.href = '/user/index.html';
         };
+        const imageUrl = "https://th.bing.com/th/id/OIP.xH_K_kDlIyvn8QfMLwYGiAHaJQ?rs=1&pid=ImgDetMain";
+        console.log("%c ", `font-size: 100px; background: url(${imageUrl}) no-repeat; background-size: cover; -webkit-background-clip: text; -webkit-text-fill-color: transparent;`);
+        console.log("nó KHÔNG phải là lỗi nó là tính năng")
 
     })
     //=====================================================================================================
