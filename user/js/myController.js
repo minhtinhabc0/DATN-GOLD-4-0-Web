@@ -491,7 +491,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         $scope.calculateGcoins = function () {
             const total_price = parseFloat($scope.total_price);
             if (!isNaN(total_price) && $scope.SJCPrices) {
-                $scope.gold_quantity = (total_price / $scope.SJCPrices.priceSell).toFixed(5);
+                $scope.gold_quantity = (total_price / ($scope.SJCPrices.priceSell*(0.1/100))).toFixed(5);
             } else {
                 $scope.gold_quantity = ''; // Reset nếu không hợp lệ
             }
@@ -500,7 +500,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         $scope.calculateMoney = function () {
             const gold_quantity = parseFloat($scope.gold_quantity);
             if (!isNaN(gold_quantity) && $scope.SJCPrices) {
-                $scope.total_price = (gold_quantity * $scope.SJCPrices.priceSell);
+                $scope.total_price = (gold_quantity * ($scope.SJCPrices.priceSell*(0.1/100)));
             } else {
                 $scope.total_price = ''; // Reset nếu không hợp lệ
             }
@@ -508,7 +508,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         $scope.initiatePayment = function() {
             console.log("Initiating payment...");
             const paymentData = {
-                productName: "Vàng SJC",
+                productName: "Gcoin",
                 quantity: $scope.gold_quantity,
                 price: $scope.total_price
             };
