@@ -86,12 +86,14 @@ app.config(['$routeProvider', function ($routeProvider) {
 }])
 
     .controller('MainController', function ($scope, $location, $window) {
-        const ADInfor = localStorage.getItem('ADInfor');
-        $scope.ADInfor = ADInfor ? JSON.parse(ADInfor) : null;
-        console.log($scope.ADInfor);
-      
+        const adminInfo = localStorage.getItem('adminInfo');
+        $scope.adminInfo = adminInfo ? JSON.parse(adminInfo) : null;
+        console.log($scope.adminInfo);
+        if ($scope.adminInfo === null) {
+            $window.location.href = '/admin/loginhome.html';
+        }
 
-     
+
         $scope.logout = function () {
             Swal.fire({
                 title: 'Thông Báo !',
@@ -105,11 +107,12 @@ app.config(['$routeProvider', function ($routeProvider) {
                 if (result.isConfirmed) {
                     // Only proceed with logout if confirmed
                     localStorage.removeItem('token');
-                    localStorage.removeItem('ADInfor');
+                    localStorage.removeItem('adminInfo');
                     $window.location.href = '/admin/loginhome.html'; // Redirect to login page
                 }
             });
         };
+
     })
 
     .controller('bangdieukhienCtrl', function ($scope) {
@@ -122,95 +125,85 @@ app.config(['$routeProvider', function ($routeProvider) {
     .controller('baocaoCtrl', function ($scope) { })
     .controller('quanlytaikhoanCtrl', function ($scope) { })
     .controller('khachhangCtrl', function ($scope) { })
+    // Controller AngularJS
     .controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
-
-        // Hàm kiểm tra token hợp lệ và quyền admin
-        function isTokenValid() {
-            var token = localStorage.getItem('token');
-            console.log(token);
-            if (!token) {
-                console.error('Token không hợp lệ!');
-                return false;
-            }
-    
-            // Giải mã token và kiểm tra quyền admin
-            var decodedToken = parseJwt(token);
-            if (decodedToken.roles !== 'ROLE_ADMIN') {
-                console.error('Bạn không có quyền tạo nhà phân phối.');
-                return false;
-            }
-    
-            return true;
-        }
-    
-        // Hàm giải mã token
-        function parseJwt(token) {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace('-', '+').replace('_', '/');
-            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-    
-            return JSON.parse(jsonPayload);
-        }
-    
-        // Kiểm tra token khi bắt đầu
-        if (!isTokenValid()) {
-            return;
-        }
-    
-        // Object chứa thông tin tài khoản nhà phân phối mới
+        const adminInfo = localStorage.getItem('adminInfo');
+        $scope.adminInfo = adminInfo ? JSON.parse(adminInfo) : null;
+        console.log($scope.adminInfo);
+       const info = localStorage.getItem('token')
+       console.log(info)
         $scope.distributor = {};
+        $scope.successMessage = "";
+        $scope.errorMessage = "";
     
-        // Hàm tạo nhà phân phối
+        // Hàm tạo tài khoản nhà phân phối
         $scope.createDistributor = function () {
-            // Kiểm tra token mỗi lần thực hiện thao tác
-            if (!isTokenValid()) {
-                $scope.errorMessage = "Token không hợp lệ!";
-                return;
-            }
-    
-            // Kiểm tra mật khẩu và xác nhận mật khẩu có khớp không
+            // Kiểm tra mật khẩu và xác nhận mật khẩu
             if ($scope.distributor.matkhau !== $scope.distributor.confirmPassword) {
                 $scope.errorMessage = "Mật khẩu và xác nhận mật khẩu không khớp.";
                 return;
             }
     
-            // Khai báo taiKhoanData từ các trường dữ liệu trong distributor
-            var taiKhoanData = {
-                taikhoan: $scope.distributor.username, // Gán username
-                matkhau: $scope.distributor.matkhau, // Gán password
-                hoTen: $scope.distributor.hoTen, // Gán họ tên
-                email: $scope.distributor.email, // Gán email
-                soDienThoai: $scope.distributor.soDienThoai, // Gán số điện thoại
-                diaChi: $scope.distributor.diaChi // Địa chỉ
-            };
+            // Kiểm tra tất cả các trường đầu vào
+            if (!$scope.distributor.username || !$scope.distributor.matkhau || !$scope.distributor.email || !$scope.distributor.sdt || !$scope.distributor.diaChi || !$scope.distributor.tenCuaHang) {
+                $scope.errorMessage = "Vui lòng điền đầy đủ thông tin!";
+                return;
+            }
     
-            // API endpoint
-            const apiEndpoint = 'http://localhost:9999/api/admin/create-distributor';
+            // Hiển thị hộp thoại yêu cầu nhập mã PIN
+            Swal.fire({
+                title: 'Xác thực mã PIN',
+                input: 'password',
+                inputPlaceholder: 'Nhập mã PIN...',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const adminPin = result.value;
     
-            // Gửi yêu cầu POST đến API
-            $http({
-                method: 'POST',
-                url: apiEndpoint,
-                data: taiKhoanData,
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token') // Gửi token trong header
-                }
-            })
-            .then(function (response) {
-                // Xử lý khi tạo tài khoản thành công
-                $scope.successMessage = "Tạo tài khoản nhà phân phối thành công.";
-                $scope.errorMessage = null;
-                $scope.distributor = {}; // Xóa dữ liệu sau khi tạo thành công
-            })
-            .catch(function (error) {
-                // Xử lý lỗi khi không có quyền (403) hoặc lỗi khác
-                $scope.successMessage = null;
-                if (error.status === 403) {
-                    $scope.errorMessage = "Bạn không có quyền tạo nhà phân phối. Vui lòng kiểm tra quyền truy cập.";
-                } else {
-                    $scope.errorMessage = error.data || "Đã xảy ra lỗi khi tạo tài khoản.";
+                    // Kiểm tra mã PIN hợp lệ
+                    if (!adminPin || adminPin.length < 0) {
+                        Swal.fire('Lỗi!', 'Mã PIN phải có ít nhất 4 ký tự!', 'error');
+                        return;
+                    }
+    
+                    // Tạo đối tượng dữ liệu tài khoản nhà phân phối
+                    const taiKhoanData = {
+                        taiKhoan: {
+                            taikhoan: $scope.distributor.username,
+                            matkhau: $scope.distributor.matkhau,
+                            email: $scope.distributor.email,
+                            sdt: $scope.distributor.sdt,
+                            diaChi: $scope.distributor.diaChi,
+                            nhaPhanPhoi: {
+                                tenCuaHang: $scope.distributor.tenCuaHang,
+                            },
+                        },
+                        adminPin: adminPin
+                    };
+    
+                    // Gọi API tạo tài khoản
+                    $http.post('http://localhost:9999/api/admin/create-distributor', taiKhoanData, {
+                        headers: {
+                            'Authorization': 'Bearer ' + $window.localStorage.getItem('token')
+                        }
+                    })
+                    .then(function (response) {
+                        // Nếu tạo tài khoản thành công, thông báo thành công
+                        Swal.fire('Thành công!', 'Tài khoản đã được tạo.', 'success');
+                        $scope.successMessage = "Tài khoản nhà phân phối đã được tạo thành công!";
+                        $scope.errorMessage = "";
+                        $scope.distributor = {};  // Reset form
+                    }, function (error) {
+                        // Nếu có lỗi, thông báo lỗi
+                        if (error.data) {
+                            $scope.errorMessage = error.data.message || "Có lỗi xảy ra. Vui lòng thử lại!";
+                        } else {
+                            $scope.errorMessage = "Không thể kết nối đến máy chủ. Vui lòng thử lại!";
+                        }
+                        $scope.successMessage = "";
+                    });
                 }
             });
         };
@@ -220,6 +213,13 @@ app.config(['$routeProvider', function ($routeProvider) {
     
     
     
+    
+
+
+
+
+
+
     .controller('uudaiCtrl', function ($scope) { })
     .controller('chitietkhCtrl', function ($scope) { })
     .controller('chitietnppCtrl', function ($scope) { })

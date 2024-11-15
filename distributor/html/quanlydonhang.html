@@ -1,32 +1,166 @@
-<div>
-    <div class="container-fluid py-4">
-        <h3 class="fw-bold">Quản lý đơn hàng</h3>
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Modal design */
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: center;
+            /* Căn giữa theo chiều ngang */
+            align-items: center;
+            /* Căn giữa theo chiều dọc */
+            text-align: center;
+            /* Căn giữa văn bản */
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+
+        }
+
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .btn-close {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 20px;
+            font-size: 1rem;
+            color: #333;
+            /* Nền vàng cho phần chi tiết */
+        }
+
+        .modal-body p {
+            margin-bottom: 1.2rem;
+            font-weight: 400;
+        }
+
+        .modal-body strong {
+            font-weight: 600;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .modal-footer {
+            padding: 15px;
+            background-color: #f8f9fa;
+            text-align: right;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .modal-footer .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-footer .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .modal-footer .btn-secondary:focus {
+            box-shadow: none;
+        }
+
+        /* Reduce size for smaller modal */
+        .modal-dialog.modal-sm {
+            max-width: 450px;
+            /* Thu nhỏ modal */
+        }
+
+        /* Add responsiveness for small screens */
+        @media (max-width: 576px) {
+            .modal-dialog.modal-sm {
+                max-width: 100%;
+            }
+
+            .modal-body p {
+                font-size: 0.95rem;
+                /* Chỉnh lại font size trên màn hình nhỏ */
+            }
+        }
+
+        /* Style for order details */
+        .modal-body .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .modal-body .row .col-6 {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .modal-body .row .col-6:last-child {
+            text-align: right;
+            font-weight: 400;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid py-4" ng-controller="quanlydonhangCtrl">
+
         <!-- Tổng số đơn hàng đã hoàn thành -->
-        <div class="bg-success text-white p-3 mb-3 rounded-3">
+        <div class="bg-warning text-white p-3 mb-3 rounded-3">
+            <h3 class="fw-bold">Quản lý đơn hàng</h3>
+
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Các đơn hàng đã hoàn thiện</h5>
-                <h1 class="mb-0">15</h1>
+                <h3 class="mb-0">Các đơn hàng đã hoàn thiện: {{soluongHoanThanh}}</h5>
+
             </div>
         </div>
-
-        <!-- Search and Filter Section -->
         <div class="d-flex justify-content-between mb-3">
+            <!-- Tìm kiếm mã đơn hàng -->
             <div class="input-group w-50 me-2">
-                <input type="text" class="form-control" placeholder="Tìm kiếm mã đơn hàng" aria-label="Search Orders">
+                <input type="text" class="form-control" placeholder="Tìm kiếm mã đơn hàng" aria-label="Search Orders"
+                    ng-model="searchKeyword" ng-change="filterOrders()">
             </div>
-            <select class="form-select w-25 me-2">
-                <option selected>Trạng thái</option>
-                <option value="1">Đang xử lý</option>
-                <option value="2">Hoàn thành</option>
-                <option value="3">Hủy</option>
+
+            <!-- Lọc trạng thái -->
+            <select class="form-select w-25 me-2" ng-model="selectedStatus" ng-change="filterOrders()">
+                <option value="">Trạng thái</option>
+                <option value="Đang xử lý">Đang xử lý</option>
+                <option value="Hoàn thành">Hoàn thành</option>
+                <option value="Hủy">Hủy</option>
             </select>
-            <select class="form-select w-25">
-                <option selected>Sắp xếp theo...</option>
+
+            <!-- Sắp xếp theo -->
+            <select class="form-select w-25" ng-model="sortCriteria" ng-change="sortOrders()">
+                <option value="">Sắp xếp theo...</option>
                 <option value="1">Mới nhất</option>
                 <option value="2">Cũ nhất</option>
                 <option value="3">Giá trị cao nhất</option>
             </select>
         </div>
+
 
         <!-- Orders Table -->
         <table class="table table-hover table-striped">
@@ -42,55 +176,150 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Tên sản phẩm</td>
-                    <td>5</td>
-                    <td>500.000 VND</td>
-                    <td>12:00, 01/01/2024</td>
-                    <td>Đơn giá</td>
-                    <td>2.500.000 VND</td>
-                    <td><a href="#">Xem chi tiết</a></td>
-                </tr>
-                <tr>
-                    <td>Tên sản phẩm</td>
-                    <td>2</td>
-                    <td>300.000 VND</td>
-                    <td>14:00, 01/01/2024</td>
-                    <td>Đơn giá</td>
-                    <td>600.000 VND</td>
-                    <td><a href="#">Xem chi tiết</a></td>
-                </tr>
-                <tr>
-                    <td>Tên sản phẩm</td>
-                    <td>10</td>
-                    <td>100.000 VND</td>
-                    <td>16:00, 01/01/2024</td>
-                    <td>Đơn giá</td>
-                    <td>1.000.000 VND</td>
-                    <td><a href="#">Xem chi tiết</a></td>
+                <tr ng-repeat="donHang in donHangsPage">
+                    <td>{{donHang.maDonHang}}</td>
+                    <td>{{donHang.soLuong}}</td>
+                    <td>{{donHang.donGia | number:0}} VND</td>
+                    <td>{{donHang.thoiGian | date:'HH:mm, dd/MM/yyyy'}}</td>
+                    <td>{{donHang.trangThai}}</td>
+                    <td>{{donHang.tongTien | number:0}} VND</td>
+                    <td>
+                        <a ng-click="getChiTietDonHang(donHang.maDonHang)" data-bs-toggle="modal"
+                            data-bs-target="#orderDetailModal">Xem chi tiết</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center">
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        <!-- Modal Chi Tiết Đơn Hàng -->
+        <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content rounded-3 shadow-lg">
+                    <div class="modal-header text-center text-white">
+                        <h5 class="modal-title" id="orderDetailModalLabel">Chi Tiết Đơn Hàng</h5>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Mã đơn hàng:</strong></div>
+                            <div class="col-6" id="modalMaDonHang">{{donHangChiTiet.maDonHang}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Mã Sản phẩm:</strong></div>
+                            <div class="col-6" id="modalSanPham">{{donHangChiTiet.sanPham.maSanPham}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Tên Sản phẩm:</strong></div>
+                            <div class="col-6" id="modalSanPham">{{donHangChiTiet.sanPham.tenSanPham}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Người dùng:</strong></div>
+                            <div class="col-6" id="modalNguoiDung">{{donHangChiTiet.nguoiDung.hoTen}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Đơn giá:</strong></div>
+                            <div class="col-6" id="modalDonGia">{{donHangChiTiet.donGia | number:0}} VND</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Số lượng:</strong></div>
+                            <div class="col-6" id="modalSoLuong">{{donHangChiTiet.soLuong}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Mã Giảm giá:</strong></div>
+
+                            <div class="col-6" id="modalGiamGia">{{donHangChiTiet.giamGia.giaTri}}%</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Tổng tiền:</strong></div>
+                            <div class="col-6" id="modalTongTien">{{donHangChiTiet.tongTien | number:0}} VND</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Trạng thái:</strong></div>
+                            <div class="col-6" id="modalTrangThai">{{donHangChiTiet.trangThai}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Thời gian:</strong></div>
+                            <div class="col-6" id="modalThoiGian">{{donHangChiTiet.thoiGian | date:'HH:mm, dd/MM/yyyy'}}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Hóa đơn:</strong></div>
+                            <div class="col-3" id="modalHoaDon">{{donHangChiTiet.hoaDon.maHoaDon}}</div>
+                            <button class="btn btn-warning btn-sm col-3"
+                                ng-click="getChiTietHoaDon(donHangChiTiet.hoaDon.maHoaDon)">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
         </div>
+        <!-- Modal Chi Tiết Hóa Đơn -->
+        <div class="modal fade" id="invoiceDetailModal" tabindex="-1" aria-labelledby="invoiceDetailModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content rounded-3 shadow-lg">
+                    <div class="modal-header text-center text-white">
+                        <h5 class="modal-title" id="invoiceDetailModalLabel">Chi Tiết Hóa Đơn</h5>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Mã Hóa Đơn:</strong></div>
+                            <div class="col-6" id="modalMaHoaDon">{{hoaDonChiTiet.maHoaDon}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Ngày In Hóa Đơn:</strong></div>
+                            <div class="col-6" id="modalNgayInHoaDon">{{hoaDonChiTiet.ngayInHoaDon | date:'HH:mm,
+                                dd/MM/yyyy'}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Mã Người Dùng:</strong></div>
+                            <div class="col-6" id="modalMaNguoiDung">{{hoaDonChiTiet.maNguoiDung}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Mã Nhà Phân Phối:</strong></div>
+                            <div class="col-6" id="modalMaNhaPhanPhoi">{{hoaDonChiTiet.maNhaPhanPhoi}}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6"><strong class="text-dark">Tổng Tiền:</strong></div>
+                            <div class="col-6" id="modalTongTien">{{hoaDonChiTiet.tongTien | number:0}} VND</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" ng-class="{'disabled': currentPage == 1}">
+                    <a class="page-link" href="" ng-click="goToPage(1)">Đầu</a>
+                </li>
+                <li class="page-item" ng-class="{'disabled': currentPage == 1}">
+                    <a class="page-link" href="" ng-click="goToPage(currentPage - 1)">Trước</a>
+                </li>
+
+                <!-- Hiển thị số trang hiện tại và tổng số trang -->
+                <li class="page-item disabled">
+                    <span class="page-link">Trang {{currentPage}} / {{totalPages}}</span>
+                </li>
+
+                <li class="page-item" ng-class="{'disabled': currentPage == totalPages}">
+                    <a class="page-link" href="" ng-click="goToPage(currentPage + 1)">Sau</a>
+                </li>
+                <li class="page-item" ng-class="{'disabled': currentPage == totalPages}">
+                    <a class="page-link" href="" ng-click="goToPage(totalPages)">Cuối</a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
-</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

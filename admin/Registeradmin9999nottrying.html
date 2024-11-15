@@ -35,6 +35,10 @@
                 <div class="text-danger" ng-if="formData.matkhau !== formData.matkhauNhapLai">Mật khẩu nhập lại không
                     khớp.</div>
             </div>
+            <div class="form-group">
+                <label for="mapin">Mã Pin</label>
+                <input type="password" class="form-control" id="mapin" ng-model="formData.mapin" required>
+            </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
@@ -122,6 +126,7 @@
                     const data = {
                         taikhoan: $scope.formData.taikhoan,
                         matkhau: $scope.formData.matkhau,
+                        mapin: $scope.formData.mapin,
                         email: $scope.formData.email,
                         hoten: $scope.formData.hoten,
                         recaptchaToken: $scope.recaptchaToken

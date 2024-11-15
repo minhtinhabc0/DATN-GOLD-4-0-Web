@@ -1,3 +1,27 @@
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//            Phật phù hộ, không bao giờ BUG
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (() => {
     "use strict";
@@ -27,6 +51,9 @@ app.controller("MainController", '$scope', '$window', function ($scope, $locatio
     $scope.changeRoute = function (route) {
         $location.path(route);
     };
+
+
+   
 });
 // Định nghĩa các route
 
@@ -98,6 +125,9 @@ app.config(['$routeProvider', function ($routeProvider) {
             localStorage.removeItem('userInfo');
             $window.location.href = '/user/index.html';
         };
+        const imageUrl = "https://th.bing.com/th/id/OIP.xH_K_kDlIyvn8QfMLwYGiAHaJQ?rs=1&pid=ImgDetMain";
+        console.log("%c ", `font-size: 100px; background: url(${imageUrl}) no-repeat; background-size: cover; -webkit-background-clip: text; -webkit-text-fill-color: transparent;`);
+        console.log("nó KHÔNG phải là lỗi nó là tính năng")
 
     })
     //=====================================================================================================
@@ -443,7 +473,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
     .controller('spyeuthichCtrl', function ($scope) {
 
     })
-    .controller('spvangCtrl', function ($scope, GoldPriceService) {
+    .controller('spvangCtrl', function ($scope,$http, GoldPriceService) {
         $scope.goldPrices = [];
         $scope.SJCPrices = null;
         $scope.total_price = null; // Khởi tạo với giá trị hợp lệ
@@ -475,7 +505,30 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
                 $scope.total_price = ''; // Reset nếu không hợp lệ
             }
         };
+        $scope.initiatePayment = function() {
+            console.log("Initiating payment...");
+            const paymentData = {
+                productName: "Vàng SJC",
+                quantity: $scope.gold_quantity,
+                price: $scope.total_price
+            };
 
+            $http({
+                method: 'POST',
+                url: 'http://localhost:9999/api/checkout/create-payment-link',
+                data: paymentData,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function(response) {
+                console.log("Response received:", response.data);
+                const checkoutUrl = response.data.checkoutUrl;  // Lấy checkoutUrl từ JSON
+                window.location.href = checkoutUrl;  // Redirect sang checkoutUrl
+            }).catch(function(error) {
+                console.error('Error creating payment link:', error);
+            });
+        };
         // Initial load
         $scope.loadPrices();
     })
