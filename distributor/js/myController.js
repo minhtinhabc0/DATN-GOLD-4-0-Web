@@ -76,22 +76,34 @@ app.controller('quanlysanphamCtrl', function ($scope) { });
 app.controller('quanlydonhangCtrl', function ($scope, $http) {
     // Khai báo danh sách đơn hàng
     $scope.donHangs = [];
-    $scope.donHangsFiltered = []; // Dữ liệu đã lọc
     $scope.pageSize = 1; // Số lượng đơn hàng trên mỗi trang
     $scope.currentPage = 1; // Trang hiện tại
+    $scope.donHangsFiltered = []; // Dữ liệu đã lọc
     $scope.searchKeyword = ""; // Từ khóa tìm kiếm
     $scope.selectedStatus = ""; // Trạng thái đã chọn
     $scope.sortCriteria = ""; // Tiêu chí sắp xếp
 
+    // Khai báo chi tiết đơn hàng
+    $scope.donHangChiTiet = {};
+
+    // Khai báo số lượng đơn hàng hoàn thành
+    $scope.soluongHoanThanh = 0;
+
+    // khai báo chi tiết hóa đơn
+    $scope.hoaDonChiTiet = {};
+
     // Hàm lấy danh sách đơn hàng từ API và phân trang
     $scope.getDanhSachDonHang = function () {
-        $http.get('http://localhost:8080/api/donhang')
+        $http.get('http://localhost:9999/api/donhang') // API để lấy danh sách đơn hàng
             .then(function (response) {
-                // Gán dữ liệu nhận được vào danh sách đơn hàng
+                // Gán dữ liệu nhận được từ backend vào biến donHangs
                 $scope.donHangs = response.data;
                 $scope.donHangsFiltered = angular.copy($scope.donHangs); // Khởi tạo danh sách đã lọc
+                // Tính toán tổng số trang
                 $scope.totalPages = Math.ceil($scope.donHangs.length / $scope.pageSize);
-                $scope.paginateData(); // Phân trang dữ liệu
+
+                // Hiển thị dữ liệu cho trang hiện tại
+                $scope.paginateData();
             })
             .catch(function (error) {
                 console.error('Có lỗi xảy ra khi lấy danh sách đơn hàng:', error);
@@ -112,7 +124,46 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
         $scope.paginateData(); // Cập nhật dữ liệu cho trang mới
     };
 
-    // Hàm lọc đơn hàng theo tìm kiếm và trạng thái
+    // Hàm lấy chi tiết đơn hàng theo mã đơn hàng
+    $scope.getChiTietDonHang = function (maDonHang) {
+        $http.get('http://localhost:9999/api/donhang/' + maDonHang) // API để lấy chi tiết đơn hàng theo mã
+            .then(function (response) {
+                // Gán dữ liệu chi tiết vào biến donHangChiTiet
+                $scope.donHangChiTiet = response.data;
+                // Hiển thị chi tiết trong một modal hoặc vùng khác
+                $('#orderDetailModal').modal('show'); // Mở modal để hiển thị chi tiết
+            })
+            .catch(function (error) {
+                console.error('Có lỗi xảy ra khi lấy chi tiết đơn hàng:', error);
+            });
+    };
+
+    // hàm lấy số lượng đơn hoàn thành
+    $scope.getSoluongHoanThanh = function () {
+        $http.get('http://localhost:9999/api/donhang/demsl/hoanthanh') // Gọi API để đếm số lượng đơn hàng hoàn thành
+            .then(function (response) {
+                // Gán số lượng đơn hàng hoàn thành vào biến soluongHoanThanh
+                $scope.soluongHoanThanh = response.data;
+            })
+            .catch(function (error) {
+                console.error('Có lỗi xảy ra khi lấy số lượng đơn hàng đã hoàn thành:', error);
+            });
+    };
+
+    // Hàm lấy chi tiết hóa đơn từ API
+    $scope.getChiTietHoaDon = function (maHoaDon) {
+        $http.get('http://localhost:9999/api/hoadon/' + maHoaDon) // API để lấy chi tiết hóa đơn theo mã
+            .then(function (response) {
+                // Gán dữ liệu chi tiết vào biến hoaDonChiTiet
+                $scope.hoaDonChiTiet = response.data;
+                // Hiển thị chi tiết trong modal
+                $('#invoiceDetailModal').modal('show'); // Mở modal để hiển thị chi tiết
+            })
+            .catch(function (error) {
+                console.error('Có lỗi xảy ra khi lấy chi tiết hóa đơn:', error);
+            });
+    };
+
     $scope.filterOrders = function () {
         $scope.donHangsFiltered = $scope.donHangs.filter(function (donHang) {
             // Lọc theo mã đơn hàng (tìm kiếm)
@@ -139,11 +190,10 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
         $scope.currentPage = 1; // Reset lại trang hiện tại khi sắp xếp
         $scope.paginateData(); // Cập nhật dữ liệu sau khi sắp xếp
     };
-
-    // Gọi hàm để lấy danh sách đơn hàng khi controller được khởi tạo
+    // Gọi hàm để lấy danh sách đơn hàng và số lượng đơn hàng hoàn thành khi controller được khởi tạo
     $scope.getDanhSachDonHang();
+    $scope.getSoluongHoanThanh();
 });
-
 
 
 
