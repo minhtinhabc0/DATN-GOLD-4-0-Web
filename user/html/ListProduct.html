@@ -338,6 +338,151 @@
             /* Điều chỉnh padding cho các thiết bị di động */
         }
     }
+    /* From Uiverse.io by MuhammadHasann */
+.product-card {
+  --white: hsl(0, 0%, 83%);
+  --black: hsl(60, 5%, 8%);
+  --stone-300: hsl(56, 100%, 52%);
+  --pink-500: hsl(300, 12%, 87%);
+  
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.product-card, .card_container {
+  background: none;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.card_container::before,
+.card_container::after {
+  display: none;
+}
+
+
+.sub-card {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  min-width: 11.5rem;
+  height: 2.25rem;
+  background-color: var(--stone-300);
+}
+
+.sub-card.category {
+  justify-content: space-between;
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+}
+
+.sub-card.named {
+  justify-content: center;
+  border-radius: 0 0 0.5rem 0.5rem;
+  transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+}
+
+.product-card:hover .sub-card.category {
+  transform: translateY(100%);
+}
+
+.product-card:hover .sub-card.named {
+  transform: translateY(-100%);
+}
+
+.sub-card .text_span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--black);
+  text-transform: capitalize;
+}
+
+.sub-card .icon_svg {
+  width: 1rem;
+  fill: var(--black);
+}
+
+.card_container {
+  overflow: hidden;
+  position: relative;
+  z-index: 5;
+  width: 17rem;
+  height: 14rem;
+  background-color: var(--pink-500);
+  border-radius: 10px !important;
+}
+
+.card_container::before {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  aspect-ratio: 1;
+  background-color: hsl(240, 15%, 9%, 0.2);
+  border-radius: 50%;
+  transform-origin: center;
+  transition: all 1s cubic-bezier(1, 0, 0, 1) 0.2s;
+}
+
+.card_container::after {
+  content: "See more";
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  width: 0;
+  aspect-ratio: 1;
+  background-color: hsl(240, 15%, 9%, 0.5);
+  font-size: 0;
+  font-weight: bold;
+  color: var(--white);
+  text-align: center;
+  border-radius: 50%;
+  transform-origin: center;
+  transition: all 1s cubic-bezier(1, 0, 0, 1) 0s;
+}
+
+.product-card:hover .card_container::before {
+  width: 22.5rem;
+  transition: all 1s cubic-bezier(1, 0, 0, 1) 0s;
+}
+
+.product-card:hover .card_container::after {
+  padding: 1rem;
+  width: 5rem;
+  font-size: 0.75rem;
+  transition: all 0.3s ease-in-out 0.4s;
+}
+
+.card_container .image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.sub-card .text_span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
 </style>
 
 <div class="container-fluid mt-5" ng-app="myapp" ng-controller="dsspCtrl">
@@ -420,23 +565,44 @@
 
 
 
+
+
+            /* From Uiverse.io by MuhammadHasann */ 
             <div class="row g-4">
                 <div class="col-md-3" ng-repeat="pro in displayedItems | filter:{ tenSanPham: searchText }">
-                    <div class="product-card" ng-click="goToDetail(pro); $event.stopPropagation()">
-
-                        <div class="installment">
-                            <span>0%</span>
-                            <span>Trả góp</span>
-                        </div>
-                        <img ng-src="{{pro.hinhAnh}}" alt="{{pro.tenSanPham}}" />
-                        <p>{{pro.tenSanPham}}</p>
-                        <p>{{pro.gia | number:0}} VND</p>
-                        <button ng-click="$event.stopPropagation(); addToCart(pro)">Thêm Vào Giỏ Hàng</button>
+                  <div class="card product-card" ng-click="goToDetail(pro); $event.stopPropagation()">
+                    
+                    <!-- Phần hiển thị thông tin tên sản phẩm -->
+                    <div class="sub-card category">
+                      <span class="text_span">{{ pro.tenSanPham }}</span>
+                      <svg
+                        class="icon_svg"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512"
+                      >
+                        <path
+                          d=""
+                        ></path>
+                      </svg>
                     </div>
+              
+                    <!-- Phần hiển thị hình ảnh sản phẩm -->
+                    <div class="card_container">
+                      <img class="image" ng-src="{{ pro.hinhAnh }}" alt="{{ pro.tenSanPham }}" />
+                    </div>
+              
+                    <!-- Phần hiển thị giá sản phẩm -->
+                    <div class="sub-card named">
+                      <span class="text_span">{{ pro.gia | number:0 }} VND</span>
+                    </div>
+              
+                    <!-- Nút thêm vào giỏ hàng -->
+                    <button ng-click="$event.stopPropagation(); addToCart(pro)">Thêm Vào Giỏ Hàng</button>
+                  </div>
                 </div>
-            </div>
-            
-            
+              </div>
+              
+
             
 
             <!-- Thanh phân trang -->
