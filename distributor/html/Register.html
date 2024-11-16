@@ -3,103 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Ký</title>
+    <title>Đăng Ký Nhà Phân Phối</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.angularjs.org/1.8.2/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-custom {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .success-message {
+            margin-top: 20px;
+            text-align: center;
+            color: green;
+            font-size: 18px;
+        }
+    </style>
 </head>
-<body ng-app="myApp" ng-controller="RegistrationController">
-    <div ng-controller="RegisterController">
-        <form name="registrationForm" ng-submit="registerUser()">
-            <div class="form-group">
-                <label for="taikhoan">Tài Khoản</label>
-                <input type="text" id="taikhoan" ng-model="registrationData.taikhoan" class="form-control" required />
-            </div>
-    
-            <div class="form-group">
-                <label for="matkhau">Mật khẩu</label>
-                <input type="password" id="matkhau" ng-model="registrationData.matkhau" class="form-control" required />
-            </div>
-    
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" ng-model="registrationData.email" class="form-control" required />
-            </div>
-    
-            <div class="form-group">
-                <label for="tencuahang">Tên Cửa Hàng</label>
-                <input type="text" id="tencuahang" ng-model="registrationData.tencuahang" class="form-control" required />
-            </div>
-    
-            <div class="form-group">
-                <label for="diachi">Địa Chỉ</label>
-                <input type="text" id="diachi" ng-model="registrationData.diachi" class="form-control" required />
-            </div>
-    
-            <div class="form-group">
-                <label for="sdt">Số Điện Thoại</label>
-                <input type="text" id="sdt" ng-model="registrationData.sdt" class="form-control" required />
-            </div>
-    
-     
-    
-            <button type="submit" class="btn btn-primary">Đăng ký</button>
-        </form>
-    
-        <div ng-if="showOtpField">
-            <hr />
-            <form name="otpForm" ng-submit="verifyOtp()">
+<body ng-app="myApp">
+    <div class="container mt-5" ng-controller="RegisterController">
+        <div class="form-container">
+            <h2>Đăng Ký Nhà Phân Phối</h2>
+            <form name="registrationForm" ng-submit="registerUser()" enctype="multipart/form-data">
+                <!-- Thông tin đăng ký -->
                 <div class="form-group">
-                    <label for="otp">Mã OTP</label>
-                    <input type="text" id="otp" ng-model="otp" class="form-control" required />
+                    <label for="taikhoan">Tài Khoản</label>
+                    <input type="text" id="taikhoan" ng-model="registrationData.taikhoan" class="form-control" required />
                 </div>
-                <button type="submit" class="btn btn-success">Xác nhận OTP</button>
+                <div class="form-group">
+                    <label for="matkhau">Mật khẩu</label>
+                    <input type="password" id="matkhau" ng-model="registrationData.matkhau" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" ng-model="registrationData.email" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="tencuahang">Tên Cửa Hàng</label>
+                    <input type="text" id="tencuahang" ng-model="registrationData.tencuahang" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="diachi">Địa Chỉ</label>
+                    <input type="text" id="diachi" ng-model="registrationData.diachi" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="sdt">Số Điện Thoại</label>
+                    <input type="text" id="sdt" ng-model="registrationData.sdt" class="form-control" required />
+                </div>
+
+                <!-- Tải lên giấy tờ -->
+                <div class="form-group">
+                    <label for="files1">Giấy phép kinh doanh cửa hàng</label>
+                    <input type="file" id="files1" ng-file-select="onFileSelect($file, 'dl1')" class="form-control" />
+                    <p ng-if="registrationData.dl1" style="color: green;">Đã tải lên</p>
+                </div>
+                <div class="form-group">
+                    <label for="files2">Giấy phép hoạt động</label>
+                    <input type="file" id="files2" ng-file-select="onFileSelect($file, 'dl2')" class="form-control" />
+                    <p ng-if="registrationData.dl2"style="color: green;">Đã tải lên</p>
+                </div>
+                <div class="form-group">
+                    <label for="files3">Giấy tờ liên quan</label>
+                    <input type="file" id="files3" ng-file-select="onFileSelect($file, 'dl3')" class="form-control" />
+                    <p ng-if="registrationData.dl3"style="color: green;">Đã tải lên</p>
+                </div>
+
+                <!-- Google reCAPTCHA -->
+                <div class="g-recaptcha" data-sitekey="6LexVlgqAAAAACJbJFXNT64FwRl5purGdSfnGJtp"></div>
+                <button type="submit" class="btn btn-custom mt-3">Đăng ký</button>
             </form>
+
+            <!-- Xác nhận OTP -->
+            <div ng-if="showOtpField">
+                <hr />
+                <h4>Xác nhận OTP</h4>
+                <form name="otpForm" ng-submit="verifyOtp()">
+                    <div class="form-group">
+                        <label for="otp">Mã OTP</label>
+                        <input type="text" id="otp" ng-model="otp" class="form-control" required />
+                    </div>
+                    <button type="submit" class="btn btn-success">Xác nhận OTP</button>
+                </form>
+            </div>
+
+            <!-- Resend Email -->
+            <div ng-if="registrationData.emailSent">
+                <hr />
+                <div class="success-message">
+                    <p>Đăng ký thành công! Mã OTP đã được gửi vào email của bạn.</p>
+                    <button class="btn btn-warning" ng-click="resendEmail()">Gửi lại Email</button>
+                </div>
+            </div>
         </div>
     </div>
-    
 
     <script>
-        var app = angular.module('myApp', [])
-        .controller('RegisterController', function($scope, $http) {
-            $scope.registrationData = {};
-            $scope.otp = "";
-            $scope.showOtpField = false;  // Initially hide the OTP field
-        
-            // Register user and send OTP
-            $scope.registerUser = function() {
-                // Send registration data to the backend
-                $http.post('http://localhost:9999/api/npp/register', $scope.registrationData, {
-                    headers: { 'Content-Type': undefined }
-                }).then(function(response) {
-                    // On success, show the OTP input field
-                    alert('Đã gửi mã OTP vào email của bạn. Vui lòng kiểm tra và nhập mã OTP.');
-                    $scope.showOtpField = true;
-                }).catch(function(error) {
-                    alert('Đã xảy ra lỗi trong quá trình đăng ký: ' + error.data.message);
-                });
-            };
-        
-            // Verify OTP and complete registration
-            $scope.verifyOtp = function() {
-                const otpData = {
-                    email: $scope.registrationData.email,
-                    otp: $scope.otp
-                };
-        
-                // Send OTP verification request
-                $http.post('http://localhost:9999/api/npp/verify-otp', otpData)
-                    .then(function(response) {
-                        alert('Đăng ký thành công!');
-                        // Redirect to the login page after successful registration
-                        window.location.href = "/login";
-                    })
-                    .catch(function(error) {
-                        alert('Mã OTP không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.');
+        var app = angular.module('myApp', []);
+
+        // Directive chọn file
+        app.directive('ngFileSelect', function() {
+            return {
+                restrict: 'A',
+                scope: {
+                    ngFileSelect: '&'
+                },
+                link: function(scope, element) {
+                    element.bind('change', function(event) {
+                        scope.ngFileSelect({ $file: event.target.files[0] });
                     });
+                }
             };
         });
-        
+
+        app.controller('RegisterController', function($scope, $http) {
+            $scope.registrationData = {};
+            $scope.showOtpField = false;
+            $scope.registrationData.emailSent = false;
+
+            // Đăng ký người dùng
+            $scope.registerUser = function() {
+                const data = {
+                    taikhoan: $scope.registrationData.taikhoan,
+                    email: $scope.registrationData.email,
+                    sdt: $scope.registrationData.sdt,
+                    matkhau: $scope.registrationData.matkhau,
+                    tencuahang: $scope.registrationData.tencuahang,
+                    diachi: $scope.registrationData.diachi,
+                    dl1: $scope.registrationData.dl1,
+                    dl2: $scope.registrationData.dl2,
+                    dl3: $scope.registrationData.dl3
+                };
+                console.log(data);
+
+                $http({
+                    method: 'POST',
+                    url: 'http://localhost:9999/api/npp/register', 
+                    data,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function(response) {
+                    console.log("Registration successful:", response);
+                    $scope.showOtpField = true;
+                    $scope.registrationData.emailSent = true;
+                }, function(error) {
+                    console.error("Error during registration:", error);
+                });
+            };
+
+            // Xác minh OTP
+            $scope.verifyOtp = function() {
+                $http.post('http://localhost:9999/api/npp/verify-otp', {
+                    email: $scope.registrationData.email,
+                    otp: $scope.otp
+                }).then(function(response) {
+                    alert('Đăng ký thành công!');
+                    window.location.href = "notification.html";  // Redirect to notification page after successful registration.
+                }).catch(function(error) {
+                    alert('Kiểm tra lại thông tin và OTP của bạn có thể tài khoản đã tồn tại hoặc OTP không đúng');
+                });
+            };
+
+            // Resend Email OTP
+            $scope.resendEmail = function() {
+                $http.post('http://localhost:9999/api/npp/resend-otp', {
+                    email: $scope.registrationData.email
+                }).then(function(response) {
+                    alert(response.data.message);  // Display success message from backend
+                }).catch(function(error) {
+                    alert('Lỗi khi gửi lại mã OTP. Vui lòng thử lại.');
+                });
+            };
+            
+
+            // Upload file
+            $scope.onFileSelect = function(file, fileType) {
+                if (!file) {
+                    alert('Vui lòng chọn tệp.');
+                    return;
+                }
+
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', 'imgavt1'); // Replace with your Cloudinary preset
+
+                $http.post('https://api.cloudinary.com/v1_1/dcr0bghdp/image/upload', formData, {
+                    headers: { 'Content-Type': undefined }
+                }).then(function(response) {
+                    $scope.registrationData[fileType] = response.data.secure_url;
+                }).catch(function(error) {
+                    alert('Lỗi tải lên tệp.');
+                });
+            };
+        });
     </script>
 </body>
 </html>

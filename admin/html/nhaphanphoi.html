@@ -125,58 +125,8 @@
     <div class="content-wrapper">
         <h2>Quản lý tài khoản (Nhà phân phối)</h2>
 
-        <!-- Nút Thêm Tài Khoản -->
-        <button class="add-account-btn" onclick="openForm()">Thêm tài khoản nhà phân phối</button>
 
-        <!-- Form Thêm Tài Khoản -->
-        <div id="accountFormModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeForm()">&times;</span>
-                <div class="container mt-5">
-                    <h2>Tạo tài khoản nhà phân phối</h2>
-                    <form name="distributorForm" ng-submit="createDistributor()">
-                        <!-- Tên tài khoản (Thay đổi từ taikhoan thành username) -->
-                         <label for="username">tên tài khoản:</label>
-                        <input type="text" class="form-control" id="username" ng-model="distributor.username" required>
-
-                        <!-- Mật khẩu (Thêm kiểm tra độ dài mật khẩu) -->
-                         <label for="password">Mât khâu:</label>
-                        <input type="password" class="form-control" id="password" ng-model="distributor.matkhau"
-                            ng-minlength="8" ng-maxlength="16" required>
-
-                        <!-- Thêm phần xác nhận mật khẩu -->
-                        <div class="form-group">
-                            <label for="confirmPassword">Xác nhận mật khẩu:</label>
-                            <input type="password" class="form-control" id="confirmPassword"
-                                ng-model="distributor.confirmPassword" required ng-pattern="distributor.matkhau" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="storeName">Tên cửa hàng:</label>
-                            <input type="text" class="form-control" id="storeName" ng-model="distributor.tenCuaHang"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" class="form-control" id="email" ng-model="distributor.email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Số điện thoại:</label>
-                            <input type="text" class="form-control" id="phone" ng-model="distributor.sdt" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Địa chỉ:</label>
-                            <input type="text" class="form-control" id="address" ng-model="distributor.diaChi" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Tạo tài khoản</button>
-                    </form>
-
-                    <!-- Thông báo kết quả -->
-                    <div class="alert alert-success mt-3" ng-if="successMessage">{{ successMessage }}</div>
-                    <div class="alert alert-danger mt-3" ng-if="errorMessage">{{ errorMessage }}</div>
-                </div>
-            </div>
-        </div>
+      
 
         <div class="row search-bar">
             <div class="col-md-6">

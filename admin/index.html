@@ -9,7 +9,20 @@
 </head>
 
 <body ng-app="myapp" ng-controller="MainController" style="background-color: #3b3b3b;">
-    <div class="container-fluid">
+    <div class="loader">
+        <div class="loading-text">
+            GOLD 4.0
+        </div>
+        <div class="khung">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="main-content">
         
         <header class="container-fluid fixed-top" ng-include="'html/header.html'">
             
@@ -44,7 +57,17 @@
             $('#welcome-message').fadeIn(); // Hiện thông báo
             setTimeout(function () {
                 $('#welcome-message').fadeOut();
-            }, 3000);
+            }, 5500);
+        });
+    </script>
+    <script>
+        window.addEventListener("load", function () {
+            // Giữ loader hiển thị trong 3 giây
+            setTimeout(function () {
+                // Ẩn loader và hiển thị nội dung chính
+                document.querySelector(".loader").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+            }, 7500); // 3 giây
         });
     </script>
 </body>
