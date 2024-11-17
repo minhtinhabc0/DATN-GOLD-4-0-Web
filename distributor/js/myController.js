@@ -18,6 +18,13 @@
 
 var app = angular.module("myapp", ['ngRoute']);
 app.controller("MainController", function ($scope, $location) {
+    const distributorInfo = localStorage.getItem('distributorInfo');
+    $scope.distributorInfo = distributorInfo ? JSON.parse(distributorInfo) : null;
+
+    // If adminInfo is null, redirect to login page
+    if (!$scope.distributorInfo) {
+        $window.location.href = '/distributor/html/login.html';
+    }
     $scope.changeRoute = function (route) {
         $location.path(route);
     };

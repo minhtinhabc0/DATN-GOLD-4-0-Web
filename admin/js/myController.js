@@ -17,11 +17,6 @@
 })();
 
 var app = angular.module("myapp", ['ngRoute']);
-app.controller("MainController", function ($scope, $location) {
-    $scope.changeRoute = function (route) {
-        $location.path(route);
-    };
-});
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -77,154 +72,173 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'html/uudaithem.html',
             controller: 'uudaithemCtrl'
         })
-
         .otherwise({
             redirectTo: '/admin/bangdieukhien'
         });
+}]);
 
+app.controller('MainController', function ($scope, $location, $window) {
+    const adminInfo = localStorage.getItem('adminInfo');
+    $scope.adminInfo = adminInfo ? JSON.parse(adminInfo) : null;
 
-}])
+    // If adminInfo is null, redirect to login page
+    if (!$scope.adminInfo) {
+        $window.location.href = '/admin/loginhome.html';
+    }
 
-    .controller('MainController', function ($scope, $location, $window) {
-        const adminInfo = localStorage.getItem('adminInfo');
-        $scope.adminInfo = adminInfo ? JSON.parse(adminInfo) : null;
-        console.log($scope.adminInfo);
-        if ($scope.adminInfo === null) {
-            $window.location.href = '/admin/loginhome.html';
-        }
-
-
-        $scope.logout = function () {
-            Swal.fire({
-                title: 'Thông Báo !',
-                text: 'Bạn có muốn đăng xuất không',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'có',
-                cancelButtonText: 'không',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Only proceed with logout if confirmed
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('adminInfo');
-                    $window.location.href = '/admin/loginhome.html'; // Redirect to login page
-                }
-            });
-        };
-
-    })
-
-    .controller('bangdieukhienCtrl', function ($scope) {
-
-    })
-    .controller('quanlysanphamCtrl', function ($scope) { })
-    .controller('quanlysanphamthemCtrl', function ($scope) { })
-    .controller('quanlysanphamsuaCtrl', function ($scope) { })
-    .controller('quanlydonhangCtrl', function ($scope) { })
-    .controller('baocaoCtrl', function ($scope) { })
-    .controller('quanlytaikhoanCtrl', function ($scope) { })
-    .controller('khachhangCtrl', function ($scope) { })
-    // Controller AngularJS
-    .controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
-        const adminInfo = localStorage.getItem('adminInfo');
-        $scope.adminInfo = adminInfo ? JSON.parse(adminInfo) : null;
-        console.log($scope.adminInfo);
-       const info = localStorage.getItem('token')
-       console.log(info)
-        $scope.distributor = {};
-        $scope.successMessage = "";
-        $scope.errorMessage = "";
-    
-        // Hàm tạo tài khoản nhà phân phối
-        $scope.createDistributor = function () {
-            // Kiểm tra mật khẩu và xác nhận mật khẩu
-            if ($scope.distributor.matkhau !== $scope.distributor.confirmPassword) {
-                $scope.errorMessage = "Mật khẩu và xác nhận mật khẩu không khớp.";
-                return;
+    // Logout function
+    $scope.logout = function () {
+        Swal.fire({
+            title: 'Thông Báo !',
+            text: 'Bạn có muốn đăng xuất không',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'có',
+            cancelButtonText: 'không',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('adminInfo');
+                $window.location.href = '/admin/loginhome.html'; // Redirect to login page
             }
-    
-            // Kiểm tra tất cả các trường đầu vào
-            if (!$scope.distributor.username || !$scope.distributor.matkhau || !$scope.distributor.email || !$scope.distributor.sdt || !$scope.distributor.diaChi || !$scope.distributor.tenCuaHang) {
-                $scope.errorMessage = "Vui lòng điền đầy đủ thông tin!";
-                return;
+        });
+    };
+
+    // Function to change route
+    $scope.changeRoute = function (route) {
+        $location.path(route);
+    };
+});
+
+app.controller('bangdieukhienCtrl', function ($scope) { });
+app.controller('quanlysanphamCtrl', function ($scope) { });
+app.controller('quanlysanphamthemCtrl', function ($scope) { });
+app.controller('quanlysanphamsuaCtrl', function ($scope) { });
+app.controller('quanlydonhangCtrl', function ($scope) { });
+app.controller('baocaoCtrl', function ($scope) { });
+app.controller('quanlytaikhoanCtrl', function ($scope) { });
+app.controller('khachhangCtrl', function ($scope) { });
+
+app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
+   
+
+    // Fetch approved distributors
+    $scope.getApprovedDistributors = function () {
+       
+        $http.get('http://localhost:9999/api/adctrl/approved', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-    
-            // Hiển thị hộp thoại yêu cầu nhập mã PIN
-            Swal.fire({
-                title: 'Xác thực mã PIN',
-                input: 'password',
-                inputPlaceholder: 'Nhập mã PIN...',
-                showCancelButton: true,
-                confirmButtonText: 'Xác nhận',
-                cancelButtonText: 'Hủy',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const adminPin = result.value;
-    
-                    // Kiểm tra mã PIN hợp lệ
-                    if (!adminPin || adminPin.length < 0) {
-                        Swal.fire('Lỗi!', 'Mã PIN phải có ít nhất 4 ký tự!', 'error');
-                        return;
-                    }
-    
-                    // Tạo đối tượng dữ liệu tài khoản nhà phân phối
-                    const taiKhoanData = {
-                        taiKhoan: {
-                            taikhoan: $scope.distributor.username,
-                            matkhau: $scope.distributor.matkhau,
-                            email: $scope.distributor.email,
-                            sdt: $scope.distributor.sdt,
-                            diaChi: $scope.distributor.diaChi,
-                            nhaPhanPhoi: {
-                                tenCuaHang: $scope.distributor.tenCuaHang,
-                            },
-                        },
-                        adminPin: adminPin
-                    };
-    
-                    // Gọi API tạo tài khoản
-                    $http.post('http://localhost:9999/api/admin/create-distributor', taiKhoanData, {
-                        headers: {
-                            'Authorization': 'Bearer ' + $window.localStorage.getItem('token')
-                        }
-                    })
-                    .then(function (response) {
-                        // Nếu tạo tài khoản thành công, thông báo thành công
-                        Swal.fire('Thành công!', 'Tài khoản đã được tạo.', 'success');
-                        $scope.successMessage = "Tài khoản nhà phân phối đã được tạo thành công!";
-                        $scope.errorMessage = "";
-                        $scope.distributor = {};  // Reset form
-                    }, function (error) {
-                        // Nếu có lỗi, thông báo lỗi
-                        if (error.data) {
-                            $scope.errorMessage = error.data.message || "Có lỗi xảy ra. Vui lòng thử lại!";
-                        } else {
-                            $scope.errorMessage = "Không thể kết nối đến máy chủ. Vui lòng thử lại!";
-                        }
-                        $scope.successMessage = "";
-                    });
-                }
-            });
-        };
-    
-    }])
-    
-    
-    
-    
+        }).then(function (response) {
+            $scope.approvedDistributors = response.data;
+            
+        }, function (error) {
+            console.log("Error fetching approved distributors:", error);
+        });
+    };
+
+    // Fetch pending distributors
+    $scope.getPendingDistributors = function () {
+        $http.get('http://localhost:9999/api/adctrl/pending', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.pendingDistributors = response.data;
+        }, function (error) {
+            console.log("Error fetching pending distributors:", error);
+        });
+    };
+
+    $scope.getLockedDistributors = function () {
+        $http.get('http://localhost:9999/api/adctrl/locked', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.lockedDistributors = response.data;
+            console.log($scope.lockedDistributors);
+        }, function (error) {
+            console.log("Error fetching locked distributors:", error);
+        });
+    };
     
 
+    // Lock distributor account (change role to 5)
+    $scope.lockAccount = function (id) {
+        $http.post('http://localhost:9999/api/adctrl/lock/' + id, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+     
+        }).then(function (response) {
+            alert(response.data);
+            $scope.getApprovedDistributors();
+        }, function (error) {
+            console.log("Error locking account:", error);
+        });
+    };
 
+    // Approve distributor account (change role to 2)
+    $scope.approveAccount = function (id) {
+        $http.post('http://localhost:9999/api/adctrl/approve/' + id, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+      
+        }).then(function (response) {
+            alert(response.data);
+            $scope.getLockedDistributors();
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
+        }, function (error) {
+            console.log("Error approving account:", error);
+        });
+    };
 
+    // Reject distributor account (delete account)
+    $scope.rejectAccount = function (id) {
+        $http.post('http://localhost:9999/api/adctrl/reject/' + id, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            alert(response.data);
+            $scope.getLockedDistributors();
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
+        }, function (error) {
+            console.log("Error rejecting account:", error);
+        });
+    };
+    $scope.unlockDistributorAccount = function (id) {
+        $http.post('http://localhost:9999/api/adctrl/unlock/' + id, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            alert(response.data);
+            $scope.getLockedDistributors();
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
+        }, function (error) {
+            console.log("Error unlocking account:", error);
+        });
+    }
 
+    // Initial data fetch
+    $scope.getApprovedDistributors();
+    $scope.getPendingDistributors();
+    $scope.getLockedDistributors();
+}]);
 
+app.controller('uudaiCtrl', function ($scope) { });
+app.controller('chitietkhCtrl', function ($scope) { });
+app.controller('chitietnppCtrl', function ($scope) { });
+app.controller('uudaithemCtrl', function ($scope) { });
 
-    .controller('uudaiCtrl', function ($scope) { })
-    .controller('chitietkhCtrl', function ($scope) { })
-    .controller('chitietnppCtrl', function ($scope) { })
-    .controller('uudaithemCtrl', function ($scope) { })
-
+// Go back function
 function goBack() {
     window.history.back();
 }

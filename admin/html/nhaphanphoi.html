@@ -1,209 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
-<!-- Thêm SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý tài khoản Nhà phân phối</title>
-    <style>
-        body {
-            background-color: #3b3b3b;
-            color: #fff;
-            margin: 0;
-        }
-
-        .content-wrapper {
-            background-color: #fff;
-            border-radius: 15px;
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-            color: #000;
-            margin-right: 30px;
-            margin-top: 60px;
-        }
-
-        h2 {
-            color: #333;
-            text-align: center;
-        }
-
-        .table-responsive {
-            margin-top: 20px;
-        }
-
-        .add-product-btn {
-            float: right;
-            background-color: #28a745;
-            color: white;
-            border-radius: 10px;
-        }
-
-        .search-bar {
-            margin-bottom: 20px;
-        }
-
-        table {
-            text-align: center;
-        }
-
-        .add-account-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-
-        /* Style cho modal form */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            overflow: auto;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 50%;
-            color: #000;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .form-btn {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .form-btn:hover {
-            background-color: #218838;
-        }
-    </style>
+    <title>Quản lý Nhà Phân Phối</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<body >
 
-<body>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Quản lý Nhà Phân Phối</h2>
 
-    <div class="content-wrapper">
-        <h2>Quản lý tài khoản (Nhà phân phối)</h2>
-
-
-      
-
-        <div class="row search-bar">
-            <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Tìm kiếm tài khoản" aria-label="Search product"
-                    ng-model="searchText">
-            </div>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>Mã nhà phân phối</th>
-                        <th>Tên cửa hàng</th>
-                        <th>Email</th>
-                        <th>Số điện thoại</th>
-                        <th>Địa chỉ</th>
-                        <th>Vai trò</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Hiển thị danh sách tài khoản nhà phân phối -->
-                    <tr ng-repeat="account in distributorAccounts | filter:searchText">
-                        <td>{{ account.maNhaPhanPhoi }}</td>
-                        <td>{{ account.storeName }}</td>
-                        <td>{{ account.email }}</td>
-                        <td>{{ account.phone }}</td>
-                        <td>{{ account.address }}</td>
-                        <td>{{ account.role == 2 ? 'Nhà phân phối' : 'Khác' }}</td>
-                        <td>
-                            <a href="#!/admin/chitietnpp/{{ account.maNhaPhanPhoi }}">
-                                <button class="btn btn-outline-secondary">Chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">&laquo;</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">&raquo;</a>
-                    </li>
-                </ul>
-            </nav>
-            <a href="#!/admin/quanlytaikhoan">
-                <button class="btn add-product-btn">Quay lại</button>
-            </a>
-        </div>
+    <!-- Trang 1: Nhà phân phối đã duyệt (vai trò 2) -->
+    <div class="mb-5">
+        <h3>Danh sách Nhà Phân Phối Đã Duyệt</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Nhà Phân Phối</th>
+                    <th>Email</th>
+                    <th>Điện Thoại</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="npp in approvedDistributors">
+                    <td>{{$index + 1}}</td>
+                    <td>{{npp.nguoiDung.tencuahang}}</td>
+                    <td>{{npp.nhaPhanPhoi.email}}</td>
+                    <td>{{npp.nhaPhanPhoi.sdt}}</td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="lockAccount(npp.id)">Khóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <script>
-        // Hàm mở form
-        function openForm() {
-            document.getElementById("accountFormModal").style.display = "block";
-        }
+    <!-- Trang 2: Nhà phân phối chờ duyệt (vai trò 4) -->
+    <div>
+        <h3>Danh sách Nhà Phân Phối Chờ Duyệt</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Nhà Phân Phối</th>
+                    <th>Email</th>
+                    <th>Điện Thoại</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="npp in pendingDistributors">
+                    <td>{{$index + 1}}</td>
+                    <td>{{npp.nguoiDung.tencuahang}}</td>
+                    <td>{{npp.nhaPhanPhoi.email}}</td>
+                    <td>{{npp.nhaPhanPhoi.sdt}}</td>
+                    <td>
+                        <button class="btn btn-success" ng-click="approveAccount(npp.id)">Duyệt</button>
+                        <button class="btn btn-danger" ng-click="rejectAccount(npp.id)">Từ Chối</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <h3>Danh sách Nhà Phân Phối bị khóa</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Nhà Phân Phối</th>
+                    <th>Email</th>
+                    <th>Điện Thoại</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="npp in lockedDistributors">
+                    <td>{{$index + 1}}</td>
+                    <td>{{npp.nguoiDung.tencuahang}}</td>
+                    <td>{{npp.nhaPhanPhoi.email}}</td>
+                    <td>{{npp.nhaPhanPhoi.sdt}}</td>
+                    <td>
+                        <button class="btn btn-success" ng-click="unlockDistributorAccount(npp.id)">mở khóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        // Hàm đóng form
-        function closeForm() {
-            document.getElementById("accountFormModal").style.display = "none";
-        }
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-
-    </script>
 
 </body>
-
 </html>
