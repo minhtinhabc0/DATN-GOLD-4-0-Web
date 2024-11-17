@@ -53,7 +53,7 @@ app.controller("MainController", '$scope', '$window', function ($scope, $locatio
     };
 
 
-   
+
 });
 // Định nghĩa các route
 
@@ -107,7 +107,7 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'html/product-detail.html',
             controller: 'productDetailCtrl'
         })
-        
+
 
         .otherwise({
             redirectTo: '/user/home'
@@ -119,7 +119,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
         const userInfo = localStorage.getItem('userInfo');
         $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
-   
+
         $scope.logout = function () {
             localStorage.removeItem('token');
             localStorage.removeItem('userInfo');
@@ -473,7 +473,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
     .controller('spyeuthichCtrl', function ($scope) {
 
     })
-    .controller('spvangCtrl', function ($scope,$http, GoldPriceService) {
+    .controller('spvangCtrl', function ($scope, $http, GoldPriceService) {
         $scope.goldPrices = [];
         $scope.SJCPrices = null;
         $scope.total_price = null; // Khởi tạo với giá trị hợp lệ
@@ -491,7 +491,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         $scope.calculateGcoins = function () {
             const total_price = parseFloat($scope.total_price);
             if (!isNaN(total_price) && $scope.SJCPrices) {
-                $scope.gold_quantity = (total_price / ($scope.SJCPrices.priceSell*(0.1/100))).toFixed(5);
+                $scope.gold_quantity = (total_price / ($scope.SJCPrices.priceSell * (0.1 / 100))).toFixed(5);
             } else {
                 $scope.gold_quantity = ''; // Reset nếu không hợp lệ
             }
@@ -500,12 +500,12 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         $scope.calculateMoney = function () {
             const gold_quantity = parseFloat($scope.gold_quantity);
             if (!isNaN(gold_quantity) && $scope.SJCPrices) {
-                $scope.total_price = (gold_quantity * ($scope.SJCPrices.priceSell*(0.1/100)));
+                $scope.total_price = (gold_quantity * ($scope.SJCPrices.priceSell * (0.1 / 100)));
             } else {
                 $scope.total_price = ''; // Reset nếu không hợp lệ
             }
         };
-        $scope.initiatePayment = function() {
+        $scope.initiatePayment = function () {
             console.log("Initiating payment...");
             const paymentData = {
                 productName: "Gcoin",
@@ -521,11 +521,11 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
-            }).then(function(response) {
+            }).then(function (response) {
                 console.log("Response received:", response.data);
                 const checkoutUrl = response.data.checkoutUrl;  // Lấy checkoutUrl từ JSON
                 window.location.href = checkoutUrl;  // Redirect sang checkoutUrl
-            }).catch(function(error) {
+            }).catch(function (error) {
                 console.error('Error creating payment link:', error);
             });
         };
@@ -587,147 +587,140 @@ app.service('GoldPriceService', function ($http) {
             throw new Error('Có lỗi xảy ra khi tải dữ liệu giá vàng. Vui lòng thử lại sau.');
         });
     };
-});
+})
 //====================================================================================================
 
-// Khai báo controller giá vàng
-app.controller('giavangCtrl', function ($scope, GoldPriceService) {
-    $scope.goldPrices = [];
-    $scope.selectedProduct = null;
-    $scope.selectedView = null;
-    $scope.products = [];
-    $scope.views = ['Biểu Đồ', 'Bảng Giá'];
-    $scope.filteredGoldPrices = []; // Thêm biến này để lưu trữ giá vàng đã lọc
-    $scope.errorMessage = '';
 
-    // Hàm để lấy ngày hiện tại
-    $scope.getCurrentDate = function () {
-        const today = new Date();
-        return today.toLocaleDateString('vi-VN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            weekday: 'long'
-        });
-    };
 
-    // Gọi hàm từ service để lấy dữ liệu giá vàng
-    $scope.fetchGoldPrices = function () {
-        GoldPriceService.fetchGoldPrices().then(function (data) {
-            $scope.goldPrices = data.goldPrices;
-            $scope.products = data.products;
 
-            if ($scope.products.length > 0) {
-                $scope.selectedProduct = $scope.products[0];
-                $scope.updateChart($scope.selectedProduct);
-                $scope.filteredGoldPrices = $scope.goldPrices; // Hiển thị tất cả giá vàng khi khởi tạo
-            } else {
-                $scope.errorMessage = 'Không có dữ liệu giá vàng hiện có.';
+// Khào báo controller giỏ hàng
+
+app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
+
+    // Kiểm tra người dùng đã đăng nhập hay chưa bằng cách lấy token từ localStorage
+    function getAuthToken() {
+        return localStorage.getItem("token");
+    }
+
+    // Hàm thêm sản phẩm vào giỏ hàng
+    $scope.addToCart = function (productId, quantity) {
+        const token = getAuthToken();
+        if (!token) {
+            alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+            $window.location.href = "http://127.0.0.1:5501/user/html/login.html";  // Đảm bảo là URL tuyệt đối
+            return;
+        }
+
+        // Tạo đối tượng CartRequest
+        const cartRequest = {
+            sanPhamId: productId,
+            soLuong: quantity
+        };
+
+        // Gửi yêu cầu POST đến API thêm sản phẩm vào giỏ hàng
+        $http.post('http://localhost:9999/api/cart/add', cartRequest, {
+            headers: {
+                'Authorization': 'Bearer ' + token
             }
+        }).then(function (response) {
+            // Xử lý thành công
+            alert('Sản phẩm đã được thêm vào giỏ hàng!');
+            // Cập nhật lại giỏ hàng hoặc chuyển hướng đến trang giỏ hàng nếu cần
+            $scope.getCart();
         }).catch(function (error) {
-            $scope.errorMessage = error.message;
+            // Xử lý khi có lỗi
+            console.error("Error details:", error);
+            if (error.status === 401) {
+                alert('Bạn chưa đăng nhập. Vui lòng đăng nhập!');
+                $window.location.href = "http://127.0.0.1:5501/user/html/login.html";  // Chuyển hướng đến trang đăng nhập
+            } else if (error.status === 400) {
+                alert('Số lượng sản phẩm không đủ trong kho!');
+            } else {
+                alert('Có lỗi xảy ra, vui lòng thử lại!');
+            }
         });
     };
 
-    // Gọi hàm fetchGoldPrices khi khởi tạo controller
-    $scope.fetchGoldPrices();
-
-    // Hàm để vẽ biểu đồ khi chọn sản phẩm
-    $scope.updateChart = function (selectedProduct) {
-        if ($scope.selectedView === 'Biểu Đồ') {
-            var ctx = document.getElementById('goldCanvas').getContext('2d');
-            var filteredPrices = selectedProduct === 'Tất cả'
-                ? $scope.goldPrices
-                : $scope.goldPrices.filter(price => price.name === selectedProduct);
-
-            filteredPrices.sort((a, b) => a.date - b.date);
-
-            var labels = filteredPrices.map(function (price) {
-                var date = price.date;
-                return date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
-            });
-
-            var priceBuyData = filteredPrices.map(function (price) {
-                return price.priceBuy;
-            });
-
-            var priceSellData = filteredPrices.map(function (price) {
-                return price.priceSell;
-            });
-
-            if ($scope.chart) {
-                $scope.chart.destroy();
-            }
-
-            $scope.chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels.length > 0 ? labels : ['Không có dữ liệu'],
-                    datasets: [
-                        {
-                            label: selectedProduct + ' - Giá Mua',
-                            data: priceBuyData.length > 0 ? priceBuyData : [0],
-                            borderColor: 'red',
-                            fill: false
-                        },
-                        {
-                            label: selectedProduct + ' - Giá Bán',
-                            data: priceSellData.length > 0 ? priceSellData : [0],
-                            borderColor: 'yellow',
-                            fill: false
-                        }
-                    ]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Giờ'
-                            },
-                            ticks: {
-                                autoSkip: true,
-                                maxTicksLimit: 10
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Giá (VNĐ)'
-                            }
-                        }
-                    }
-                }
-            });
+    // Lấy thông tin giỏ hàng
+    // Gọi API lấy giỏ hàng từ backend
+    $scope.getCart = function () {
+        const token = getAuthToken();
+        if (!token) {
+            alert("Bạn cần đăng nhập để xem giỏ hàng!");
+            $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
+            return;
         }
 
-        // Cập nhật bảng giá
-        $scope.filteredGoldPrices = selectedProduct === 'Tất cả'
-            ? $scope.goldPrices
-            : $scope.goldPrices.filter(price => price.name === selectedProduct);
+        $http.get('http://localhost:9999/api/cart', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        }).then(function (response) {
+            $scope.gioHang = response.data;  // Cập nhật giỏ hàng trong UI
+        }).catch(function (error) {
+            alert('Có lỗi xảy ra khi lấy giỏ hàng!');
+        });
     };
 
-    // Theo dõi sự thay đổi của selectedView để cập nhật chart hoặc bảng
-    $scope.$watch('selectedView', function (newValue) {
-        if (newValue) {
-            $scope.updateChart($scope.selectedProduct);
+    // Hàm xử lý khi người dùng cập nhật số lượng sản phẩm trong giỏ hàng
+    $scope.updateQuantity = function (item, change) {
+        item.soLuong += change;
+
+        // Gửi yêu cầu cập nhật số lượng sản phẩm trong giỏ hàng
+        const token = getAuthToken();
+        if (!token) {
+            alert("Bạn cần đăng nhập để cập nhật giỏ hàng!");
+            $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
+            return;
         }
-    });
 
-    // Theo dõi sự thay đổi của selectedProduct để cập nhật chart và bảng
-    $scope.$watch('selectedProduct', function (newValue) {
-        if (newValue) {
-            $scope.updateChart(newValue);
+        // Tạo đối tượng CartRequest để gửi lên API
+        const cartRequest = {
+            sanPhamId: item.sanPhamId,
+            soLuong: item.soLuong
+        };
+
+        $http.put('http://localhost:9999/api/cart/update', cartRequest, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(function (response) {
+            alert('Giỏ hàng đã được cập nhật!');
+        }).catch(function (error) {
+            alert('Có lỗi xảy ra khi cập nhật giỏ hàng!');
+        });
+    };
+
+    // Hàm xóa sản phẩm khỏi giỏ hàng
+    $scope.removeFromCart = function (item) {
+        const token = getAuthToken();
+        if (!token) {
+            alert("Bạn cần đăng nhập để xóa sản phẩm khỏi giỏ hàng!");
+            $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
+            return;
         }
-    });
-})
-    //====================================================================================================
+
+        // Gửi yêu cầu DELETE để xóa sản phẩm
+        $http.delete('http://localhost:9999/api/cart/remove/' + item.sanPhamId, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(function (response) {
+            alert('Sản phẩm đã được xóa khỏi giỏ hàng!');
+            $scope.getCart(); // Tải lại giỏ hàng
+        }).catch(function (error) {
+            alert('Có lỗi xảy ra khi xóa sản phẩm!');
+        });
+    };
+
+    // Khởi động: Lấy thông tin giỏ hàng khi trang được tải
+    $scope.getCart();
+}])
 
 
-    // Khào báo controller giỏ hàng
-    .controller('giohangCtrl', function ($scope) {
 
-    })
+
+
+
+
     //================================================================================================
     // Khào báo controller thanh toán
     .controller('thanhtoanCtrl', function ($scope) {
@@ -808,7 +801,7 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
             });
         }
 
-        $scope.goToDetail = function(product) {
+        $scope.goToDetail = function (product) {
             if (!product || !product.maSanPham) {
                 console.error("Product ID is undefined:", product);
                 alert("Sản phẩm không có mã hợp lệ.");
@@ -817,10 +810,10 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
             console.log("Navigating to product detail:", product);
             $location.path('/user/product/' + product.maSanPham);
         };
-        
-        
-        
-    
+
+
+
+
         // Cập nhật danh sách sản phẩm đã lọc
         $scope.updateFilteredItems = function () {
             let start = ($scope.currentPage - 1) * $scope.itemsPerPage;
@@ -1037,7 +1030,10 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
         ], function () {
             $scope.applyFilters();
         });
-
+        // Hàm thêm vào giỏ hàng
+        $scope.themVaoGioHang = function (product) {
+            giohangCtrl.themVaoGioHang(product);
+        };
         // Thực hiện tải toàn bộ sản phẩm
         $scope.load_all();
     })
@@ -1049,27 +1045,27 @@ app.controller('giavangCtrl', function ($scope, GoldPriceService) {
 
     //========================================================================
     //chi tiet 
-   // Định nghĩa controller detailsCtrl
- // Assume product ID is available in the route params or scope
- .controller('productDetailCtrl', function($scope, $routeParams, $http) {
-    const productId = $routeParams.id; // Lấy maSanPham từ URL
-    console.log("Product ID from URL:", productId);
+    // Định nghĩa controller detailsCtrl
+    // Assume product ID is available in the route params or scope
+    .controller('productDetailCtrl', function ($scope, $routeParams, $http) {
+        const productId = $routeParams.id; // Lấy maSanPham từ URL
+        console.log("Product ID from URL:", productId);
 
-    const apiUrl = `http://localhost:9999/api/products/${productId}`;
-    const token = localStorage.getItem('token');
+        const apiUrl = `http://localhost:9999/api/products/${productId}`;
+        const token = localStorage.getItem('token');
 
-    const config = token ? { headers: { 'Authorization': 'Bearer ' + token } } : {};
+        const config = token ? { headers: { 'Authorization': 'Bearer ' + token } } : {};
 
-    $http.get(apiUrl, config)
-        .then(function(response) {
-            console.log("API Response:", response.data);
-            $scope.product = response.data;
-        })
-        .catch(function(error) {
-            console.error("Error loading product details:", error);
-            alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
-        });
-})
+        $http.get(apiUrl, config)
+            .then(function (response) {
+                console.log("API Response:", response.data);
+                $scope.product = response.data;
+            })
+            .catch(function (error) {
+                console.error("Error loading product details:", error);
+                alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
+            });
+    })
 
 
 

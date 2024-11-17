@@ -112,101 +112,28 @@
     }
 </style>
 
+<div class="cart-container">
+    <h2>Giỏ hàng</h2>
 
-<div class="cart-container" style="margin-top: 140px;">
-    <!-- Header -->
-    <div class="cart-header">
+    <div ng-repeat="item in gioHang">
+        <div class="product-item">
+            <img ng-src="{{item.hinhAnh}}" alt="{{item.tenSanPham}}" class="product-image">
+            <div>
+                <h3>{{item.tenSanPham}}</h3>
+                <p>Giá: {{item.gia | number:0}} VND</p>
+                <p>Số lượng:
+                    <button ng-click="updateQuantity(item, -1)" ng-disabled="item.soLuong <= 1">-</button>
+                    {{item.soLuong}}
+                    <button ng-click="updateQuantity(item, 1)">+</button>
 
-        <h2 class="text-center" style="color: #000;">GIỎ HÀNG <i class="fa-solid fa-bag-shopping"></i></h2>
+                </p>
+            </div>
+            <button class="delete-btn" ng-click="removeFromCart(item)">Xóa</button>
+        </div>
     </div>
 
-    <!-- Product List -->
-    <div class="card">
-        <!-- Select All -->
-        <div class="select-all mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="selectAll">
-                <label class="form-check-label" for="selectAll">Tất cả</label>
-            </div>
-        </div>
-
-        <!-- Product Item 1 -->
-        <div class="product-item d-flex justify-content-between align-items-center">
-            <div class="product-info">
-                <input type="checkbox" checked class="form-check-input me-3">
-                <div class="product-image"></div>
-                <div>
-                    <div class="product-title">Item1</div>
-                    <div class="product-description text-muted">Description</div>
-                </div>
-            </div>
-            <div class="product-quantity d-flex align-items-center">
-                <button class="btn btn-outline-secondary btn-sm">-</button>
-                <input type="text" value="1" class="form-control form-control-sm">
-                <button class="btn btn-outline-secondary btn-sm">+</button>
-            </div>
-            <div class="product-price">Price$</div>
-            <i class="delete-btn bi bi-trash"></i>
-        </div>
-
-        <!-- Product Item 2 -->
-        <div class="product-item d-flex justify-content-between align-items-center">
-            <div class="product-info">
-                <input type="checkbox" class="form-check-input me-3">
-                <div class="product-image"></div>
-                <div>
-                    <div class="product-title">Item2</div>
-                    <div class="product-description text-muted">Description</div>
-                </div>
-            </div>
-            <div class="product-quantity d-flex align-items-center">
-                <button class="btn btn-outline-secondary btn-sm">-</button>
-                <input type="text" value="1" class="form-control form-control-sm">
-                <button class="btn btn-outline-secondary btn-sm">+</button>
-            </div>
-            <div class="product-price">Price$</div>
-            <i class="delete-btn bi bi-trash"></i>
-        </div>
-
-        <!-- Product Item 3 -->
-        <div class="product-item d-flex justify-content-between align-items-center">
-            <div class="product-info">
-                <input type="checkbox" class="form-check-input me-3">
-                <div class="product-image"></div>
-                <div>
-                    <div class="product-title">Item3</div>
-                    <div class="product-description text-muted">Description</div>
-                </div>
-            </div>
-            <div class="product-quantity d-flex align-items-center">
-                <button class="btn btn-outline-secondary btn-sm">-</button>
-                <input type="text" value="1" class="form-control form-control-sm">
-                <button class="btn btn-outline-secondary btn-sm">+</button>
-            </div>
-            <div class="product-price">Price$</div>
-            <i class="delete-btn bi bi-trash"></i>
-        </div>
-
-        <!-- Summary -->
-        <div class="row">
-            <div class="col-8 summary">Số lượng: 3</div>
-            <div class="col-4 summary">Tổng tiền: $$$</div>
-
-        </div>
-
-        <!-- Checkout Button -->
-        <div class="text-end mt-4">
-            <a href="html/paying.html"><button class="btn btn-checkout">Thanh toán</button></a>
-        </div>
+    <div class="summary">
+        <p>Tổng tiền: {{tinhTongTien() | number:0}} VND</p>
+        <button class="btn-checkout">Thanh toán</button>
     </div>
 </div>
-
-
-<script>
-    // Select All Checkbox functionality
-    const selectAllCheckbox = document.getElementById('selectAll');
-    selectAllCheckbox.addEventListener('change', function () {
-        const checkboxes = document.querySelectorAll('.form-check-input');
-        checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
-    });
-</script>

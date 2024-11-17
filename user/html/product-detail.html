@@ -1,106 +1,105 @@
 <style>
-body{
-    margin-top: 200px !important;
-}
-/* Căn chỉnh phần tiêu đề */
-.product-detail-container h1 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 15px;
-}
+    body {
+        margin-top: 200px !important;
+    }
 
-/* Căn chỉnh phần hình ảnh */
-.product-detail-container img {
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 20px;
-}
+    /* Căn chỉnh phần tiêu đề */
+    .product-detail-container h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
 
-/* Căn chỉnh phần giá */
-.product-detail-container .price {
-    font-size: 18px;
-    color: #b12704;
-    font-weight: bold;
-    margin: 5px 0 20px;
-}
+    /* Căn chỉnh phần hình ảnh */
+    .product-detail-container img {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 20px;
+    }
 
-/* Chọn kích cỡ */
-.size-selection {
-    font-size: 16px;
-    margin-bottom: 15px;
-}
+    /* Căn chỉnh phần giá */
+    .product-detail-container .price {
+        font-size: 18px;
+        color: #b12704;
+        font-weight: bold;
+        margin: 5px 0 20px;
+    }
 
-.size-selection label {
-    font-weight: bold;
-}
+    /* Chọn kích cỡ */
+    .size-selection {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
 
-.size-selection select {
-    padding: 5px;
-    margin-left: 10px;
-    font-size: 16px;
-}
+    .size-selection label {
+        font-weight: bold;
+    }
 
-/* Căn chỉnh phần mô tả */
-.product-detail-container .description {
-    font-size: 14px;
-    color: #555;
-    line-height: 1.6;
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
+    .size-selection select {
+        padding: 5px;
+        margin-left: 10px;
+        font-size: 16px;
+    }
 
-/* Căn chỉnh toàn bộ container */
-.product-detail-container {
-    max-width: 600px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-}
+    /* Căn chỉnh phần mô tả */
+    .product-detail-container .description {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
 
-/* Định dạng nút */
-.product-detail-container .buy-now,
-.product-detail-container .add-to-cart,
-.product-detail-container .contact-now {
-    background-color: #d32f2f;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: block;
-    width: 100%;
-    text-align: center;
-    text-transform: uppercase;
-}
+    /* Căn chỉnh toàn bộ container */
+    .product-detail-container {
+        max-width: 600px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+    }
 
-.product-detail-container .add-to-cart {
-    background-color: #1a73e8;
-}
+    /* Định dạng nút */
+    .product-detail-container .buy-now,
+    .product-detail-container .add-to-cart,
+    .product-detail-container .contact-now {
+        background-color: #d32f2f;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        text-transform: uppercase;
+    }
 
-.product-detail-container .contact-now {
-    background-color: #333;
-}
+    .product-detail-container .add-to-cart {
+        background-color: #1a73e8;
+    }
 
-.product-detail-container .buy-now:hover {
-    background-color: #b71c1c;
-}
+    .product-detail-container .contact-now {
+        background-color: #333;
+    }
 
-.product-detail-container .add-to-cart:hover {
-    background-color: #155ab8;
-}
+    .product-detail-container .buy-now:hover {
+        background-color: #b71c1c;
+    }
 
-.product-detail-container .contact-now:hover {
-    background-color: #222;
-}
+    .product-detail-container .add-to-cart:hover {
+        background-color: #155ab8;
+    }
 
-
+    .product-detail-container .contact-now:hover {
+        background-color: #222;
+    }
 </style>
 <div class="product-detail-container">
     <h1>{{ product.tenSanPham }}</h1>
@@ -108,10 +107,12 @@ body{
     <p style="color: black !important;">Giá: {{ product.gia | number:0 }} VND</p>
     <p>{{ product.moTa }}</p>
     <p class="description">
-        Chiếc lắc tay PNJ sở hữu sự cứng cáp của vàng Ý 14K được chế tác tinh xảo, kết hợp các chi tiết đúc, chà nhám thể hiện cho công nghệ hiện đại và sự tỉ mỉ tạo nên sự sang trọng và sáng trọng.
+        Chiếc lắc tay PNJ sở hữu sự cứng cáp của vàng Ý 14K được chế tác tinh xảo, kết hợp các chi tiết đúc, chà nhám
+        thể hiện cho công nghệ hiện đại và sự tỉ mỉ tạo nên sự sang trọng và sáng trọng.
     </p>
 
     <button class="buy-now">Mua ngay</button>
-    <button class="add-to-cart">Thêm vào giỏ hàng</button>
+    <button class="add-to-cart" ng-click="addToCart(product.id, 1)">Thêm vào giỏ hàng</button>
+
     <button class="contact-now">Gọi ngay (miễn phí)</button>
 </div>
