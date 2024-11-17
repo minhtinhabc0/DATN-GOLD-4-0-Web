@@ -90,7 +90,7 @@
             </form>
 
             <!-- Xác nhận OTP -->
-            <div ng-if="showOtpField">
+            <div ng-show="registrationData.emailSent">
                 <hr />
                 <h4>Xác nhận OTP</h4>
                 <form name="otpForm" ng-submit="verifyOtp()">
@@ -169,6 +169,7 @@
 
             // Xác minh OTP
             $scope.verifyOtp = function() {
+                console.log($scope.otp);
                 $http.post('http://localhost:9999/api/npp/verify-otp', {
                     email: $scope.registrationData.email,
                     otp: $scope.otp
