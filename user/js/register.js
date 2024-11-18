@@ -24,8 +24,8 @@ app.controller('MainController', ['$scope', '$http', '$interval', '$timeout', fu
         Swal.showLoading();
       },
       customClass: {
-        popup: 'swal2-popup-custom',
-        title: 'swal2-title-custom'
+        popup: 'swal2-popup-custom', // Sử dụng lớp tùy chỉnh
+        title: 'swal2-title-custom' // Sử dụng lớp tùy chỉnh cho tiêu đề
       }
     });
   };
@@ -218,6 +218,3 @@ app.controller('MainController', ['$scope', '$http', '$interval', '$timeout', fu
     }, 1000);
   }
 }]);
-
-// CSS tùy chỉnh cho SweetAlert2
-

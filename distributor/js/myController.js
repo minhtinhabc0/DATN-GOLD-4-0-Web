@@ -21,7 +21,7 @@ app.controller("MainController", function ($scope, $location) {
     const distributorInfo = localStorage.getItem('distributorInfo');
     $scope.distributorInfo = distributorInfo ? JSON.parse(distributorInfo) : null;
 
-   
+
     // If adminInfo is null, redirect to login page
     if (!$scope.distributorInfo) {
         $window.location.href = '/distributor/html/login.html';
@@ -107,21 +107,21 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
 
     // Hàm lấy danh sách đơn hàng từ API và phân trang
     $scope.getDanhSachDonHang = function () {
-        $http.get('http://localhost:9999/api/donhang') // API để lấy danh sách đơn hàng
+        $http.get('http://localhost:9999/api/donhang', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
             .then(function (response) {
-                // Gán dữ liệu nhận được từ backend vào biến donHangs
+                // console.log('Kết quả API:', response.data);
                 $scope.donHangs = response.data;
-                $scope.donHangsFiltered = angular.copy($scope.donHangs); // Khởi tạo danh sách đã lọc
-                // Tính toán tổng số trang
+                $scope.donHangsFiltered = angular.copy($scope.donHangs);
                 $scope.totalPages = Math.ceil($scope.donHangs.length / $scope.pageSize);
-
-                // Hiển thị dữ liệu cho trang hiện tại
                 $scope.paginateData();
             })
             .catch(function (error) {
-                console.error('Có lỗi xảy ra khi lấy danh sách đơn hàng:', error);
+                console.error('Lỗi khi gọi API:', error);
             });
     };
+
 
     // Hàm phân trang dữ liệu
     $scope.paginateData = function () {
@@ -153,15 +153,29 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
 
     // hàm lấy số lượng đơn hoàn thành
     $scope.getSoluongHoanThanh = function () {
-        $http.get('http://localhost:9999/api/donhang/demsl/hoanthanh') // Gọi API để đếm số lượng đơn hàng hoàn thành
-            .then(function (response) {
-                // Gán số lượng đơn hàng hoàn thành vào biến soluongHoanThanh
-                $scope.soluongHoanThanh = response.data;
+        // Lấy token từ localStorage (hoặc sessionStorage) nếu đã lưu sau khi đăng nhập
+        const token = localStorage.getItem("token");  // Hoặc sử dụng sessionStorage nếu bạn lưu token ở đó
+
+        if (token) {
+            $http.get('http://localhost:9999/api/donhang/demsl/hoanthanh', {
+                headers: {
+                    'Authorization': 'Bearer ' + token  // Thêm token vào header Authorization
+                }
             })
-            .catch(function (error) {
-                console.error('Có lỗi xảy ra khi lấy số lượng đơn hàng đã hoàn thành:', error);
-            });
+                .then(function (response) {
+                    // Gán số lượng đơn hàng hoàn thành vào biến soluongHoanThanh
+                    // console.log('Kết quả Đơn Hàng Thành Công:', response.data);
+                    $scope.soluongHoanThanh = response.data;
+                })
+                .catch(function (error) {
+                    console.error('Có lỗi xảy ra khi lấy số lượng đơn hàng đã hoàn thành:', error);
+                });
+        } else {
+            console.log("Token không có trong localStorage.");
+            // Bạn có thể xử lý trường hợp này nếu cần
+        }
     };
+
 
     // Hàm lấy chi tiết hóa đơn từ API
     $scope.getChiTietHoaDon = function (maHoaDon) {

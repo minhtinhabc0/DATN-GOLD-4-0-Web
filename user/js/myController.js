@@ -981,7 +981,13 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
 
         // Hàm sắp xếp theo giá
         $scope.sortByPrice = function (order) {
-            if (order === 'asc') {
+            var sortByPrice = $scope.selectedSort;
+
+            // Kiểm tra xem loại đá có hợp lệ không trước khi lọc
+            if (sortByPrice === undefined || sortByPrice === null || sortByPrice === '') {
+                $scope.filteredItems = $scope.items;  // Không lọc nếu giá trị không hợp lệ
+            }
+            else if (order === 'asc') {
                 $scope.filteredItems.sort((a, b) => a.gia - b.gia); // Sắp xếp giá tăng dần
             } else if (order === 'desc') {
                 $scope.filteredItems.sort((a, b) => b.gia - a.gia); // Sắp xếp giá giảm dần

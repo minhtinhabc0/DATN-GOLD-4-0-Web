@@ -28,61 +28,128 @@
             height: 3rem;
         }
 
-        .form-control {
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn {
-            border-radius: 30px;
-            padding: 12px 20px;
-            font-weight: bold;
-        }
-
-        .register-form {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
+        /* Tùy chỉnh giao diện cho popup của SweetAlert */
+        .swal2-popup {
+            background: #ffffff;
+            color: #333;
+            border-radius: 15px;
+            /* Bo góc khung */
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Bóng nhẹ cho khung */
+            transform: scale(0.9);
+            /* Khung nhỏ lại khi hiển thị */
+            transition: transform 0.3s ease-in-out;
+            /* Hiệu ứng chuyển động */
         }
 
-        .g-recaptcha {
-            margin: 20px 0;
+        /* Hiệu ứng khi thông báo được hiển thị */
+        .swal2-popup.show {
+            transform: scale(1);
+            /* Khôi phục kích thước bình thường */
         }
 
-        .swal2-popup-custom {
-            border-radius: 12px;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .swal2-title-custom {
-            font-size: 18px;
+        /* Tiêu đề của thông báo */
+        .swal2-title {
+            color: #f0b400;
+            /* Vàng ánh kim */
             font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            /* Đổ bóng cho tiêu đề */
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Icon thành công */
+        .swal2-icon.swal2-success {
+            border-color: #f0b400;
+            /* Vàng ánh kim cho icon */
+        }
+
+        /* Icon lỗi */
+        .swal2-icon.swal2-error {
+            border-color: #f0b400;
+            /* Vàng ánh kim cho icon */
+        }
+
+        /* Icon cảnh báo */
+        .swal2-icon.swal2-warning {
+            border-color: #f0b400;
+            /* Vàng ánh kim cho icon */
+        }
+
+        /* Nút xác nhận */
+        .swal2-confirm {
+            background-color: #f0b400;
+            /* Vàng ánh kim */
+            border: none;
+            color: white;
+            border-radius: 5px;
+            /* Bo góc nút */
+            padding: 10px 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Thêm bóng cho nút */
+            cursor: pointer;
+        }
+
+        .swal2-confirm:hover {
+            background-color: #e09400;
+            /* Màu vàng nhạt hơn khi hover */
+        }
+
+        /* Nút hủy */
+        .swal2-cancel {
+            color: #333;
+            border: none;
+            background: transparent;
+        }
+
+        .swal2-cancel:hover {
+            color: #f0b400;
+            /* Màu vàng ánh kim khi hover */
+        }
+
+        /* Thêm bóng cho các thông báo */
+        .swal2-popup-custom {
+            border: 2px solid #f0b400;
+            /* Vàng ánh kim cho đường viền */
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            /* Bóng nhẹ cho popup */
+        }
+
+        /* Thiết kế cho các thông báo */
+        .swal2-title-custom {
+            color: #f0b400;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
     </style>
 
 <body ng-controller="MainController">
 
     <div class="container-fluid p-0">
-        <div class="row g-0">
+        <div class="row g-0" style="margin-right: 15px;">
             <!-- Cột bên trái chứa hình ảnh -->
             <div class="col-lg-7 col-md-6 col-12">
                 <img src="https://www.karat.vn/uploads/images/cau-chuyen-ve-bieu-tuong-con-ran-trong-cac-thiet-ke-trang-suc-cua-bvlgari-3.jpg"
-                    alt="" class="img-fluid w-100" style="height: 100vh; object-fit: cover;">
+                    alt="" class="img-fluid w-100" style="height: 125vh; object-fit: cover;">
             </div>
 
             <!-- Cột bên phải chứa form -->
             <div class="col-lg-5 col-md-6 col-12 d-flex flex-column justify-content-center align-items-center">
                 <!-- Tiêu đề GOLD - 4.0 -->
-                <a href="index.html" style="text-decoration: none;">
+                <a href="/user/index.html" style="text-decoration: none;">
                     <h1 class="text-center" style="
                         font-family: 'Montserrat', sans-serif;
                         margin-top: 20px;
                         color: #f4f489;
-                        
+                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
                         letter-spacing: 2px;
-                       
-                        ">
+                        background: linear-gradient(30deg, #ffffff, #FFA500);
+                        -webkit-background-clip: text;
+                        color: transparent;">
                         GOLD - 4.0
                     </h1>
                 </a>
@@ -153,7 +220,15 @@
                             <div class="g-recaptcha" data-sitekey="{{ siteKey }}" data-callback="recaptchaCallback">
                             </div>
                         </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms" style="font-family: 'Times New Roman';">Tôi đồng
+                                ý với các điều khoản</label>
+                            <div class="invalid-feedback">
+                                Bạn phải đồng ý với các điều khoản
+                            </div>
 
+                        </div>
                         <button type="submit" class="btn btn-outline-dark w-100" style="height: 50px;">
                             <span class="button__label" style="
                                 letter-spacing: .0852071047em;
@@ -165,15 +240,7 @@
                             </span>
                         </button>
                     </form>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="terms" required>
-                        <label class="form-check-label" for="terms" style="font-family: 'Times New Roman';">Tôi đồng
-                            ý với các </label>
-                        <div class="invalid-feedback">
-                            Bạn phải đồng ý với các điều khoản
-                        </div>
-                        <a href="#" class="herf">điều khoản</a>
-                    </div>
+
                 </div>
                 <div ng-show="!isRegistering" class="container mt-5">
                     <form ng-submit="verifyOTP()">
@@ -195,7 +262,7 @@
                     </form>
                 </div>
 
-                <hr>
+                <hr style="color: #0c0c0c;">
 
                 <!-- Link sang trang đăng nhập -->
                 <div class="d-flex justify-content-between w-75">

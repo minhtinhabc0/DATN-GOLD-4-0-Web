@@ -1,4 +1,3 @@
-
 body {
     background-color: #3b3b3b;
     color: #fff;
@@ -34,7 +33,8 @@ body {
     border-radius: 10px;
 }
 
-.card-info h5, .card-info p {
+.card-info h5,
+.card-info p {
     color: #000;
 }
 
@@ -58,7 +58,8 @@ body {
     border-radius: 50%;
 }
 
-.chart-title, .product-title {
+.chart-title,
+.product-title {
     color: #fff;
     padding-bottom: 10px;
 }

@@ -139,12 +139,113 @@
                 font-size: 0.9rem;
             }
         }
+
+        /* CSS cho loader */
+        .loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            text-align: center;
+        }
+
+        /* Đảm bảo nội dung chính không hiện trước khi tải */
+        #main-content {
+            display: none;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 13pt;
+            font-weight: 800;
+            text-align: center
+        }
+
+
+
+        .khung {
+            height: 30px;
+            display: inline-block;
+        }
+
+        .khung>div {
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            box-shadow: 0 0 10px;
+            background: #FFECBA;
+            float: left;
+            margin: 5px;
+            transform: scale(1.4);
+        }
+
+        .khung>div:nth-child(1) {
+            animation: anm-BL-53-move1 1s infinite linear;
+        }
+
+        .khung>div:nth-child(2) {
+            animation: anm-BL-53-move2 1s infinite linear;
+            animation-delay: 0.2s;
+        }
+
+        .khung>div:nth-child(3) {
+            animation: anm-BL-53-move3 1s infinite linear;
+            animation-delay: 0.3s;
+        }
+
+        .khung>div:nth-child(4) {
+            animation: anm-BL-53-move4 1s infinite linear;
+            animation-delay: 0.4s;
+        }
+
+        .khung>div:nth-child(5) {
+            animation: anm-BL-53-move5 1s infinite linear;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes anm-BL-53-move1 {
+            50% {
+                background: #FFBB00;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes anm-BL-53-move2 {
+            50% {
+                background: #FFBB00;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes anm-BL-53-move3 {
+            50% {
+                background: #FFBB00;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes anm-BL-53-move4 {
+            50% {
+                background: #FFBB00;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes anm-BL-53-move5 {
+            50% {
+                background: #FFBB00;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 
 <body ng-app="myapp" ng-controller="MainController" style="background-color: #3b3b3b;">
     <div class="loader">
-        <div class="loading-text">GOLD 4.0</div>
+        <div class="loading-text">
+            GOLD 4.0
+        </div>
         <div class="khung">
             <div></div>
             <div></div>
@@ -169,7 +270,8 @@
             <nav>
                 <ul class="list-unstyled">
                     <li><a href="#!/admin/bangdieukhien"><i class="fa-solid fa-house"></i> Bảng điều khiển</a></li>
-                    <li><a href="#!/admin/quanlysanpham"><i class="fa-solid fa-rectangle-list"></i> Quản lý sản phẩm</a></li>
+                    <li><a href="#!/admin/quanlysanpham"><i class="fa-solid fa-rectangle-list"></i> Quản lý sản phẩm</a>
+                    </li>
                     <li><a href="#!/admin/quanlydonhang"><i class="fa-solid fa-shop"></i> Quản lý đơn hàng</a></li>
                     <li><a href="#!/admin/quanlytaikhoan"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a></li>
                     <li><a href="#!/admin/baocao"><i class="fa-solid fa-file-circle-xmark"></i> Báo cáo</a></li>
@@ -207,15 +309,21 @@
             const sidebar = document.querySelector('.sidebar');
             sidebar.classList.toggle('show'); // Thêm hoặc xóa class `show`
         }
-        
 
-        window.addEventListener("load", function () {
+
+
+
+    </script>
+    <script>
+        // Ẩn loader và hiển thị nội dung chính sau 3 giây
+        window.onload = function () {
             setTimeout(function () {
                 document.querySelector(".loader").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
-            }, 7500);
-        });
+                document.querySelector("#main-content").style.display = "block";
+            }, 1500); // 3000ms = 3 giây
+        };
     </script>
+
 </body>
 
 </html>
