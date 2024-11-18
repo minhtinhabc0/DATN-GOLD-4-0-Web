@@ -137,7 +137,46 @@ app.controller('khachhangCtrl', function ($scope, $http, $window) {
             console.log("Error fetching approved distributors:", error);
         });
     };
+    $scope.UserAccountband = function () {
+        $http.get('http://localhost:9999/api/adctrl/ngdungband', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.users1 = response.data;
+            console.log($scope.users1);
+            
+        }, function (error) {
+            console.log("Error fetching approved distributors:", error);
+        });
+    }
+
+    $scope.UserbandAccount = function (id) {
+        $http.post('http://localhost:9999/api/adctrl/ngdungband/' + id, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            alert(response.data);
+            $scope.UserAccount();
+        }, function (error) {
+            console.log("Error locking account:", error);
+        });
+    }
+    $scope.Userunbandaccount = function (id) {
+        $http.post('http://localhost:9999/api/adctrl/ngdungunband/' + id, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            alert(response.data);
+            $scope.UserAccount();
+        }, function (error) {
+            console.log("Error unlocking account:", error);
+        });
+    }
    $scope.UserAccount(); 
+   $scope.UserAccountband();
  });
 
 app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
@@ -176,6 +215,19 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             console.log("Error fetching pending distributors:", error);
         });
     };
+    $scope.Deletenpp = function (id) {
+        $http.post('http://localhost:9999/api/adctrl/delete/' + id, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            alert(response.data);
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
+        }, function (error) {
+            console.log("Error deleting distributor:", error);
+        })
+    }
 
     
 

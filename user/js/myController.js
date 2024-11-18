@@ -266,6 +266,11 @@ app.service('GoldPriceBuyService', function ($http) {
 //===============================================================================================
 //controller profile
 app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceService) {
+    $scope.logout1 = function () {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userInfo');
+        $window.location.href = '/user/index.html';
+    };
     // Khởi tạo biến cho thông tin người dùng
     $scope.userInfo = {};
     $scope.oldPassword = '';
@@ -299,9 +304,8 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         localStorage.setItem('userInfo', JSON.stringify($scope.userInfo)); // Lưu thông tin vào localStorage
     }).catch(function (error) {
         console.error('Lỗi khi lấy thông tin người dùng:', error);
-        alert('Lỗi khi tải thông tin người dùng!');
-        logout();
-        $window.location.href = 'home.html'; // Chuyển hướng nếu có lỗi
+        $scope.logout1();
+        // Chuyển hướng nếu có lỗi
     });
 
     // Tải giá vàng

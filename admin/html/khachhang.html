@@ -1,153 +1,201 @@
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Link tới CSS Lightbox (nếu chưa có) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en" ng-app="accountManagementApp" ng-controller="AccountController">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tài khoản</title>
+    <!-- Bootstrap và Font Icon -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-<!-- Link tới JavaScript Lightbox (nếu chưa có) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-<style>
-    body {
-        background-color: #3b3b3b;
-        color: #fff;
-        margin: 0;
-    }
-
-    .content-wrapper {
-        background-color: #fff;
-        border-radius: 15px;
-        max-width: 1200px;
-        margin: auto;
-        padding: 20px;
-        color: #000;
-        margin-right: 30px;
-        margin-top: 60px;
-    }
-
-    h2 {
-        color: #333;
-        text-align: center;
-    }
-
-    .product-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: #e0e0e0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 14px;
-        color: #fff;
-    }
-
-    .table-responsive {
-        margin-top: 20px;
-    }
-
-    .pagination {
-        justify-content: center;
-    }
-
-    .add-product-btn {
-        float: right;
-        background-color: #28a745;
-        color: white;
-        border-radius: 10px;
-    }
-
-    .search-bar {
-        margin-bottom: 20px;
-    }
-
-    table {
-        text-align: center;
-    }
-</style>
-
+    <style>
+        body {
+            background-color: #3b3b3b;
+            color: #fff;
+            margin: 0;
+        }
+        .content-wrapper {
+            background-color: #fff;
+            border-radius: 15px;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            color: #000;
+            margin-top: 60px;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+        table {
+            text-align: center;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
 <body>
 
     <div class="content-wrapper">
-        <h2>Quản lý tài khoản (Khách hàng)</h2>
-        <div class="row search-bar">
-            <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Tìm kiếm " aria-label="Search product">
-            </div>
-        </div>
+        <h2>Quản lý tài khoản</h2>
 
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>Ảnh đại diện</th>
-                        <th>Tên người dùng</th>
-                        <th>Tên tài khoản</th>
-                        <th>Email</th>
-                        <th>Số điện thoại</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Duyệt qua mảng dữ liệu để hiển thị thông tin tài khoản -->
-                    <tr ng-repeat="user in users">
-                        <td>
-                            <div class="product-img">
-                                <img ng-src="{{user.nguoiDung.avt}}" alt="Ảnh đại diện" class="img-fluid rounded-circle">
-                            </div>
-                        </td>
-                        <td>{{user.nguoiDung.hoTen}}</td>
-                        <td>{{user.taikhoan}}</td>
-                        <td>{{user.nguoiDung.email}}</td>
-                        <td>{{user.nguoiDung.sdt}}</td>
-                        <td>
-                            <!-- Liên kết chi tiết tài khoản -->
-                        
-                                <button class="btn btn-outline-secondary" ng-click="viewUserDetail(user)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Chi tiết</button>
-                           
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Tabs chuyển đổi -->
+        <ul class="nav nav-tabs justify-content-center" id="accountTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">
+                    Tài khoản người dùng
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="lockedUsers-tab" data-bs-toggle="tab" data-bs-target="#lockedUsers" type="button" role="tab" aria-controls="lockedUsers" aria-selected="false">
+                    Tài khoản bị khóa
+                </button>
+            </li>
+        </ul>
 
-            <!-- Phân trang -->
-            <div class="modal fade" id="distributorDetailModal" tabindex="-1" aria-labelledby="distributorDetailModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content" style="background-color: #fdfbfb; color: #fff;">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="distributorDetailModalLabel">Chi Tiết Nhà Phân Phối</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table ">
-                                <tr>
-                                    <td><strong>Hình đại diện</strong></td>
-                                    <td><a href="{{useris.nguoiDung.avt}} " target="_blank" data-bs-toggle="lightbox" data-bs-target="#distributorImage1"><img src="{{useris.nguoiDung.avt}}" alt="Ảnh 1" style="width: 100px; height: 100px;" class="img-fluid thumbnail-img"></a></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Tên Tài Khoản</strong></td>
-                                    <td>{{useris.taikhoan}}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Email</strong></td>
-                                    <td>{{useris.nguoiDung.email}}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Điện thoại</strong></td>
-                                    <td>{{useris.nguoiDung.sdt}}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Họ Tên Người Dùng</strong></td>
-                                    <td>{{useris.nguoiDung.hoTen}}</td>
-                                </tr>
-                               
-                            
-                                <!-- Thêm các trường khác nếu cần -->
-                            </table>
-                        </div>
-                    </div>
+        <!-- Nội dung các Tabs -->
+        <div class="tab-content" id="accountTabsContent">
+            <!-- Tài khoản người dùng -->
+            <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
+                <h4 class="text-center mt-3">Danh sách tài khoản người dùng</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ảnh đại diện</th>
+                                <th>Tên người dùng</th>
+                                <th>Tên tài khoản</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="user in users">
+                                <td>
+                                    <img ng-src="{{user.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}" alt="Ảnh đại diện" class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
+                                </td>
+                                <td>{{user.nguoiDung.hoTen}}</td>
+                                <td>{{user.taikhoan}}</td>
+                                <td>{{user.nguoiDung.email}}</td>
+                                <td>{{user.nguoiDung.sdt}}</td>
+                                <td>
+                                    <button class="btn btn-primary" ng-click="viewUserDetail(user)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Chi tiết</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
+            <!-- Tài khoản bị khóa -->
+            <div class="tab-pane fade" id="lockedUsers" role="tabpanel" aria-labelledby="lockedUsers-tab">
+                <h4 class="text-center mt-3">Danh sách tài khoản bị khóa</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ảnh đại diện</th>
+                                <th>Tên người dùng</th>
+                                <th>Tên tài khoản</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="user in users1">
+                                <td>
+                                    <img ng-src="{{user.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}"  class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
+                                </td>
+                                <td>{{user.nguoiDung.hoTen}}</td>
+                                <td>{{user.taikhoan}}</td>
+                                <td>{{user.nguoiDung.email}}</td>
+                                <td>{{user.nguoiDung.sdt}}</td>
+                                <td>
+                                    <button class="btn btn-danger" ng-click="viewUserDetail(user)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Chi tiết</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="modal fade" id="distributorDetailModal" tabindex="-1" aria-labelledby="distributorDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="background-color: #ffffff; color: #fff;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="distributorDetailModalLabel">Chi Tiết Nhà Phân Phối</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table ">
+                        <tr>
+                            <td><strong>Hình đại diện</strong></td>
+                            <td><a href="{{useris.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}} " target="_blank" data-bs-toggle="lightbox" data-bs-target="#distributorImage1"><img src="{{useris.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}" style="height: 100px; width: 100px;"  class="img-fluid thumbnail-img"></a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tên Tài Khoản</strong></td>
+                            <td>{{useris.taikhoan}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email</strong></td>
+                            <td>{{useris.nguoiDung.email}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Điện thoại</strong></td>
+                            <td>{{useris.nguoiDung.sdt}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Họ Tên Người Dùng</strong></td>
+                            <td>{{useris.nguoiDung.hoTen}}</td>
+                        </tr>
+                       
+                    
+                        <!-- Thêm các trường khác nếu cần -->
+                       
+                    </table>
+                    <button class="btn btn-danger" data-bs-dismiss="modal" ng-click="UserbandAccount(useris.id)" ng-show="useris.vaitro==0"> khóa tài khoản</button>
+                    <button class="btn btn-success" data-bs-dismiss="modal" ng-click="Userunbandaccount(useris.id)" ng-show="useris.vaitro==6"> Mở Khóa Tài Khoản</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AngularJS Application
+        const app = angular.module('accountManagementApp', []);
+
+        app.controller('AccountController', ['$scope', '$http', function ($scope, $http) {
+            $scope.users = []; // Danh sách tài khoản người dùng
+            $scope.lockedUsers = []; // Danh sách tài khoản bị khóa
+
+            // Lấy dữ liệu từ API
+            $scope.loadAccounts = function () {
+                $http.get('/api/accounts')
+                    .then(function (response) {
+                        $scope.users = response.data.filter(user => user.active); // Tài khoản hoạt động
+                        $scope.lockedUsers = response.data.filter(user => !user.active); // Tài khoản bị khóa
+                    }, function (error) {
+                        console.error('Error loading accounts:', error);
+                    });
+            };
+
+            // Gọi hàm khi tải trang
+            $scope.loadAccounts();
+
+            // Hiển thị chi tiết tài khoản
+            $scope.viewUserDetail = function (user) {
+                alert(`Chi tiết tài khoản: ${user.taikhoan}`);
+            };
+        }]);
+    </script>
 </body>
+</html>
