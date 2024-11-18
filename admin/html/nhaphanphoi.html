@@ -182,7 +182,7 @@
                             <td>{{npp.nhaPhanPhoi.email}}</td>
                             <td>{{npp.nhaPhanPhoi.sdt}}</td>
                             <td>
-                                <button class="btn btn-danger" ng-click="lockAccount(npp.id)">Khóa</button>
+                              
                                 <button class="btn btn-info" ng-click="viewDistributorDetail(npp)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi tiết</button>
 
                             </td>
@@ -211,8 +211,7 @@
                             <td>{{npp.nhaPhanPhoi.email}}</td>
                             <td>{{npp.nhaPhanPhoi.sdt}}</td>
                             <td>
-                                <button class="btn btn-success" ng-click="approveAccount(npp.id)">Duyệt</button>
-                                <button class="btn btn-warning" ng-click="rejectAccount(npp.id)">Từ Chối</button>
+                               
                                 <button class="btn btn-info" ng-click="viewDistributorDetail(npp)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi tiết</button>
                             </td>
                         </tr>
@@ -240,7 +239,7 @@
                             <td>{{npp.nhaPhanPhoi.email}}</td>
                             <td>{{npp.nhaPhanPhoi.sdt}}</td>
                             <td>
-                                <button class="btn btn-success" ng-click="unlockDistributorAccount(npp.id)">Mở Khóa</button>
+                                
                                 <button class="btn btn-info" ng-click="viewDistributorDetail(npp)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi tiết</button>
                             </td>
                         </tr>
@@ -290,9 +289,17 @@
                         <td><a href="{{distributorDetail.nhaPhanPhoi.dl3}}"  target="_blank"data-bs-toggle="lightbox" data-bs-target="#distributorImage3"><img src="{{distributorDetail.nhaPhanPhoi.dl3}}" alt="Ảnh 3" class="img-fluid thumbnail-img"></a></td>
                     </tr>
                     <!-- Thêm các trường khác nếu cần -->
+              
                 </table>
+    
             </div>
+            <button class="btn btn-success" ng-click="approveAccount(distributorDetail.id)" ng-show="distributorDetail.vaitro == 4">Duyệt</button>
+            <button class="btn btn-danger" ng-click="rejectAccount(distributorDetail.id)"ng-show="distributorDetail.vaitro == 4">Từ Chối</button>
+            <button class="btn btn-success" ng-click="unlockDistributorAccount(distributorDetail.id)" ng-show="distributorDetail.vaitro == 5">Mở Khóa</button>
+            <button class="btn btn-danger" ng-click="lockAccount(distributorDetail.id)"ng-show="distributorDetail.vaitro == 2">Khóa</button>
+            <button class="btn btn-danger" ng-click="Deletenpp(distributorDetail.id)"ng-show="distributorDetail.vaitro == 2">Hủy tư cách nhà phân phối</button>
         </div>
+  
     </div>
 </div>
 
