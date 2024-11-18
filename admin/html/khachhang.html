@@ -1,3 +1,11 @@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Link tới CSS Lightbox (nếu chưa có) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Link tới JavaScript Lightbox (nếu chưa có) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 <style>
     body {
         background-color: #3b3b3b;
@@ -56,7 +64,6 @@
         text-align: center;
     }
 </style>
-</head>
 
 <body>
 
@@ -81,108 +88,66 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <!-- Duyệt qua mảng dữ liệu để hiển thị thông tin tài khoản -->
+                    <tr ng-repeat="user in users">
                         <td>
-                            <div class="product-img">$Image</div>
+                            <div class="product-img">
+                                <img ng-src="{{user.nguoiDung.avt}}" alt="Ảnh đại diện" class="img-fluid rounded-circle">
+                            </div>
                         </td>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
+                        <td>{{user.nguoiDung.hoTen}}</td>
+                        <td>{{user.taikhoan}}</td>
+                        <td>{{user.nguoiDung.email}}</td>
+                        <td>{{user.nguoiDung.sdt}}</td>
                         <td>
-                            
-                            <a href="#!/admin/chitietkh">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-img">$Image</div>
-                        </td>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
-                        <td>
-                            
-                            <a href="#!/admin/chitietkh">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
+                            <!-- Liên kết chi tiết tài khoản -->
+                        
+                                <button class="btn btn-outline-secondary" ng-click="viewUserDetail(user)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Chi tiết</button>
+                           
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div class="product-img">$Image</div>
-                        </td>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
-                        <td>
-                            
-                            <a href="#!/admin/chitietkh">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-img">$Image</div>
-                        </td>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
-                        <td>
-                            
-                            <a href="#!/admin/chitietkh">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-img">$Image</div>
-                        </td>
-                        <td>$ProductName</td>
-                        <td>$Price</td>
-                        <td>$Quantity</td>
-                        <td>$DistributorName</td>
-                        <td>
-                            
-                            <a href="#!/admin/chitietkh">
-                                <button class="btn btn-outline-secondary">chi tiết</button>
-                            </a>
-                        </td>
-                    </tr>
-
                 </tbody>
             </table>
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">&laquo;</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">&raquo;</a>
-                    </li>
-                </ul>
-            </nav>
-            
-            <a href="#!/admin/quanlytaikhoan">
-                <button class="btn add-product-btn">Quay lại</button>
-            </a>
-             
+
+            <!-- Phân trang -->
+            <div class="modal fade" id="distributorDetailModal" tabindex="-1" aria-labelledby="distributorDetailModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content" style="background-color: #fdfbfb; color: #fff;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="distributorDetailModalLabel">Chi Tiết Nhà Phân Phối</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table ">
+                                <tr>
+                                    <td><strong>Hình đại diện</strong></td>
+                                    <td><a href="{{useris.nguoiDung.avt}} " target="_blank" data-bs-toggle="lightbox" data-bs-target="#distributorImage1"><img src="{{useris.nguoiDung.avt}}" alt="Ảnh 1" style="width: 100px; height: 100px;" class="img-fluid thumbnail-img"></a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tên Tài Khoản</strong></td>
+                                    <td>{{useris.taikhoan}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Email</strong></td>
+                                    <td>{{useris.nguoiDung.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Điện thoại</strong></td>
+                                    <td>{{useris.nguoiDung.sdt}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Họ Tên Người Dùng</strong></td>
+                                    <td>{{useris.nguoiDung.hoTen}}</td>
+                                </tr>
+                               
+                            
+                                <!-- Thêm các trường khác nếu cần -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>

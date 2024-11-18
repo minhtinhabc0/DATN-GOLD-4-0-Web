@@ -21,6 +21,7 @@ app.controller("MainController", function ($scope, $location) {
     const distributorInfo = localStorage.getItem('distributorInfo');
     $scope.distributorInfo = distributorInfo ? JSON.parse(distributorInfo) : null;
 
+   
     // If adminInfo is null, redirect to login page
     if (!$scope.distributorInfo) {
         $window.location.href = '/distributor/html/login.html';
@@ -28,6 +29,11 @@ app.controller("MainController", function ($scope, $location) {
     $scope.changeRoute = function (route) {
         $location.path(route);
     };
+    $scope.logout1 = function () {
+        localStorage.removeItem('distributorInfo');
+        localStorage.removeItem('token');
+        window.location.href = '/distributor/html/login.html';
+    }
 });
 
 app.config(['$routeProvider', function ($routeProvider) {

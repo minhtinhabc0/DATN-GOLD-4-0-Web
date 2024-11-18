@@ -138,36 +138,7 @@
 </head>
 
 <body ng-app="myApp" ng-controller="ProfileController">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2 sidebar">
-                <h2 class="text-center" style="color: yellow;">Gold 4.0</h2>
-                <nav>
-                    <ul class="list-unstyled">
-                        <li><a href="#!/admin/bangdieukhien"><i class="fa-solid fa-house"></i> Bảng điều khiển</a></li>
-                        <li><a href="#!/admin/quanlysanpham"><i class="fa-solid fa-rectangle-list"></i> Quản lý sản phẩm</a></li>
-                        <li><a href="#!/admin/quanlydonhang"><i class="fa-solid fa-shop"></i> Quản lý đơn hàng</a></li>
-                        <li><a href="#!/admin/quanlytaikhoan"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a></li>
-                        <li><a href="#!/admin/baocao"><i class="fa-solid fa-file-circle-xmark"></i> Báo cáo</a></li>
-                        <li><a href="#!/admin/uudai"><i class="fa-solid fa-fire-flame-curved"></i> Ưu đãi</a></li>
-                    </ul>
-                </nav>
-                <!-- Logout button at the bottom -->
-                <a href="#" ng-click="logout()" class="logout">Logout</a>
-            </div>
 
-            <div class="col-md-10">
-                <div class="header">
-                    <!-- Clickable Name to Show Profile -->
-                    <div class="user-icon">
-                        <span ng-click="showProfile()"><b>Tên Nhân viên:</b> {{adminInfo.hoTen}}</span>
-                        <br>
-                        <span><b>ID:</b> {{adminInfo.id}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>

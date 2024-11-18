@@ -118,11 +118,35 @@ app.controller('quanlysanphamsuaCtrl', function ($scope) { });
 app.controller('quanlydonhangCtrl', function ($scope) { });
 app.controller('baocaoCtrl', function ($scope) { });
 app.controller('quanlytaikhoanCtrl', function ($scope) { });
-app.controller('khachhangCtrl', function ($scope) { });
+app.controller('khachhangCtrl', function ($scope, $http, $window) {
+    $scope.viewUserDetail = function(user) {
+       
+        $scope.useris = user;
+    };
+    $scope.UserAccount = function () {
+       
+        $http.get('http://localhost:9999/api/adctrl/ngdung', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.users = response.data;
+            console.log($scope.users);
+            
+        }, function (error) {
+            console.log("Error fetching approved distributors:", error);
+        });
+    };
+   $scope.UserAccount(); 
+ });
 
 app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
    
-
+    $scope.viewDistributorDetail = function(npp) {
+        // Store the selected distributor's data in the distributorDetail variable
+        $scope.distributorDetail = npp;
+    };
+    
     // Fetch approved distributors
     $scope.getApprovedDistributors = function () {
        
@@ -132,6 +156,7 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             }
         }).then(function (response) {
             $scope.approvedDistributors = response.data;
+            console.log($scope.approvedDistributors);
             
         }, function (error) {
             console.log("Error fetching approved distributors:", error);
@@ -146,10 +171,13 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             }
         }).then(function (response) {
             $scope.pendingDistributors = response.data;
+            console.log($scope.pendingDistributors);
         }, function (error) {
             console.log("Error fetching pending distributors:", error);
         });
     };
+
+    
 
     $scope.getLockedDistributors = function () {
         $http.get('http://localhost:9999/api/adctrl/locked', {
@@ -174,7 +202,9 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
      
         }).then(function (response) {
             alert(response.data);
+            $scope.getLockedDistributors();
             $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
         }, function (error) {
             console.log("Error locking account:", error);
         });
