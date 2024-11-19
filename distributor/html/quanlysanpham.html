@@ -31,7 +31,7 @@
             <tbody>
                 <!-- Product Rows will be dynamically filled by AngularJS -->
                 <tr ng-repeat="product in products">
-                    <td><img ng-src="{{ product.hinhAnh }}" alt="Product Image" class="rounded-circle"></td>
+                    <td><img style="height: 200px; width: 200px" ng-src="{{ product.hinhAnh }}" alt="Product Image" ></td>
                     <td>{{ product.tenSanPham }}</td>
                     <td>{{ product.gia | number }} VNĐ</td>
                     <td>{{ product.soLuong }}</td>
@@ -77,7 +77,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12 text-center mb-4">
-                            <img ng-src="{{ selectedProduct.hinhAnh }}" alt="Product Image" class="rounded-circle">
+                            <img  ng-src="{{ selectedProduct.hinhAnh }}" alt="Product Image" class="rounded-circle">
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
