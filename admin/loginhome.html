@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +9,49 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Tùy chỉnh SweetAlert2 */
+        .swal2-popup-custom {
+            border-radius: 10px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            font-family: 'Roboto', sans-serif;
+            animation: fadeInEffect 0.5s ease-in-out;
+            /* Thêm hiệu ứng mượt mà */
+            max-width: 400px;
 
+            /* Đảm bảo rằng nó không vượt quá chiều rộng màn hình */
+            margin: 0 auto;
+            /* Căn giữa popup */
+            padding: 20px;
+            /* Thêm padding cho popup để văn bản không bị dính vào viền */
+            box-sizing: border-box;
+            /* Đảm bảo padding không làm méo popup */
+        }
+
+        .swal2-title-custom {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .swal2-content-custom {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.5;
+            text-align: center;
+            /* Căn giữa nội dung */
+            margin-bottom: 20px;
+            /* Đảm bảo rằng văn bản không bị dính vào spinner */
+        }
+    </style>
     <style>
         body {
-            background-color: #333;
-            color: #f1f1f1;
+            background-color: #FFF8DD;
+            /* Màu nền mới */
+            color: #333;
+            /* Màu chữ sáng hơn */
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,46 +59,60 @@
             margin: 0;
             overflow: hidden;
         }
-        
+
         .login-container {
             width: 100%;
-            max-width: 500px; /* Tăng kích thước tối đa của form */
-            background-color: #000;
-            border-radius: 10px; /* Tăng độ bo tròn nếu cần */
-            padding: 40px; /* Tăng padding cho form rộng hơn */
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            background-color: #FFFFFF;
+            /* Màu nền của form */
+            border-radius: 50px;
+            padding: 40px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 1050;
+            border: 1px solid #ccc;
+            /* Thêm border nhẹ cho form */
         }
-        
-        
+
         h2 {
             text-align: center;
-            color: yellow;
+            color: #FF8C00;
+            /* Màu chữ tiêu đề */
+            font-size: 24px;
+            margin-bottom: 20px;
         }
-    
+
         input {
             margin-bottom: 15px;
-            padding: 10px;
+            padding: 12px;
             width: 100%;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            background-color: #f9f9f9;
         }
-    
+
         button {
             width: 100%;
-            background-color: yellow;
+            background-color: #FF8C00;
+            /* Màu nền của nút */
             border: none;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 16px;
-            color: black;
+            padding: 12px;
+            border-radius: 65px;
+            font-size: 18px;
+            color: #fff;
             position: relative;
+            transition: background-color 0.3s ease;
         }
-    
+
+        button:hover {
+            background-color: #E07B00;
+            /* Màu sắc thay đổi khi hover */
+        }
+
         button .loading-spinner {
             display: none;
             position: absolute;
@@ -67,30 +120,47 @@
             top: 50%;
             transform: translateY(-50%);
             border: 4px solid #f3f3f3;
-            border-top: 4px solid yellow;
+            border-top: 4px solid #fff;
             border-radius: 50%;
             width: 20px;
             height: 20px;
             animation: spin 1s linear infinite;
         }
-    
+
         .error {
             color: red;
             font-size: 14px;
             margin-top: 10px;
         }
-    
+
         .g-recaptcha {
             margin-bottom: 15px;
         }
-    
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast notification */
+        #toast {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background-color: #FF8C00;
+            color: #fff;
+            border-radius: 5px;
+            display: none;
         }
     </style>
-    
 </head>
+
 <body ng-app="myApp" ng-controller="FormController">
 
     <!-- Overlay khi loading -->
@@ -99,7 +169,17 @@
     </div>
 
     <div class="login-container">
-        <h2> Admin Gold 4.0</h2>
+        <h2 class="text-center" style="
+        font-family: 'Montserrat', sans-serif;
+        margin-top: 20px;
+        color: #f4f489;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        letter-spacing: 2px;
+        background: linear-gradient(30deg, #ffea98, #7e6602);
+        -webkit-background-clip: text;
+        color: transparent;">
+            ADMIN GOLD - 4.0
+        </h2>
         <form ng-submit="submitForm()">
             <div>
                 <input type="text" ng-model="username" placeholder="Tên tài khoản" required />
@@ -123,73 +203,105 @@
     <script>
         var app = angular.module('myApp', []);
 
-        app.controller('FormController', ['$scope', '$http', function($scope, $http) {
+        app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
             $scope.recaptchaToken = null;
             $scope.siteKey = '6LexVlgqAAAAACJbJFXNT64FwRl5purGdSfnGJtp';  // Thay thế bằng site key của bạn
-        
-            window.recaptchaCallback = function(response) {
+
+            window.recaptchaCallback = function (response) {
                 $scope.recaptchaToken = response;
             };
-        
-            $scope.submitForm = function() {
+
+            $scope.submitForm = function () {
                 if ($scope.recaptchaToken) {
                     const loginData = {
                         tenTK: $scope.username,
                         matKhau: $scope.password,
                         recaptchaToken: $scope.recaptchaToken
                     };
-        
+
                     // Hiển thị SweetAlert2 ở trạng thái loading khi bắt đầu đăng nhập
                     Swal.fire({
                         title: 'Đang xử lý...',
                         text: 'Vui lòng chờ giây lát',
                         allowOutsideClick: false,
                         didOpen: () => {
-                            Swal.showLoading();
-                        }
+                            Swal.showLoading(); // Hiển thị loading spinner
+                        },
+                        background: '#F0F8FF', // Màu nền pastel nhẹ
+                        icon: 'info', // Biểu tượng "thông tin"
+                        showConfirmButton: false, // Ẩn nút "OK"
+                        customClass: {
+                            confirmButton: 'swal2-confirm',
+                            popup: 'swal2-popup-custom', // Thêm lớp tùy chỉnh cho popup
+                            title: 'swal2-title-custom', // Tùy chỉnh tiêu đề
+                            content: 'swal2-content-custom' // Tùy chỉnh nội dung
+                        },
+                        grow: 'row' // Tạo hiệu ứng chia row cho popup
                     });
-        
+
+                    // Thực hiện đăng nhập
                     $http.post('http://localhost:9999/api/auth/admin/login', loginData)
-                    .then(function(response) {
-                        console.log('Success:', response.data);
-                        Swal.fire({
-                            title: 'Đăng nhập thành công!',
-                            text: 'Redirecting...',
-                            icon: 'success',
-                            confirmButtonText: 'OK',
-                            timer: 2000,
-                            willClose: () => {
-                                // Lưu thông tin người dùng và token vào localStorage
+                        .then(function (response) {
+                            console.log('Success:', response.data);
+                            // Thông báo thành công không có nút đóng, tự động chuyển hướng sau 2 giây
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đăng nhập thành công!',
+                                text: 'Chào mừng bạn đến với GOLD - 4.0!',
+                                showConfirmButton: false, // Ẩn nút "Đóng"
+                                timer: 2000, // Đếm ngược 2 giây
+                                customClass: {
+                                    confirmButton: 'swal2-confirm',
+                                }
+                            }).then(function () {
+                                // Sau 2 giây sẽ chuyển hướng trang
                                 localStorage.setItem('adminInfo', JSON.stringify(response.data.adminInfo));
                                 localStorage.setItem('token', response.data.token);
-                                window.location.href = response.data.redirectUrl;
+                                window.location.href = response.data.redirectUrl; // Chuyển hướng
+                            });
+
+                            // Reset reCAPTCHA
+                            grecaptcha.reset();
+                        }, function (error) {
+                            console.error('Error during login:', error);
+                            // Xử lý lỗi với SweetAlert2
+                            let errorMessage = 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+                            if (error.data) {
+                                errorMessage = error.data.message || errorMessage;
                             }
-                            
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Đăng nhập thất bại!',
+                                text: errorMessage,
+                                confirmButtonText: 'Đóng',
+                                customClass: {
+                                    confirmButton: 'swal2-confirm',
+                                }
+                            });
+                            // Reset reCAPTCHA khi có lỗi
+                            grecaptcha.reset();
                         });
-        
-                        grecaptcha.reset();
-                    }, function(error) {
-                        console.error('Error during login:', error);
-                        Swal.fire({
-                            title: 'Đăng nhập thất bại!',
-                            text: 'Vui lòng kiểm tra lại thông tin.',
-                            icon: 'error',
-                            confirmButtonText: 'Thử lại'
-                        });
-                        grecaptcha.reset();
-                    });
                 } else {
+                    // Thông báo yêu cầu reCAPTCHA
                     Swal.fire({
                         title: 'Thông báo',
                         text: 'Vui lòng hoàn tất xác thực reCAPTCHA.',
-                        icon: 'warning',
-                        confirmButtonText: 'OK'
+                        icon: 'warning', // Biểu tượng cảnh báo
+                        background: '#FFF8DD', // Màu nền sáng
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            confirmButton: 'swal2-confirm',
+                            popup: 'swal2-popup-warning', // Popup cảnh báo đẹp hơn
+                        }
                     });
                 }
             };
+
+
+
         }]);
-        
     </script>
 
 </body>
+
 </html>
