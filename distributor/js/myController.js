@@ -17,7 +17,7 @@
 })();
 
 var app = angular.module("myapp", ['ngRoute']);
-app.controller("MainController", function ($scope, $location) {
+app.controller("MainController", function ($scope, $location, $window) {
     const distributorInfo = localStorage.getItem('distributorInfo');
     $scope.distributorInfo = distributorInfo ? JSON.parse(distributorInfo) : null;
 
@@ -29,11 +29,34 @@ app.controller("MainController", function ($scope, $location) {
     $scope.changeRoute = function (route) {
         $location.path(route);
     };
+
+
     $scope.logout1 = function () {
-        localStorage.removeItem('distributorInfo');
-        localStorage.removeItem('token');
-        window.location.href = '/distributor/html/login.html';
-    }
+        Swal.fire({
+            title: 'Bạn muốn đăng xuất?',
+            text: 'Nếu bạn đăng xuất, bạn sẽ phải đăng nhập lại để tiếp tục.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa fa-check"></i> Có, đăng xuất',
+            cancelButtonText: '<i class="fa fa-times"></i> Không, quay lại',
+            confirmButtonColor: '#d4af37', // Nền vàng ánh kim
+            cancelButtonColor: '#f44336', // Nền đỏ tươi
+            reverseButtons: true,
+            customClass: {
+                title: 'swal-title', // Tùy chỉnh tiêu đề thông báo
+                text: 'swal-text', // Tùy chỉnh nội dung thông báo
+                cancelButton: 'swal-btn-cancel', // Tùy chỉnh nút hủy
+                confirmButton: 'swal-btn-confirm' // Tùy chỉnh nút xác nhận
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('distributorInfo');
+                localStorage.removeItem('token');
+                window.location.href = '/distributor/html/login.html'; // Redirect to login page
+            }
+        });
+    };
+
 });
 
 app.config(['$routeProvider', function ($routeProvider) {

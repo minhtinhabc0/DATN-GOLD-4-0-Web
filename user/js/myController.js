@@ -121,10 +121,50 @@ app.config(['$routeProvider', function ($routeProvider) {
         $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
 
         $scope.logout = function () {
-            localStorage.removeItem('token');
-            localStorage.removeItem('userInfo');
-            $window.location.href = '/user/index.html';
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn đăng xuất?',
+                text: "Bạn sẽ phải đăng nhập lại để tiếp tục sử dụng!",
+                icon: 'warning',
+                showCancelButton: true, // Hiển thị nút huỷ
+                confirmButtonText: 'Đăng xuất',
+                cancelButtonText: 'Hủy bỏ',
+                confirmButtonColor: '#f0b400', // Màu nút Đăng xuất
+                cancelButtonColor: '#d33', // Màu nút Hủy bỏ
+                reverseButtons: true, // Đảo ngược nút
+                position: 'top-end', // Vị trí thông báo góc trên bên phải
+                customClass: {
+                    popup: 'swal2-popup-small' // Đặt lớp CSS để chỉnh kích thước
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Xóa token và thông tin người dùng
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userInfo');
+
+                    // Hiển thị thông báo đăng xuất thành công nhỏ
+                    Swal.fire({
+                        position: 'top-end', // Vị trí thông báo
+                        icon: 'success', // Loại thông báo thành công
+                        title: 'Đăng xuất thành công!', // Tiêu đề thông báo
+                        showConfirmButton: false, // Không có nút xác nhận
+                        confirmButtonText: 'OK',
+                        timer: 1500, // Thông báo sẽ tự động biến mất sau 1.5 giây
+                        position: 'center',
+                        customClass: {
+                            popup: 'swal2-popup-small' // Đặt lớp CSS để làm nhỏ thông báo
+                        }
+                    });
+
+                    // Sau khi thông báo biến mất, chuyển hướng
+                    setTimeout(() => {
+                        $window.location.href = '/user/index.html';
+                    }, 1500); // Đồng bộ với thời gian hiển thị thông báo
+                }
+            });
         };
+
+
+
         const imageUrl = "https://th.bing.com/th/id/OIP.xH_K_kDlIyvn8QfMLwYGiAHaJQ?rs=1&pid=ImgDetMain";
         console.log("%c ", `font-size: 100px; background: url(${imageUrl}) no-repeat; background-size: cover; -webkit-background-clip: text; -webkit-text-fill-color: transparent;`);
         console.log("nó KHÔNG phải là lỗi nó là tính năng")

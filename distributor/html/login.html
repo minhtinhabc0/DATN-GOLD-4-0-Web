@@ -230,19 +230,22 @@
 
                     $http.post('http://localhost:9999/api/auth/distributor/login', loginData)
                         .then(function (response) {
-                            // Thông báo thành công
+                            // Thông báo thành công không có nút đóng, tự động chuyển hướng sau 2 giây
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Đăng nhập thành công!',
                                 text: 'Chào mừng bạn đến với GOLD - 4.0!',
-                                confirmButtonText: 'Đóng',
+                                showConfirmButton: false, // Ẩn nút "Đóng"
+                                timer: 2000, // Đếm ngược 2 giây
                                 customClass: {
                                     confirmButton: 'swal2-confirm',
                                 }
+                            }).then(function () {
+                                // Sau 2 giây sẽ chuyển hướng trang
+                                localStorage.setItem('distributorInfo', JSON.stringify(response.data.distributorInfo));
+                                localStorage.setItem('token', response.data.token);
+                                window.location.href = response.data.redirectUrl; // Chuyển hướng
                             });
-                            localStorage.setItem('distributorInfo', JSON.stringify(response.data.distributorInfo));
-                            localStorage.setItem('token', response.data.token);
-                            window.location.href = response.data.redirectUrl;
                         })
                         .catch(function (error) {
                             // Xử lý lỗi với SweetAlert2

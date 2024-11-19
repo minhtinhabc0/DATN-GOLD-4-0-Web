@@ -19,3 +19,90 @@ body {
     color: #f4f489;
     /* Đổi màu chữ vàng khi rê chuột vào */
 }
+
+/* CSS tùy chỉnh cho thông báo nhỏ */
+.swal2-popup-small {
+    width: 250px !important;
+    /* Điều chỉnh chiều rộng */
+    font-size: 13px !important;
+    /* Chỉnh kích thước chữ */
+    padding: 10px 20px !important;
+    /* Điều chỉnh khoảng cách giữa nội dung và viền */
+    border-radius: 8px !important;
+    /* Bo tròn các góc của popup */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+    /* Thêm bóng cho popup */
+}
+
+.swal2-title {
+    font-size: 14px !important;
+    /* Giảm kích thước chữ tiêu đề */
+    font-weight: bold;
+    text-align: center;
+}
+
+.swal2-content {
+    font-size: 12px !important;
+    /* Giảm kích thước nội dung */
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Đảm bảo icon hiển thị đúng kích thước */
+
+
+/* Icon success */
+.swal2-icon.swal2-success {
+    border-color: #f0b400 !important;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon error */
+.swal2-icon.swal2-error {
+    border-color: #f0b400 !important;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon warning */
+.swal2-icon.swal2-warning {
+    border-color: #f0b400 !important;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Nút xác nhận và hủy */
+.swal2-confirm,
+.swal2-cancel {
+    padding: 8px 16px !important;
+    /* Giảm kích thước nút */
+    font-size: 13px !important;
+    /* Kích thước chữ trên nút */
+    border-radius: 5px !important;
+    /* Bo tròn nút */
+}
+
+.swal2-confirm {
+    background-color: #f0b400 !important;
+    /* Màu nền nút xác nhận */
+    border: none;
+}
+
+.swal2-confirm:hover {
+    background-color: #00fc22 !important;
+    /* Màu nền nút khi hover */
+}
+
+.swal2-cancel {
+    color: #333 !important;
+    /* Màu chữ nút huỷ */
+    border: none;
+    background: transparent;
+}
+
+.swal2-cancel:hover {
+    color: #f0b400 !important;
+    /* Màu chữ khi hover */
+}

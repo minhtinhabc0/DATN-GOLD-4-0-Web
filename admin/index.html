@@ -1,247 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myapp" ng-controller="MainController">
 
-<head >
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN {{adminInfo.hoTen}}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/bangdk.css">
 
 
-    <style>
-        body {
-            background-color: #3b3b3b;
-            color: white !important;
-            margin: 0;
-        }
-
-        .sidebar {
-            background-color: #151515;
-            height: 100vh;
-            padding-top: 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease-in-out;
-            justify-content: flex-start;
-        }
-
-        .sidebar a {
-            color: yellow;
-            text-decoration: none;
-            font-size: 1.2rem;
-            display: block;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            transition: background-color 0.3s;
-            height: auto;
-        }
-
-        .sidebar a:hover {
-            background-color: #333;
-            color: yellow;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #3b3b3b;
-            position: fixed;
-            top: 0;
-            left: 250px;
-            right: 0;
-            height: 60px;
-            z-index: 1000;
-            transition: left 0.3s ease-in-out;
-        }
-
-        .user-icon img {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            margin-left: 10px;
-        }
-
-        .dashboard-content {
-            margin-left: 250px;
-            padding: 30px;
-            padding-top: 50px;
-            margin-top: 60px;
-            transition: margin-left 0.3s ease-in-out;
-        }
-
-        h1,
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #ffc107;
-        }
-
-        .logout {
-            color: yellow;
-            font-size: 1.2rem;
-            padding: 10px 15px;
-            display: block;
-            text-align: center;
-            border-top: 1px solid #333;
-            margin-top: auto;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 200px;
-            }
-
-            .header {
-                left: 200px;
-            }
-
-            .dashboard-content {
-                margin-left: 200px;
-            }
-
-            .sidebar a {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .sidebar {
-                transform: translateX(-100%);
-                position: fixed;
-                width: 100%;
-                z-index: 999;
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .header {
-                left: 0;
-            }
-
-            .dashboard-content {
-                margin-left: 0;
-                padding: 10px;
-                padding-top: 60px;
-            }
-
-            .sidebar a {
-                font-size: 0.9rem;
-            }
-        }
-
-        /* CSS cho loader */
-        .loader {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            text-align: center;
-        }
-
-        /* Đảm bảo nội dung chính không hiện trước khi tải */
-        #main-content {
-            display: none;
-        }
-
-        .loading-text {
-            color: white;
-            font-size: 13pt;
-            font-weight: 800;
-            text-align: center
-        }
-
-
-
-        .khung {
-            height: 30px;
-            display: inline-block;
-        }
-
-        .khung>div {
-            width: 10px;
-            height: 10px;
-            border-radius: 100%;
-            box-shadow: 0 0 10px;
-            background: #FFECBA;
-            float: left;
-            margin: 5px;
-            transform: scale(1.4);
-        }
-
-        .khung>div:nth-child(1) {
-            animation: anm-BL-53-move1 1s infinite linear;
-        }
-
-        .khung>div:nth-child(2) {
-            animation: anm-BL-53-move2 1s infinite linear;
-            animation-delay: 0.2s;
-        }
-
-        .khung>div:nth-child(3) {
-            animation: anm-BL-53-move3 1s infinite linear;
-            animation-delay: 0.3s;
-        }
-
-        .khung>div:nth-child(4) {
-            animation: anm-BL-53-move4 1s infinite linear;
-            animation-delay: 0.4s;
-        }
-
-        .khung>div:nth-child(5) {
-            animation: anm-BL-53-move5 1s infinite linear;
-            animation-delay: 0.5s;
-        }
-
-        @keyframes anm-BL-53-move1 {
-            50% {
-                background: #FFBB00;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes anm-BL-53-move2 {
-            50% {
-                background: #FFBB00;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes anm-BL-53-move3 {
-            50% {
-                background: #FFBB00;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes anm-BL-53-move4 {
-            50% {
-                background: #FFBB00;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes anm-BL-53-move5 {
-            50% {
-                background: #FFBB00;
-                transform: scale(1);
-            }
-        }
-    </style>
 </head>
 
-<body  style="background-color: #3b3b3b;">
+<body style="background-color: #3b3b3b;">
     <div class="loader">
         <div class="loading-text">
             GOLD 4.0
@@ -256,29 +28,54 @@
     </div>
 
     <div class="container-fluid" id="main-content">
-        <div class="header">
-            <button class="btn btn-outline-light d-md-none" onclick="toggleSidebar()">☰</button>
-            <div class="user-icon">
-                <span ng-click="showProfile()"><b>Tên Nhân viên:</b> {{adminInfo.hoTen}}</span>
-                <br>
-                <span><b>ID:</b> {{adminInfo.id}}</span>
-            </div>
-        </div>
+
 
         <div class="sidebar">
-            <h2 class="text-center" style="color: yellow;">Gold 4.0</h2>
+            <div class="header">
+                <button class="btn btn-outline-light d-md-none" onclick="toggleSidebar()">☰</button>
+                <div class="user-icon">
+                    <span ng-click="showProfile()"><b>Tên Nhân viên:</b> {{adminInfo.hoTen}}</span>
+                    <br>
+                    <span><b>ID:</b> {{adminInfo.id}}</span>
+                </div>
+            </div>
+            <h2 class="text-center" style="
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 20px;
+            color: #f4f489;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            background: linear-gradient(30deg, #ffea98, #FFA500);
+            -webkit-background-clip: text;
+            color: transparent;">
+                GOLD - 4.0
+            </h2>
             <nav>
-                <ul class="list-unstyled">
-                    <li><a href="#!/admin/bangdieukhien"><i class="fa-solid fa-house"></i> Bảng điều khiển</a></li>
-                    <li><a href="#!/admin/quanlysanpham"><i class="fa-solid fa-rectangle-list"></i> Quản lý sản phẩm</a>
+                <ul class="list-unstyled nav-pills">
+                    <li class="nav-item"><a class="nav-link" href="#!/admin/bangdieukhien">
+                            <i class="fa-solid fa-house"></i> Bảng Điều Khiển</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!/admin/quanlysanpham"><i
+                                class="fa-solid fa-rectangle-list"></i>
+                            Quản Lý Sản Phẩm</a>
                     </li>
-                    <li><a href="#!/admin/quanlydonhang"><i class="fa-solid fa-shop"></i> Quản lý đơn hàng</a></li>
-                    <li><a href="#!/admin/quanlytaikhoan"><i class="fa-solid fa-users"></i> Quản lý tài khoản</a></li>
-                    <li><a href="#!/admin/baocao"><i class="fa-solid fa-file-circle-xmark"></i> Báo cáo</a></li>
-                    <li><a href="#!/admin/uudai"><i class="fa-solid fa-fire-flame-curved"></i> Ưu đãi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!/admin/quanlydonhang"><i
+                                class="fa-solid fa-shop"></i> Quản Lý Đơn
+                            Hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!/admin/quanlytaikhoan"><i
+                                class="fa-solid fa-users"></i> Quản Lý Tài
+                            Khoản</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!/admin/baocao"><i
+                                class="fa-solid fa-file-circle-xmark"></i> Báo
+                            Cáo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!/admin/uudai"><i
+                                class="fa-solid fa-fire-flame-curved"></i> Ưu
+                            Đãi</a></li>
                 </ul>
             </nav>
-            <a href="#" ng-click="logout()" class="logout">Logout</a>
+            <div class="mt-auto text-center mb-3">
+                <button ng-click="logout()" class="btn btn-danger px-4 logout">Đăng Xuất</button>
+            </div>
+            <!-- <a href="#" ng-click="logout()" class="logout">Logout</a> -->
         </div>
 
         <div class="dashboard-content">
@@ -322,6 +119,18 @@
                 document.querySelector("#main-content").style.display = "block";
             }, 1500); // 3000ms = 3 giây
         };
+    </script>
+    <script>
+        document.querySelectorAll('.nav-link').forEach((item) => {
+            item.addEventListener('click', (e) => {
+                // Loại bỏ active từ tất cả các nav-link
+                document.querySelectorAll('.nav-link').forEach((link) => {
+                    link.classList.remove('active');
+                });
+                // Thêm active cho nav-link được click
+                e.target.classList.add('active');
+            });
+        });
     </script>
 
 </body>

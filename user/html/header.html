@@ -112,6 +112,11 @@
             margin: 0;
             /* Xóa margin trên các thiết bị nhỏ */
         }
+
+
+
+
+
     }
 </style>
 
@@ -132,8 +137,8 @@
     <!-- Center: Logo -->
     <div class="center-section d-flex justify-content-center">
         <a href="#!home" style="text-decoration: none;">
-            <img src="https://res.cloudinary.com/dcr0bghdp/image/upload/v1729941665/z26bq3ehwmqad4tqvlox.jpg" alt="GOLD - 4.0 Logo"
-                style="height: 80px; margin-top: -17px;margin-bottom: -15px;">
+            <img src="https://res.cloudinary.com/dcr0bghdp/image/upload/v1729941665/z26bq3ehwmqad4tqvlox.jpg"
+                alt="GOLD - 4.0 Logo" style="height: 80px; margin-top: -17px;margin-bottom: -15px;">
         </a>
     </div>
 
@@ -211,13 +216,15 @@
                     <a class="nav-link" href="#" style="color: white;">TIN TỨC</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"  id="navbarDropdownProduct" role="button"
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownProduct" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
                         HỖ TRỢ
                     </a>
                     <ul class="dropdown-menu" style="background-color: black;">
-                        <li><a class="dropdown-item" href="#!/user/hdkh" style="color: white;">Hướng dẫn sử dụng</a></li>
-                        <li><a class="dropdown-item" href="https://zalo.me/g/ieqdqo452" style="color: white;">Liên hệ CSKH</a></li>
+                        <li><a class="dropdown-item" href="#!/user/hdkh" style="color: white;">Hướng dẫn sử dụng</a>
+                        </li>
+                        <li><a class="dropdown-item" href="https://zalo.me/g/ieqdqo452" style="color: white;">Liên hệ
+                                CSKH</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -237,35 +244,35 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>// Get all navigation links
-// Get all navigation links
-// Get all navigation links and dropdown items
-const navLinks = document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item');
+    // Get all navigation links
+    // Get all navigation links and dropdown items
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item');
 
-// Add a click event listener to each link and dropdown item
-navLinks.forEach(link => {
-    link.addEventListener('click', function () {
-        // Remove 'active-link' from all links
-        navLinks.forEach(l => l.classList.remove('active-link'));
-        // Add 'active-link' to the clicked link
-        this.classList.add('active-link');
+    // Add a click event listener to each link and dropdown item
+    navLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            // Remove 'active-link' from all links
+            navLinks.forEach(l => l.classList.remove('active-link'));
+            // Add 'active-link' to the clicked link
+            this.classList.add('active-link');
 
-        // Scroll to the top of the page
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth' // Smooth scroll
+            // Scroll to the top of the page
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll
+            });
         });
     });
-});
 
-// Additionally, scroll to the top when the hash changes to "#!/user/home"
-window.addEventListener('hashchange', function () {
-    if (window.location.hash === "#!/user/home") {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-});
+    // Additionally, scroll to the top when the hash changes to "#!/user/home"
+    window.addEventListener('hashchange', function () {
+        if (window.location.hash === "#!/user/home") {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    });
 
 
 
