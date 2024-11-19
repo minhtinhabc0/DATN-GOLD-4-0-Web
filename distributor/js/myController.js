@@ -106,7 +106,7 @@ app.controller('quanlysanphamCtrl', function ($scope, $http) {
  $scope.products = [];
  $scope.selectedProduct = null;
  $scope.newProduct = {};
- $scope.newProduct.nhaPhanPhoi = $scope.distributorInfo.maNhaPhanPhoi;
+ 
 
  // Hàm lấy danh sách sản phẩm từ API
  $scope.loadProducts = function() {
@@ -170,9 +170,10 @@ app.controller('quanlysanphamCtrl', function ($scope, $http) {
         loaiDa: $scope.newProduct.loaiDa,//
         soLuong: $scope.newProduct.soLuong,
         tienCong: $scope.newProduct.tienCong,
-        maNhaPhanPhoi: $scope.newProduct.nhaPhanPhoi,
 
     }
+    console.log(newProduct);
+    console.log(localStorage.getItem('distributorInfo'));
         $http.post('http://localhost:9999/api/nppctrl/add-product',newProduct, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
