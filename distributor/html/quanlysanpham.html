@@ -10,6 +10,9 @@
                     <option value="2">Giá giảm dần</option>
                     <option value="3">Số lượng</option>
                 </select>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                    Thêm sản phẩm
+                </button>
             </div>
         </div>
 
@@ -21,59 +24,19 @@
                     <th>Tên sản phẩm</th>
                     <th>Giá sản phẩm</th>
                     <th>Số lượng</th>
-                    <th>Nhà phân phối</th>
+                 
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Row 1 -->
-                <tr>
-                    <td><img src="https://via.placeholder.com/50" alt="Product Image" class="rounded-circle"></td>
-                    <td>$ProductName</td>
-                    <td>$Price</td>
-                    <td>$Quantity</td>
-                    <td>$DistributorName</td>
-                    <td><button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#productDetailsModal">
-                            Chi tiết
-                        </button></td>
-                </tr>
-
-                <!-- Row 2 -->
-                <tr>
-                    <td><img src="https://via.placeholder.com/50" alt="Product Image" class="rounded-circle"></td>
-                    <td>$ProductName</td>
-                    <td>$Price</td>
-                    <td>$Quantity</td>
-                    <td>$DistributorName</td>
-                    <td><button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#productDetailsModal">
-                            Chi tiết
-                        </button></td>
-                </tr>
-
-                <!-- Row 3 -->
-                <tr>
-                    <td><img src="https://via.placeholder.com/50" alt="Product Image" class="rounded-circle"></td>
-                    <td>$ProductName</td>
-                    <td>$Price</td>
-                    <td>$Quantity</td>
-                    <td>$DistributorName</td>
-                    <td><button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#productDetailsModal">
-                            Chi tiết
-                        </button></td>
-                </tr>
-
-                <!-- Row 4 -->
-                <tr>
-                    <td><img src="https://via.placeholder.com/50" alt="Product Image" class="rounded-circle"></td>
-                    <td>$ProductName</td>
-                    <td>$Price</td>
-                    <td>$Quantity</td>
-                    <td>$DistributorName</td>
-                    <td><button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#productDetailsModal">
+                <!-- Product Rows will be dynamically filled by AngularJS -->
+                <tr ng-repeat="product in products">
+                    <td><img ng-src="{{ product.hinhAnh }}" alt="Product Image" class="rounded-circle"></td>
+                    <td>{{ product.tenSanPham }}</td>
+                    <td>{{ product.gia | number }} VNĐ</td>
+                    <td>{{ product.soLuong }}</td>
+                    <td>{{ product.nhaPhanPhoi.tenNhaPhanPhoi }}</td>
+                    <td><button type="button" class="btn btn-secondary" ng-click="viewProductDetails(product)">
                             Chi tiết
                         </button></td>
                 </tr>
@@ -100,6 +63,8 @@
         </div>
     </div>
 </div>
+
+<!-- Product Details Modal -->
 <div class="modal fade" id="productDetailsModal" tabindex="-1" aria-labelledby="productDetailsModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -112,63 +77,125 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12 text-center mb-4">
-                            <img src="https://via.placeholder.com/100" alt="Product Image" class="rounded-circle">
+                            <img ng-src="{{ selectedProduct.hinhAnh }}" alt="Product Image" class="rounded-circle">
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="productName" class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="productName" value="$ProductName">
+                                <input type="text" class="form-control" id="productName" ng-model="selectedProduct.tenSanPham" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productDescription" class="form-label">Chi tiết sản phẩm</label>
-                                <textarea class="form-control" id="productDescription" rows="2">$Description</textarea>
+                                <textarea class="form-control" id="productDescription" rows="2" ng-model="selectedProduct.chiTiet" readonly></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="productSize" class="form-label">Kích cỡ</label>
-                                <input type="text" class="form-control" id="productSize" value="$Size">
+                                <input type="text" class="form-control" id="productSize" ng-model="selectedProduct.kichCo" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productWeight" class="form-label">Trọng lượng</label>
-                                <input type="text" class="form-control" id="productWeight" value="$Weight">
+                                <input type="text" class="form-control" id="productWeight" ng-model="selectedProduct.trongLuong" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productCategory" class="form-label">Danh mục</label>
-                                <select class="form-select" id="productCategory">
-                                    <option selected>$CatalogID</option>
-                                    <!-- More options can be added here -->
-                                </select>
+                                <input type="text" class="form-control" id="productCategory" ng-model="selectedProduct.loai" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="productPrice" class="form-label">Giá</label>
-                                <input type="text" class="form-control" id="productPrice" value="$Price">
-                            </div>
-                            <div class="mb-3">
-                                <label for="productType" class="form-label">Loại sản phẩm</label>
-                                <input type="text" class="form-control" id="productType" value="$ProductType">
+                                <input type="text" class="form-control" id="productPrice" ng-model="selectedProduct.gia" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="goldType" class="form-label">Loại vàng</label>
-                                <input type="text" class="form-control" id="goldType" value="$GoldType">
+                                <input type="text" class="form-control" id="goldType" ng-model="selectedProduct.loaiVang" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="gemstoneType" class="form-label">Loại đá</label>
-                                <input type="text" class="form-control" id="gemstoneType" value="$GemstoneType">
+                                <input type="text" class="form-control" id="gemstoneType" ng-model="selectedProduct.loaiDa" readonly>
                             </div>
-                            <div class="mb-3">
-                                <label for="distributor" class="form-label">Nhà phân phối</label>
-                                <select class="form-select" id="distributor">
-                                    <option selected>$DistributorID</option>
-                                    <!-- More options can be added here -->
-                                </select>
-                            </div>
+                        
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Thêm sản phẩm mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="addProduct()">
+                    <div class="form-group">
+                        <label for="addProductImage">Hình ảnh sản phẩm</label>
+                          <input type="file" id="avatar"  ng-file-select ng-model="avatarFile"
+                         accept="image/*" ng-change="uploadAvatar()" />
+                         <img style="height: 100px; width: 100px" ng-src="{{newProduct.hinhAnh}}" alt="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="productName" ng-model="newProduct.tenSanPham" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productDescription" class="form-label">Chi tiết sản phẩm</label>
+                        <textarea class="form-control" id="productDescription" rows="2" ng-model="newProduct.chiTiet" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productSize" class="form-label">Kích cỡ</label>
+                        <input type="text" class="form-control" id="productSize" ng-model="newProduct.kichCo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productSize" class="form-label">Số Lượng Sản Phẩm</label>
+                        <input type="text" class="form-control" id="productSize" ng-model="newProduct.soLuong" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productWeight" class="form-label">Trọng lượng</label>
+                        <input type="text" class="form-control" id="productWeight" ng-model="newProduct.trongLuong" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productCategory" class="form-label">Danh mục</label>
+                        <select class="form-control" id="productCategory" ng-model="newProduct.loai" ng-change="checkCategory()" required>
+                            <option value="Vòng tay">Vòng tay</option>
+                            <option value="Nhẫn">Nhẫn</option>
+                            <option value="Dây chuyền">Dây chuyền</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Hiển thị ô nhập liệu khi chọn "Khác" -->
+                    <div class="mb-3" ng-show="newProduct.loai === 'Khác'">
+                        <label for="otherCategory" class="form-label">Nhập danh mục khác</label>
+                        <input type="text" class="form-control" id="otherCategory" ng-model="newProduct.loai" placeholder="Nhập danh mục" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Giá</label>
+                        <input type="number" class="form-control" id="productPrice" ng-model="newProduct.gia" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Tiền công</label>
+                        <input type="number" class="form-control" id="productPrice" ng-model="newProduct.tienCong" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="goldType" class="form-label">Loại vàng</label>
+                        <input type="text" class="form-control" id="goldType" ng-model="newProduct.loaiVang" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gemstoneType" class="form-label">Loại đá</label>
+                        <input type="text" class="form-control" id="gemstoneType" ng-model="newProduct.loaiDa" required>
+                    </div>
+                  
+                    <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                </form>
             </div>
         </div>
     </div>

@@ -84,7 +84,115 @@ app.controller('bangdieukhienCtrl', function ($scope) {
     });
 });
 
-app.controller('quanlysanphamCtrl', function ($scope) { });
+app.directive('ngFileSelect', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element) {
+            element.bind('change', function(event) {
+                scope.$apply(function() {
+                    scope.avatarFile = event.target.files[0];
+                    if (scope.avatarFile) {
+                        scope.uploadAvatar(); // Gọi hàm uploadAvatar ngay tại đây
+                    }
+                });
+            });
+        }
+    };
+})
+app.controller('quanlysanphamCtrl', function ($scope, $http) {
+    
+
+ // Định nghĩa danh sách sản phẩm và thông tin nhà phân phối
+ $scope.products = [];
+ $scope.selectedProduct = null;
+ $scope.newProduct = {};
+ $scope.newProduct.nhaPhanPhoi = $scope.distributorInfo.maNhaPhanPhoi;
+
+ // Hàm lấy danh sách sản phẩm từ API
+ $scope.loadProducts = function() {
+    console.log('token', localStorage.getItem('token'));
+    $http.get('http://localhost:9999/api/nppctrl/getsp', {
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        } 
+     }).then(function(response) {
+         $scope.products = response.data;
+         console.log($scope.products);
+     }, function(error) {
+         console.log('Lỗi khi lấy sản phẩm:', error);
+     });
+ };
+
+ // Hàm hiển thị chi tiết sản phẩm
+ $scope.viewProductDetails = function(product) {
+     $scope.selectedProduct = angular.copy(product);
+     // Mở modal chi tiết sản phẩm
+     $('#productDetailsModal').modal('show');
+ };
+
+
+ $scope.uploadAvatar = function() {
+    if (!$scope.avatarFile) {
+        alert('Vui lòng chọn một tệp ảnh để tải lên.');
+        return;
+    }
+
+    // Tạo form data để gửi
+    var formData = new FormData();
+    formData.append('file', $scope.avatarFile);
+    formData.append('upload_preset', 'imgavt1'); // Thay YOUR_UPLOAD_PRESET bằng upload preset của bạn
+
+    // Gọi API của Cloudinary để upload ảnh
+    $http.post('https://api.cloudinary.com/v1_1/dcr0bghdp/image/upload', formData, {
+        headers: {
+            'Content-Type': undefined
+        }
+    }).then(function(response) {
+        // Cập nhật avatar URL trong userInfo
+        $scope.newProduct.hinhAnh = response.data.secure_url; 
+    
+       
+    }).catch(function(error) {
+        console.error('Lỗi khi tải lên avatar:', error);
+        alert('Tải lên không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
+    });
+};
+ $scope.addProduct = function() {
+    const newProduct ={
+        tenSanPham: $scope.newProduct.tenSanPham, //
+        gia: $scope.newProduct.gia,//
+        chiTiet: $scope.newProduct.chiTiet,//
+        loai: $scope.newProduct.loai,//
+        hinhAnh: $scope.newProduct.hinhAnh,//
+        kichCo: $scope.newProduct.kichCo,//
+        loaiVang: $scope.newProduct.loaiVang,//
+        trongLuong: $scope.newProduct.trongLuong,//
+        loaiDa: $scope.newProduct.loaiDa,//
+        soLuong: $scope.newProduct.soLuong,
+        tienCong: $scope.newProduct.tienCong,
+        maNhaPhanPhoi: $scope.newProduct.nhaPhanPhoi,
+
+    }
+        $http.post('http://localhost:9999/api/nppctrl/add-product',newProduct, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function(response) {
+             // Sau khi thêm thành công, tải lại danh sách sản phẩm
+             $scope.loadProducts();
+             // Đóng modal thêm sản phẩm
+             $('#addProductModal').modal('hide');
+         }, function(error) {
+             console.log('Lỗi khi thêm sản phẩm:', error);
+         });
+     
+ };
+
+ // Gọi hàm loadProducts và loadDistributors khi trang được tải
+ $scope.loadProducts();
+//  $scope.loadDistributors();
+
+});
 
 app.controller('quanlydonhangCtrl', function ($scope, $http) {
     // Khai báo danh sách đơn hàng
