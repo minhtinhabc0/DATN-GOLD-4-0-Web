@@ -1,6 +1,17 @@
+/* Toàn bộ nền */
 body {
-    background-color: #121212;
+    background-color: #fff8dd !important;
+    /* Nền trắng */
+    color: #000000;
+    /* Màu chữ đen */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
+
+
+
+
 
 /* Sidebar styles */
 .sidebar {
@@ -9,84 +20,178 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #000;
-    padding-top: 20px;
-    color: gold;
+    background-color: #ffffff;
+    /* Nền trắng */
+    color: #000000;
+    /* Màu chữ đen */
+    border-right: 3px solid #d4af37;
+    /* Viền vàng ánh kim */
+    display: flex;
+    flex-direction: column;
+    /* Sắp xếp dọc */
+    padding-top: 10px;
 }
 
-.sidebar a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 18px;
-    color: gold;
-    display: block;
+/* Sidebar items */
+.nav-pills {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    width: 100%;
 }
 
-/* Khi tab được chọn, thay đổi màu nền thành xám */
-.nav-pills .nav-link.active {
-    background-color: #6c757d;
-    color: white;
-    /* Màu chữ trắng khi chọn */
+.nav-pills .nav-item {
+    margin: 10px 10px;
+    /* Khoảng cách giữa các mục */
 }
 
 .nav-pills .nav-link {
-    color: gold;
-    /* Màu chữ vàng mặc định */
+    display: block;
+    padding: 15px;
+    border-radius: 15px;
+    /* Bo góc */
+    text-align: center;
+    color: #000000;
+    /* Chữ đen */
+    background-color: #f8f8f8;
+    /* Nền xám nhạt */
+    border: 2px solid transparent;
+    /* Bỏ viền mặc định */
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng nhẹ */
 }
 
-.nav-pills .nav-link:hover {
-    background-color: rgba(108, 117, 125, 0.7);
-    /* Màu xám nhạt khi hover */
+/* Hover hiệu ứng */
+.nav-pills .nav-link:hover,
+.nav-pills .nav-link:focus {
+    background-color: rgba(212, 175, 55, 0.2);
+    /* Nền vàng nhạt khi hover */
+    color: #d4af37;
+    /* Màu chữ vàng ánh kim */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Tăng đổ bóng */
 }
 
-/* Content section styles */
+/* Khi tab được chọn */
+
+
+
+
+.nav-item .btn {
+    border-radius: 15px;
+    /* Bo góc */
+    background-color: #d4af37;
+    /* Nền vàng ánh kim */
+    color: #ffffff;
+    /* Chữ trắng */
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Đổ bóng */
+    width: 100%;
+    padding: 10px;
+}
+
+.nav-item .btn:hover {
+    background-color: #c29d2e;
+    /* Màu vàng đậm khi hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    /* Tăng đổ bóng */
+}
+
+.nav-item .btn:active {
+    transform: scale(0.98);
+    /* Hiệu ứng thu nhỏ khi bấm */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Giảm đổ bóng */
+}
+
+/* Nội dung bên phải */
 .content {
     margin-left: 260px;
     padding: 20px;
-    color: gold;
+    color: #000000;
+    /* Màu chữ đen */
 }
 
 /* Tab content styles */
 .tab-content {
     background-color: #ffffff;
+    /* Nền trắng */
     border-radius: 10px;
+    /* Bo góc */
     padding: 30px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    color: black;
+    /* Đổ bóng nhẹ */
+    color: #000000;
+    /* Chữ đen */
 }
 
-/* Avatar styling */
-.logo-container {
-
-    top: 20px;
-    right: 20px;
-    text-align: right;
-    z-index: 1000;
+/* Màu chữ mặc định cho các tab */
+.nav-pills .nav-link {
+    background-color: transparent;
+    /* Nền trong suốt */
+    color: #a88206;
+    /* Màu chữ vàng ánh kim */
+    border-radius: 15px;
+    /* Bo góc */
+    border: 2px solid transparent;
+    /* Viền trong suốt */
+    transition: all 0.3s ease-in-out;
+    /* Hiệu ứng mượt */
 }
 
-.logo-container img {
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+/* Khi rê chuột (hover) */
+.nav-pills .nav-link:hover {
+    background-color: rgba(212, 175, 55, 0.2);
+    /* Nền vàng nhạt */
+    color: #a88206;
+    /* Màu chữ vàng ánh kim */
+    border: 2px solid #d4af37;
+
+    /* Viền vàng ánh kim */
 }
 
-.logo-container h3 {
-    margin-top: 10px;
-    font-size: 16px;
-    color: gold;
+/* Khi được chọn (active) */
+.nav-pills .nav-link.active {
+    background-color: #fff8dd !important;
+    /* Nền vàng ánh kim đậm */
+    color: #a88206 !important;
+    /* Màu chữ trắng */
+    border: 2px solid #d4af37 !important;
+    border-radius: 15px;
+    /* Viền vàng ánh kim */
+    transform: scale(1.05);
+    /* Phóng to nhẹ */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    /* Đổ bóng */
 }
 
-.card {
-    border-radius: 10px;
-    background-color: #fff;
+/* Khi tab được focus */
+.nav-pills .nav-link:focus {
+    outline: none;
+    /* Loại bỏ viền mặc định */
+    background-color: rgba(212, 175, 55, 0.2);
+    /* Nền vàng nhạt */
+    color: #a88206;
+    /* Màu chữ vàng ánh kim */
+    border: 2px solid #d4af37;
+    /* Viền vàng ánh kim */
 }
 
-.table img {
-    width: 30px;
-    height: 30px;
+/* Xóa gạch chân mặc định và khi hover */
+.sidebar .nav-link {
+    text-decoration: none;
+
+
 }
+
+.sidebar .nav-link:hover {
+    text-decoration: none;
+
+}
+
 
 /* CSS cho loader */
 .loader {
@@ -104,7 +209,7 @@ body {
 }
 
 .loading-text {
-    color: white;
+    color: #a88206;
     font-size: 13pt;
     font-weight: 800;
     text-align: center
@@ -185,4 +290,114 @@ body {
         background: #FFBB00;
         transform: scale(1);
     }
+}
+
+/* Đẩy nút logout xuống dưới cùng */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    padding: 20px 10px;
+    color: gold;
+}
+
+/* Làm đẹp phần header */
+.header {
+
+    /* Nền xám đậm */
+    border: 1px solid gold;
+    /* Viền vàng ánh kim */
+    border-radius: 10px;
+    /* Bo góc */
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header .user-icon p {
+    margin: 0;
+    color: #a88206;
+    /* Màu vàng ánh kim */
+    font-size: 14px;
+}
+
+.header button {
+    background-color: transparent;
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.header button:hover {
+    background-color: #d4af37;
+    /* Nền vàng khi hover */
+    color: black;
+    /* Màu chữ đen */
+}
+
+/* Định dạng nút logout */
+.sidebar .btn-danger {
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #d4af37;
+}
+
+.sidebar .btn-danger:hover {
+    background-color: #ff0000;
+    /* Nền đỏ tươi */
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.4);
+}
+
+/* Tùy chỉnh kiểu dáng cho SweetAlert2 */
+.swal-title {
+    font-size: 1.5rem;
+    color: #a88206;
+    /* Màu vàng ánh kim */
+}
+
+.swal-text {
+    font-size: 1rem;
+    color: #000000;
+}
+
+.swal-btn-cancel {
+    background-color: #f44336;
+    /* Đỏ tươi */
+    border-color: #d32f2f;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.swal-btn-cancel:hover {
+    background-color: #c62828;
+}
+
+.swal-btn-confirm {
+    background-color: #d4af37;
+    /* Vàng ánh kim */
+    border-color: #c29d2e;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.swal-btn-confirm:hover {
+    background-color: #c29d2e;
+}
+
+.swal2-popup {
+    background-color: #fff8dd;
+    /* Nền vàng nhạt */
+    border-radius: 10px;
 }

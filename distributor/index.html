@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nha Phan Phoi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
     <link rel="stylesheet" href="css/nhaphanphoi.css">
 </head>
 
@@ -29,35 +35,50 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="header">
+            <div class="header d-flex align-items-center justify-content-between p-3">
                 <button class="btn btn-outline-light d-md-none" onclick="toggleSidebar()">☰</button>
                 <div class="user-icon">
-                    <span ng-click="showProfile()"><b>Tên Nhà Phân Phối:</b> {{distributorInfo.tencuahang}}</span>
-                    <br>
-                    <span><b>ID:</b> {{distributorInfo.id}}</span>
+                    <p class="mb-1"><b>Tên Nhà Phân Phối:</b> {{distributorInfo.tencuahang}}</p>
+                    <p class="mb-0"><b>ID:</b> {{distributorInfo.id}}</p>
                 </div>
             </div>
-            <h2 class="text-center" style="color: yellow;">Gold 4.0</h2>
+
+            <h2 class="text-center" style="
+                        font-family: 'Montserrat', sans-serif;
+                        margin-top: 20px;
+                        color: #f4f489;
+                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+                        letter-spacing: 2px;
+                        background: linear-gradient(30deg, #ffea98, #FFA500);
+                        -webkit-background-clip: text;
+                        color: transparent;">
+                GOLD - 4.0
+            </h2>
             <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" href="#!/distributor/bangdieukhien" role="tab">Bảng điều khiển</a>
+                    <a class="nav-link" href="#!/distributor/bangdieukhien" role="tab">
+                        <i class="fa-solid fa-house"></i> Bảng Điều Khiển</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#!/distributor/quanlysanpham" role="tab">Danh sách sản
-                        phẩm</a>
+                    <a class="nav-link" href="#!/distributor/quanlysanpham" role="tab">
+                        <i class="fa-solid fa-rectangle-list"></i> Quản Lý Sản Phẩm</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#!/distributor/quanlydonhang" role="tab">Quản lý đơn
-                        hàng</a>
+                    <a class="nav-link" href="#!/distributor/quanlydonhang" role="tab">
+                        <i class="fa-solid fa-shop"></i> Quản Lý Đơn Hàng</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#!/distributor/baocao" role="tab">Báo cáo</a>
-                </li>
-                <li class="nav-item">
-                    <button ng-click="logout1()" class="btn btn-danger">logout</button>
+                    <a class="nav-link" href="#!/distributor/baocao" role="tab">
+                        <i class="fa-solid fa-file-circle-xmark"></i> Báo Cáo</a>
                 </li>
             </ul>
+
+            <!-- Nút logout ở dưới cùng -->
+            <div class="mt-auto text-center mb-3">
+                <button ng-click="logout1()" class="btn btn-danger px-4">Đăng Xuất</button>
+            </div>
         </div>
+
 
 
         <div class="content">
@@ -105,6 +126,18 @@
             const sidebar = document.querySelector('.sidebar');
             sidebar.classList.toggle('show'); // Thêm hoặc xóa class `show`
         }
+        // Đảm bảo chỉ có một nav-link active
+        document.querySelectorAll('.nav-link').forEach((item) => {
+            item.addEventListener('click', (e) => {
+                // Loại bỏ active từ tất cả các nav-link
+                document.querySelectorAll('.nav-link').forEach((link) => {
+                    link.classList.remove('active');
+                });
+                // Thêm active cho nav-link được click
+                e.target.classList.add('active');
+            });
+        });
+
     </script>
 
 
