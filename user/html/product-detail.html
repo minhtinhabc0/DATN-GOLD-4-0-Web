@@ -417,7 +417,9 @@
     <div class="product-info">
         <h1 class="product-title" style="color: #2a3356;">{{ product.tenSanPham }}</h1>
         <p class="product-code" style="color: #2a3356;">Mã sản phẩm: {{ product.maSanPham }}</p>
-        <p class="product-price" style="color: #2a3356;">{{ product.gia | number: 0 }} VND</p>
+        <p class="product-price" style="color: red;">{{ product.gia | number: 0 }} VND
+        <span style="color: gray; text-decoration: line-through; font-size: 16px;">15,000,000 VND</p>
+        </span>
         <p class="product-note">(Giá sản phẩm có thể thay đổi tùy trọng lượng vàng và đá quý.)</p>
 
         <!-- Chọn size -->
@@ -487,28 +489,28 @@
 </div>
 
 <script>
-// Thêm sự kiện click vào các phần tử có class "tab"
-document.addEventListener("click", function (event) {
-    // Kiểm tra nếu phần tử được click là tab
-    if (event.target.classList.contains("tab")) {
-        const tab = event.target;
+    // Thêm sự kiện click vào các phần tử có class "tab"
+    document.addEventListener("click", function (event) {
+        // Kiểm tra nếu phần tử được click là tab
+        if (event.target.classList.contains("tab")) {
+            const tab = event.target;
 
-        // Loại bỏ class active khỏi tất cả các tab
-        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-        // Thêm class active vào tab được click
-        tab.classList.add("active");
+            // Loại bỏ class active khỏi tất cả các tab
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+            // Thêm class active vào tab được click
+            tab.classList.add("active");
 
-        // Ẩn tất cả nội dung tab
-        document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+            // Ẩn tất cả nội dung tab
+            document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
 
-        // Hiển thị nội dung của tab tương ứng
-        const tabId = tab.getAttribute("data-tab");
-        const targetContent = document.querySelector(`#tab-${tabId}`);
-        if (targetContent) {
-            targetContent.classList.add("active");
+            // Hiển thị nội dung của tab tương ứng
+            const tabId = tab.getAttribute("data-tab");
+            const targetContent = document.querySelector(`#tab-${tabId}`);
+            if (targetContent) {
+                targetContent.classList.add("active");
+            }
         }
-    }
-});
+    });
 
 
 </script>
