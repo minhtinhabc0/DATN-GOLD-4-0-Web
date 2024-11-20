@@ -1,118 +1,514 @@
 <style>
     body {
-        margin-top: 200px !important;
+        margin-top: 140px !important;
+
     }
 
-    /* Căn chỉnh phần tiêu đề */
-    .product-detail-container h1 {
+    .product-detail-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .product-image-gallery {
+        flex: 1 1 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .main-image img {
+        max-width: 100%;
+        height: 500px;
+        border-radius: 10px;
+    }
+
+    .product-info {
+        flex: 1 1 45%;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-title {
         font-size: 24px;
-        font-weight: bold;
         color: #333;
+        margin-bottom: 10px;
+    }
+
+    .product-code {
+        font-size: 14px;
+        color: #777;
         margin-bottom: 15px;
     }
 
-    /* Căn chỉnh phần hình ảnh */
-    .product-detail-container img {
-        width: 100%;
-        max-width: 300px;
-        margin-bottom: 20px;
-    }
-
-    /* Căn chỉnh phần giá */
-    .product-detail-container .price {
-        font-size: 18px;
-        color: #b12704;
+    .product-price {
+        font-size: 20px;
+        color: #d32f2f;
         font-weight: bold;
-        margin: 5px 0 20px;
+        margin-bottom: 5px;
     }
 
-    /* Chọn kích cỡ */
-    .size-selection {
-        font-size: 16px;
-        margin-bottom: 15px;
-    }
-
-    .size-selection label {
-        font-weight: bold;
-    }
-
-    .size-selection select {
-        padding: 5px;
-        margin-left: 10px;
-        font-size: 16px;
-    }
-
-    /* Căn chỉnh phần mô tả */
-    .product-detail-container .description {
+    .product-note {
         font-size: 14px;
         color: #555;
-        line-height: 1.6;
-        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    .size-selection {
         margin-bottom: 20px;
     }
 
-    /* Căn chỉnh toàn bộ container */
-    .product-detail-container {
-        max-width: 600px;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin: 0 auto;
-    }
-
-    /* Định dạng nút */
-    .product-detail-container .buy-now,
-    .product-detail-container .add-to-cart,
-    .product-detail-container .contact-now {
-        background-color: #d32f2f;
-        color: #fff;
+    .size-title {
         font-size: 16px;
         font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .size-options {
+        display: flex;
+        gap: 10px;
+    }
+
+    .size-option {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .size-option.selected,
+    .size-option:hover {
+        background-color: #1a73e8;
+        color: #fff;
+        border-color: #1a73e8;
+    }
+
+    .offers-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .offers-container h3 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .offer-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .offer-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .offer-item img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .offer-text {
+        font-size: 13px;
+        line-height: 1.4;
+        color: #555;
+    }
+
+    .offer-text a {
+        color: #1a73e8;
+        text-decoration: none;
+    }
+
+    .offer-text a:hover {
+        text-decoration: underline;
+    }
+
+    .check-icon {
+        color: #1a73e8;
+        font-size: 18px;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .action-buttons button {
         padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        margin-top: 10px;
-        display: block;
-        width: 100%;
         text-align: center;
-        text-transform: uppercase;
     }
 
-    .product-detail-container .add-to-cart {
+    .buy-now {
+        background-color: #d32f2f;
+        color: #fff;
+    }
+
+    .add-to-cart {
         background-color: #1a73e8;
+        color: #fff;
     }
 
-    .product-detail-container .contact-now {
+    .contact-now {
         background-color: #333;
+        color: #fff;
     }
 
-    .product-detail-container .buy-now:hover {
+    .buy-now:hover {
         background-color: #b71c1c;
     }
 
-    .product-detail-container .add-to-cart:hover {
+    .add-to-cart:hover {
         background-color: #155ab8;
     }
 
-    .product-detail-container .contact-now:hover {
+    .contact-now:hover {
         background-color: #222;
     }
+
+    .tab-container {
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        color: #222;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: start;
+        border-bottom: 2px solid #ddd;
+        cursor: pointer;
+    }
+
+    .tab {
+        padding: 10px 20px;
+        margin-right: 10px;
+        border: none;
+        background-color: transparent;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        transition: color 0.3s, border-bottom 0.3s;
+    }
+
+    .tab.active {
+        color: #1a73e8;
+        border-bottom: 3px solid #1a73e8;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .tab-content.active h2 {
+        font-size: 15px !important;
+        font-weight: bold;
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .main-button {
+        background-color: #b71c1c;
+        margin-top: 20px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px 10px;
+        border: none;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 35 0px;
+        cursor: pointer;
+    }
+
+    .main-button span {
+        display: block;
+        font-size: 12px;
+        font-weight: normal;
+        margin-top: 5px;
+    }
+
+    .main-button:hover {
+        background-color: #a11717;
+    }
+
+    .secondary-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .secondary-button {
+        background-color: #1a237e;
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px 10px;
+        border: none;
+        border-radius: 10px;
+        flex: 1;
+        width: 195px;
+        cursor: pointer;
+    }
+
+    .secondary-button:hover {
+        background-color: #121a5b;
+    }
+
+    .store-check {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .store-check h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .store-check .dropdowns {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .store-check select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .store-check p {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .store-check strong {
+        color: #000;
+    }
 </style>
+
 <div class="product-detail-container">
-    <h1>{{ product.tenSanPham }}</h1>
-    <img ng-src="{{ product.hinhAnh }}" alt="{{ product.tenSanPham }}">
-    <p style="color: black !important;">Giá: {{ product.gia | number:0 }} VND</p>
-    <p>{{ product.moTa }}</p>
-    <p class="description">
-        Chiếc lắc tay PNJ sở hữu sự cứng cáp của vàng Ý 14K được chế tác tinh xảo, kết hợp các chi tiết đúc, chà nhám
-        thể hiện cho công nghệ hiện đại và sự tỉ mỉ tạo nên sự sang trọng và sáng trọng.
-    </p>
+    <!-- Phần ảnh sản phẩm -->
+    <div class="product-image-gallery">
+        <div class="main-image">
+            <img ng-src="{{ product.hinhAnh }}" alt="Sản phẩm chính" style="background-color: #f9f9f9;">
+        </div>
+        <div class="tab-container">
+            <!-- Thanh tab -->
+            <div class="tabs">
+                <button class="tab active" data-tab="1">Chính sách hậu mãi</button>
+                <button class="tab" data-tab="2">Mô tả sản phẩm</button>
+                <button class="tab" data-tab="3">Câu hỏi thường gặp</button>
+            </div>
 
-    <button class="buy-now">Mua ngay</button>
-    <button class="add-to-cart" ng-click="addToCart(product.id, 1)">Thêm vào giỏ hàng</button>
+            <!-- Nội dung từng tab -->
+            <div id="tab-1" class="tab-content active" style="font-size: 13px;">
+                <div class="policy-container">
+                    <section class="policy-item">
+                        <h2>Miễn phí bảo hành 6 tháng</h2>
+                        <ul>
+                            <li>Bảo hành 6 tháng lỗi kỹ thuật, nước xi.</li>
+                        </ul>
+                    </section>
 
-    <button class="contact-now">Gọi ngay (miễn phí)</button>
+                    <section class="policy-item">
+                        <h2>Miễn phí siêu âm và đánh bóng bằng máy chuyên dụng trọn đời</h2>
+                        <ul>
+                            <li>Đối với sản phẩm bị oxy hóa, xuống màu, sẽ được siêu âm làm sạch bằng máy chuyên dụng
+                                (siêu âm, không xi) miễn phí trọn đời tại cửa hàng.</li>
+                            <li>Miễn phí đánh bóng, siêu âm trọn đời.</li>
+                            <li>Đối với nhẫn cưới được làm mới, đánh bóng, xi miễn phí trọn đời.</li>
+                        </ul>
+                    </section>
+
+                    <section class="policy-item">
+                        <h2>Miễn phí thay đá ECZ, CZ và đá tổng hợp</h2>
+                        <ul>
+                            <li>Miễn phí thay đá tổng hợp, ECZ và CZ trong suốt thời gian bảo hành.</li>
+                        </ul>
+                    </section>
+
+                    <section class="policy-item">
+                        <h2>Không áp dụng bảo hành cho các trường hợp sau:</h2>
+                        <ul>
+                            <li>Dây chuyền, lắc chế tác bị đứt gãy.</li>
+                            <li>Sản phẩm bị lỗi do tác động bên ngoài, do quá trình sử dụng hoặc sử dụng không đúng cách
+                                dẫn đến sản phẩm bị biến dạng hoặc hư hỏng.</li>
+                            <li>Không bảo hành kiềng, vòng, nữ trang 22K, 24K, dây chuyền, dây cổ chế tác, lắc chế tác
+                                bị đứt gãy và sản phẩm bị lỗi do tác động bên ngoài.</li>
+                            <li>Khách hàng cung cấp thông tin truy lục hóa đơn không chính xác.</li>
+                        </ul>
+                    </section>
+
+                    <section class="policy-item">
+                        <h2>Lưu ý về chính sách bảo hành:</h2>
+                        <ul>
+                            <li>PNJ bảo hành các sản phẩm thuộc hệ thống cửa hàng kênh lẻ và online của PNJ.</li>
+                            <li>Chế độ bảo hành sản phẩm có thể thay đổi theo chính sách của PNJ đối với các dòng hàng
+                                và chương trình khuyến mãi vào từng thời điểm.</li>
+                            <li>Xem thông tin chi tiết về chính sách bảo hành vui lòng truy cập tại đây.</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+            <div id="tab-2" class="tab-content">
+                <h3>Mô tả sản phẩm</h3>
+                <p>{{ product.chiTiet }}</p>
+                <p>{{ product.loaiDa}}</p>
+                <p>Số lượng sản phẩm hiện còn: {{ product.soLuong }}</p>
+                <p>Các loại size : {{ product.kichCo }}</p>
+                <p>Trọng lượng sản phẩm: {{ product.trongLuong }}</p>
+            </div>
+            <div id="tab-3" class="tab-content">
+                <h3>Câu hỏi thường gặp</h3>
+                <p>Q: Làm thế nào để đặt hàng?<br>A: Bạn có thể đặt hàng qua website hoặc liên hệ hotline của chúng tôi.
+                </p>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Phần thông tin sản phẩm -->
+    <div class="product-info">
+        <h1 class="product-title" style="color: #2a3356;">{{ product.tenSanPham }}</h1>
+        <p class="product-code" style="color: #2a3356;">Mã sản phẩm: {{ product.maSanPham }}</p>
+        <p class="product-price" style="color: #2a3356;">{{ product.gia | number: 0 }} VND</p>
+        <p class="product-note">(Giá sản phẩm có thể thay đổi tùy trọng lượng vàng và đá quý.)</p>
+
+        <!-- Chọn size -->
+        <div class="size-selection" style="color: black;">
+            <p class="size-title">Các loại size:</p>
+            <div class="size-options">
+                <span class="size-option">{{product.kichCo}}</span>
+            </div>
+        </div>
+
+        <!-- Ưu đãi -->
+        <div class="offers-container">
+            <h3>Ưu đãi:</h3>
+            <div class="offer-item">
+                <span class="check-icon">✔</span>
+                <p class="offer-text">Giảm đến 300K khi thanh toán bằng <a href="#">VNPAY-QR</a></p>
+            </div>
+            <div class="offer-item">
+                <span class="check-icon">✔</span>
+                <p class="offer-text">Giảm 800.000VNĐ cho đơn hàng từ 20.000.000 cho Thẻ tín dụng VPBank khi thanh toán
+                    qua PAYOO. <a href="#">Xem chi tiết</a></p>
+            </div>
+            <div class="offer-item">
+                <span class="check-icon">✔</span>
+                <p class="offer-text">Ưu đãi thêm lên đến 1.5tr khi thanh toán bằng thẻ TECHCOMBANK <a href="#">Xem chi
+                        tiết</a></p>
+            </div>
+            <div class="offer-item">
+                <span class="check-icon">✔</span>
+                <p class="offer-text">Giảm 200.000Đ cho hóa đơn mua hàng từ 2.500.000Đ khi thanh toán bằng thẻ tín dụng
+                    Muadee by HDBANK <a href="#">Xem chi tiết</a></p>
+            </div>
+        </div>
+
+        <!-- Đánh giá -->
+
+        <!-- Nút hành động -->
+        <div class="button-container">
+            <!-- Nút chính -->
+            <button class="main-button">
+                Mua ngay
+                <span>(Giao hàng miễn phí tận nhà hoặc nhận tại cửa hàng)</span>
+            </button>
+
+            <!-- Hai nút phụ -->
+            <div class="secondary-buttons">
+                <button class="secondary-button">Thêm vào giỏ hàng</button>
+                <button class="secondary-button">Gọi ngay (miễn phí)</button>
+            </div>
+        </div>
+        <div class="store-check">
+            <h3>Xem Cửa Hàng Còn Hàng</h3>
+            <div class="dropdowns">
+                <select>
+                    <option selected>Tỉnh/Thành phố</option>
+                    <!-- Thêm các tùy chọn khác -->
+                </select>
+                <select>
+                    <option selected>Quận/Huyện</option>
+                    <!-- Thêm các tùy chọn khác -->
+                </select>
+            </div>
+            <p>Chọn <strong>Tỉnh/Thành Phố</strong> để xem danh sách cửa hàng có sẵn sản phẩm của bạn</p>
+        </div>
+
+    </div>
 </div>
+
+<script>
+// Thêm sự kiện click vào các phần tử có class "tab"
+document.addEventListener("click", function (event) {
+    // Kiểm tra nếu phần tử được click là tab
+    if (event.target.classList.contains("tab")) {
+        const tab = event.target;
+
+        // Loại bỏ class active khỏi tất cả các tab
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        // Thêm class active vào tab được click
+        tab.classList.add("active");
+
+        // Ẩn tất cả nội dung tab
+        document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+
+        // Hiển thị nội dung của tab tương ứng
+        const tabId = tab.getAttribute("data-tab");
+        const targetContent = document.querySelector(`#tab-${tabId}`);
+        if (targetContent) {
+            targetContent.classList.add("active");
+        }
+    }
+});
+
+
+</script>
