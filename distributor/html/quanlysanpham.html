@@ -3,17 +3,18 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="fw-bold">Danh sách sản phẩm</h3>
             <div class="d-flex">
-                <input type="text" class="form-control me-2" placeholder="Tìm kiếm sản phẩm">
-                <select class="form-select">
-                    <option selected>Sắp xếp theo</option>
-                    <option value="1">Giá tăng dần</option>
-                    <option value="2">Giá giảm dần</option>
-                    <option value="3">Số lượng</option>
+                <input type="text" class="form-control" ng-model="searchQuery" placeholder="Tìm kiếm sản phẩm..." ng-change="filterProducts()">
+                <select class="form-select" ng-model="selectedFilter" ng-change="filterProducts()">
+                    <option value="3">Tất cả</option>
+                    <option value="1">Sản phẩm đã duyệt</option>
+                    <option value="2">Sản phẩm đợi duyệt</option>
                 </select>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal">
-                    Thêm sản phẩm
-                </button>
+                
+              
             </div>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                Thêm sản phẩm
+            </button>
         </div>
 
         <!-- Product Table -->
@@ -30,21 +31,24 @@
             </thead>
             <tbody>
                 <!-- Product Rows will be dynamically filled by AngularJS -->
-                <tr ng-repeat="product in products">
+                <tr ng-repeat="product in filteredProducts">
+                    
                     <td><img style="height: 200px; width: 200px" ng-src="{{ product.hinhAnh }}" alt="Product Image" ></td>
                     <td>{{ product.tenSanPham }}</td>
                     <td>{{ product.gia | number }} VNĐ</td>
                     <td>{{ product.soLuong }}</td>
-                    <td>{{ product.nhaPhanPhoi.tenNhaPhanPhoi }}</td>
-                    <td><button type="button" class="btn btn-secondary" ng-click="viewProductDetails(product)">
+                    <td style="color: {{product.trangThai ? 'green' : 'red'}} "><b>{{product.trangThai ? 'Đã duyệt' : 'Đợi duyệt'}}</b></td>
+                   
+                    <td><button type="button" class="btn btn-primary" ng-click="viewProductDetails(product)">
                             Chi tiết
                         </button></td>
+                        
                 </tr>
             </tbody>
         </table>
 
         <!-- Pagination -->
-        <div class="d-flex justify-content-center">
+        <!-- <div class="d-flex justify-content-center">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li class="page-item">
@@ -60,7 +64,7 @@
                     </li>
                 </ul>
             </nav>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -77,51 +81,61 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12 text-center mb-4">
-                            <img  ng-src="{{ selectedProduct.hinhAnh }}" alt="Product Image" class="rounded-circle">
+                            <img ng-src="{{ selectedProduct.hinhAnh }}" alt="Product Image" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                            <div class="mt-3" ng-show="isEditing">
+                                <input type="file" id="avatar"  ng-file-select ng-model="avatarFile"
+                            accept="image/*" ng-change="uploadAvatar(false)">
+                              
+                            </div>
                         </div>
+                        
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="productName" class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="productName" ng-model="selectedProduct.tenSanPham" readonly>
+                                <input type="text" class="form-control" id="productName" ng-model="selectedProduct.tenSanPham" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productDescription" class="form-label">Chi tiết sản phẩm</label>
-                                <textarea class="form-control" id="productDescription" rows="2" ng-model="selectedProduct.chiTiet" readonly></textarea>
+                                <textarea class="form-control" id="productDescription" rows="2" ng-model="selectedProduct.chiTiet" ng-readonly="!isEditing" readonly></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="productSize" class="form-label">Kích cỡ</label>
-                                <input type="text" class="form-control" id="productSize" ng-model="selectedProduct.kichCo" readonly>
+                                <input type="text" class="form-control" id="productSize" ng-model="selectedProduct.kichCo" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productWeight" class="form-label">Trọng lượng</label>
-                                <input type="text" class="form-control" id="productWeight" ng-model="selectedProduct.trongLuong" readonly>
+                                <input type="text" class="form-control" id="productWeight" ng-model="selectedProduct.trongLuong" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productCategory" class="form-label">Danh mục</label>
-                                <input type="text" class="form-control" id="productCategory" ng-model="selectedProduct.loai" readonly>
+                                <input type="text" class="form-control" id="productCategory" ng-model="selectedProduct.loai" ng-readonly="!isEditing" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="productPrice" class="form-label">Giá</label>
-                                <input type="text" class="form-control" id="productPrice" ng-model="selectedProduct.gia" readonly>
+                                <input type="text" class="form-control" id="productPrice" ng-model="selectedProduct.gia" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="goldType" class="form-label">Loại vàng</label>
-                                <input type="text" class="form-control" id="goldType" ng-model="selectedProduct.loaiVang" readonly>
+                                <input type="text" class="form-control" id="goldType" ng-model="selectedProduct.loaiVang" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="gemstoneType" class="form-label">Loại đá</label>
-                                <input type="text" class="form-control" id="gemstoneType" ng-model="selectedProduct.loaiDa" readonly>
+                                <input type="text" class="form-control" id="gemstoneType" ng-model="selectedProduct.loaiDa" ng-readonly="!isEditing" readonly>
                             </div>
                         
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-            </div>
+            <button type="button" class="btn btn-primary" ng-click="toggleEdit()">
+                {{ isEditing ? 'Hủy chỉnh sửa' : 'Chỉnh sửa' }}
+            </button>
+            <button type="button" class="btn btn-success" ng-show="isEditing" ng-click="saveProductChanges()">
+                Lưu thay đổi
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
         </div>
     </div>
 </div>
@@ -139,7 +153,7 @@
                     <div class="form-group">
                         <label for="addProductImage">Hình ảnh sản phẩm</label>
                           <input type="file" id="avatar"  ng-file-select ng-model="avatarFile"
-                         accept="image/*" ng-change="uploadAvatar()" />
+                         accept="image/*" ng-change="uploadAvatar(true)" />
                          <img style="height: 100px; width: 100px" ng-src="{{newProduct.hinhAnh}}" alt="">
                     </div>
                     <div class="mb-3">

@@ -129,22 +129,45 @@ app.controller('quanlysanphamCtrl', function ($scope, $http) {
  $scope.products = [];
  $scope.selectedProduct = null;
  $scope.newProduct = {};
+ $scope.filteredProducts = []; // Danh sách sản phẩm đã được lọc
+ $scope.selectedFilter = '3'; // Mặc định là "Tất cả"
+ $scope.searchQuery = '';
  
+
+
 
  // Hàm lấy danh sách sản phẩm từ API
  $scope.loadProducts = function() {
-    console.log('token', localStorage.getItem('token'));
     $http.get('http://localhost:9999/api/nppctrl/getsp', {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
-        } 
-     }).then(function(response) {
-         $scope.products = response.data;
-         console.log($scope.products);
-     }, function(error) {
-         console.log('Lỗi khi lấy sản phẩm:', error);
-     });
- };
+        }
+    }).then(function(response) {
+        $scope.products = response.data;
+        $scope.filterProducts(); // Sau khi tải sản phẩm, thực hiện lọc
+    }, function(error) {
+        console.log('Lỗi khi lấy sản phẩm:', error);
+    });
+};
+
+// Hàm lọc sản phẩm dựa trên trạng thái và tìm kiếm
+$scope.filterProducts = function() {
+    $scope.filteredProducts = $scope.products.filter(function(product) {
+        let matchesStatus = false;
+        if ($scope.selectedFilter == '1') {
+            matchesStatus = product.trangThai == true; // Giả sử trạng thái duyệt là 'duyet'
+        } else if ($scope.selectedFilter == '2') {
+            matchesStatus = product.trangThai == false; // Giả sử trạng thái chưa duyệt là 'chuaDuyet'
+        } else {
+            matchesStatus = true; // Tất cả sản phẩm
+        }
+
+        // Lọc theo tên sản phẩm
+        let matchesSearch = product.tenSanPham.toLowerCase().includes($scope.searchQuery.toLowerCase());
+
+        return matchesStatus && matchesSearch;
+    });
+};
 
  // Hàm hiển thị chi tiết sản phẩm
  $scope.viewProductDetails = function(product) {
@@ -152,13 +175,44 @@ app.controller('quanlysanphamCtrl', function ($scope, $http) {
      // Mở modal chi tiết sản phẩm
      $('#productDetailsModal').modal('show');
  };
+ // Thêm trạng thái chỉnh sửa
+$scope.isEditing = false;
+
+// Hàm bật/tắt chế độ chỉnh sửa
+$scope.toggleEdit = function() {
+    $scope.isEditing = !$scope.isEditing;
+};
+
+// Hàm lưu thay đổi sản phẩm
+$scope.saveProductChanges = function() {
+    console.log($scope.selectedProduct);
+    if ($scope.selectedProduct) {
+        $http.put('http://localhost:9999/api/nppctrl/update-product/' + $scope.selectedProduct.maSanPham, $scope.selectedProduct, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function(response) {
+            console.log('Cập nhật sản phẩm thành công.');
+            // Tải lại danh sách sản phẩm
+            $scope.loadProducts();
+            // Tắt chế độ chỉnh sửa
+            $scope.isEditing = false;
+            $('#productDetailsModal').modal('hide');
+        }, function(error) {
+            console.error('Lỗi khi cập nhật sản phẩm:', error);
+            alert('Cập nhật sản phẩm không thành công.');
+        });
+    }
+};
 
 
- $scope.uploadAvatar = function() {
+
+$scope.uploadAvatar = function() {
     if (!$scope.avatarFile) {
         alert('Vui lòng chọn một tệp ảnh để tải lên.');
         return;
     }
+   
 
     // Tạo form data để gửi
     var formData = new FormData();
@@ -171,15 +225,24 @@ app.controller('quanlysanphamCtrl', function ($scope, $http) {
             'Content-Type': undefined
         }
     }).then(function(response) {
-        // Cập nhật avatar URL trong userInfo
-        $scope.newProduct.hinhAnh = response.data.secure_url; 
-    
-       
+        // Kiểm tra xem đang cập nhật cho newProduct hay selectedProduct
+        if (true) {
+            // Cập nhật avatar URL trong newProduct
+            $scope.newProduct.hinhAnh = response.data.secure_url;
+            console.log("new product");
+        } else {
+            // Cập nhật avatar URL trong selectedProduct
+            $scope.selectedProduct.hinhAnh = response.data.secure_url;
+        }
+
+        // Hiển thị thành công
+        console.log("Cập nhật hình ảnh thành công:", response.data.secure_url);
     }).catch(function(error) {
         console.error('Lỗi khi tải lên avatar:', error);
         alert('Tải lên không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
     });
 };
+
  $scope.addProduct = function() {
     const newProduct ={
         tenSanPham: $scope.newProduct.tenSanPham, //
