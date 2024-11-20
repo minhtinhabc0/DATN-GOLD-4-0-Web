@@ -231,10 +231,14 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             }
         }).then(function (response) {
             alert(response.data);
+            $scope.getLockedDistributors();
             $scope.getApprovedDistributors();
             $scope.getPendingDistributors();
         }, function (error) {
             console.log("Error deleting distributor:", error);
+            $scope.getLockedDistributors();
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
         })
     }
 
@@ -250,6 +254,7 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             console.log($scope.lockedDistributors);
         }, function (error) {
             console.log("Error fetching locked distributors:", error);
+            
         });
     };
 
@@ -268,6 +273,9 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             $scope.getPendingDistributors();
         }, function (error) {
             console.log("Error locking account:", error);
+            $scope.getLockedDistributors();
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
         });
     };
 
@@ -285,6 +293,9 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             $scope.getPendingDistributors();
         }, function (error) {
             console.log("Error approving account:", error);
+            $scope.getLockedDistributors();
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
         });
     };
 
@@ -301,6 +312,9 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             $scope.getPendingDistributors();
         }, function (error) {
             console.log("Error rejecting account:", error);
+            $scope.getLockedDistributors();
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
         });
     };
     $scope.unlockDistributorAccount = function (id) {
@@ -315,6 +329,9 @@ app.controller('nhaphanphoiCtrl', ['$scope', '$http', '$window', function ($scop
             $scope.getPendingDistributors();
         }, function (error) {
             console.log("Error unlocking account:", error);
+            $scope.getLockedDistributors();
+            $scope.getApprovedDistributors();
+            $scope.getPendingDistributors();
         });
     }
 

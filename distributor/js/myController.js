@@ -230,10 +230,10 @@ $scope.uploadAvatar = function() {
             // Cập nhật avatar URL trong newProduct
             $scope.newProduct.hinhAnh = response.data.secure_url;
             console.log("new product");
-        } else {
+        }  
             // Cập nhật avatar URL trong selectedProduct
             $scope.selectedProduct.hinhAnh = response.data.secure_url;
-        }
+        
 
         // Hiển thị thành công
         console.log("Cập nhật hình ảnh thành công:", response.data.secure_url);
@@ -274,6 +274,27 @@ $scope.uploadAvatar = function() {
          });
      
  };
+ $scope.deleteProduct = function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Vui lòng đăng nhập');
+        return;
+    }
+
+    // Gọi API xóa sản phẩm
+    $http.delete(`http://localhost:9999/api/nppctrl/delete-product/${$scope.selectedProduct.maSanPham}`, {
+        headers: {
+            'Authorization': 'Bearer '  + localStorage.getItem('token')
+        }
+    }).then(function(response) {
+        console.log('Xóa sản phẩm thành công.');
+        
+        $scope.loadProducts();
+    }, function(error) {
+        console.log('Lỗi khi xóa sản phẩm:', error);
+        $scope.loadProducts();
+    });
+};
 
  // Gọi hàm loadProducts và loadDistributors khi trang được tải
  $scope.loadProducts();
