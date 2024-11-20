@@ -121,7 +121,51 @@ app.controller('MainController', function ($scope, $location, $window) {
 });
 
 app.controller('bangdieukhienCtrl', function ($scope) { });
-app.controller('quanlysanphamCtrl', function ($scope) { });
+app.controller('quanlysanphamCtrl', function ($scope, $http) {
+    
+
+
+    $scope.products = [];
+    $scope.filteredProducts = []; // Danh sách sản phẩm đã được lọc
+    $scope.selectedFilter = '3'; // Mặc định là "Tất cả"
+    $scope.searchQuery = '';
+
+    $scope.loadProducts = function() {
+        $http.get('http://localhost:9999/api/adctrl/productsall', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function(response) {
+            $scope.products = response.data;
+            console.log($scope.products);
+            $scope.filterProducts(); 
+        }, function(error) {
+            console.log('Lỗi khi lấy sản phẩm:', error);
+        });
+    };
+
+    $scope.filterProducts = function() {
+        $scope.filteredProducts = $scope.products.filter(function(product) {
+            let matchesStatus = false;
+            if ($scope.selectedFilter == '1') {
+                matchesStatus = product.trangThai == true; // Giả sử trạng thái duyệt là 'duyet'
+            } else if ($scope.selectedFilter == '2') {
+                matchesStatus = product.trangThai == false; // Giả sử trạng thái chưa duyệt là 'chuaDuyet'
+            } else {
+                matchesStatus = true; // Tất cả sản phẩm
+            }
+    
+            // Lọc theo tên sản phẩm
+            let matchesSearch = product.tenSanPham.toLowerCase().includes($scope.searchQuery.toLowerCase()) ;
+
+    
+            return matchesStatus && matchesSearch;
+        });
+    };
+
+    $scope.loadProducts();
+
+});
 app.controller('quanlysanphamthemCtrl', function ($scope) { });
 app.controller('quanlysanphamsuaCtrl', function ($scope) { });
 app.controller('quanlydonhangCtrl', function ($scope) { });
