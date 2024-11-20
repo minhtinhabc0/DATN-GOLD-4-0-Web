@@ -426,8 +426,9 @@
         <div class="size-selection" style="color: black;">
             <p class="size-title">Các loại size:</p>
             <div class="size-options">
-                <span class="size-option">{{product.kichCo}}</span>
+                <span class="size-option" ng-repeat="size in product.kichCo.split(',')">{{size}}</span>
             </div>
+            
         </div>
 
         <!-- Ưu đãi -->
