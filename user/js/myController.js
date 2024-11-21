@@ -559,7 +559,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
 
             $http({
                 method: 'POST',
-                url: 'http://localhost:9999/api/checkout/create-payment-link',
+                url: 'http://localhost:9999/api/checkout/create',
                 data: paymentData,
                 headers: {
                     'Content-Type': 'application/json',
