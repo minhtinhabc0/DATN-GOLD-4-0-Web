@@ -418,7 +418,8 @@
         <h1 class="product-title" style="color: #2a3356;font-weight: 300;">{{ product.tenSanPham }}</h1>
         <p class="product-code" style="color: #2a3356;">Mã sản phẩm: {{ product.maSanPham }}</p>
         <p class="product-price" style="color: red; font-weight: lighter;">{{ product.gia | number: 0 }} VND
-        <span style="color: gray; text-decoration: line-through; font-size: 16px;">15,000,000 VND</p>
+        <span style="color: gray; text-decoration: line-through; font-size: 16px;"><span>{{ calculatePrice(product.gia) | number: 0 }} VND</span>
+    </p>
         </span>
         <p class="product-note">(Giá sản phẩm có thể thay đổi tùy trọng lượng vàng và đá quý.)</p>
 

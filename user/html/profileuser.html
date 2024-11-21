@@ -62,17 +62,18 @@
                                             ng-disabled="!isEditing" accept="image/*" ng-change="uploadAvatar()" />
                                         
                                     </div>
-                                
-                                    <form class="user-info-form" ng-submit="updateProfile()">
+                                    
+                                    <form class="user-info-form" ng-submit="updateProfile()" ng-show="!editemail">
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Họ tên</label>
                                             <input type="text" class="form-control" id="fullName" ng-model="userInfo.hoTen"
                                                 required ng-disabled="!isEditing">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
+                                            <label for="email" class="form-label">Email</label> 
                                             <input type="email" class="form-control" id="email" ng-model="userInfo.email"
-                                                required ng-disabled="!isEditing">
+                                                required disabled>
+                                               <button type="button" class="btn" ng-click="enableEditemail()"ng-if="isEditing">sửa email</button>
                                         </div>
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">Số điện thoại</label>
