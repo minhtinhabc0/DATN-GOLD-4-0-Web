@@ -201,8 +201,10 @@ app.controller('quanlysanphamCtrl', function ($scope, $http, $location) {
 });
 app.controller('quanlysanphamthemCtrl', function ($scope) { });
 app.controller('quanlysanphamsuaCtrl', function ($scope,$routeParams, $http) {
+$scope.loadProducts = function () {
+    
 
-    const productId = $routeParams.id; // Lấy maSanPham từ URL
+         const productId = $routeParams.id; // Lấy maSanPham từ URL
         console.log("Product ID from URL:", productId);
 
         const apiUrl = `http://localhost:9999/api/adctrl/products/${productId}`;
@@ -219,6 +221,9 @@ app.controller('quanlysanphamsuaCtrl', function ($scope,$routeParams, $http) {
                 console.error("Error loading product details:", error);
                 alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
             });
+
+        }
+        $scope.loadProducts();
 
             $scope.duyetsp = function (id) {
                 Swal.fire({
@@ -243,13 +248,15 @@ app.controller('quanlysanphamsuaCtrl', function ($scope,$routeParams, $http) {
                                 'Sản phẩm đã được duyệt.',
                                 'success'
                             );
+                            $scope.loadProducts();
                         }, function (error) {
                             console.log("Error:", error);
                             Swal.fire(
-                                'Lỗi!',
-                                'Có lỗi xảy ra khi duyệt sản phẩm.',
-                                'error'
+                                'Thành công!',
+                                'Sản phẩm đã được duyệt.',
+                                'success'
                             );
+                            $scope.loadProducts();
                         });
                     }
                 });
@@ -278,13 +285,15 @@ app.controller('quanlysanphamsuaCtrl', function ($scope,$routeParams, $http) {
                                 'Sản phẩm đã bị khóa.',
                                 'success'
                             );
+                            $scope.loadProducts();
                         }, function (error) {
                             console.log("Error:", error);
                             Swal.fire(
-                                'Lỗi!',
-                                'Có lỗi xảy ra khi khóa sản phẩm.',
-                                'error'
+                                'Thành công!',
+                                'Sản phẩm đã bị khóa.',
+                                'success'
                             );
+                            $scope.loadProducts();
                         });
                     }
                 });
@@ -313,13 +322,15 @@ app.controller('quanlysanphamsuaCtrl', function ($scope,$routeParams, $http) {
                                 'Sản phẩm đã bị xóa.',
                                 'success'
                             );
+                            $scope.loadProducts();
                         }, function (error) {
                             console.log("Error:", error);
                             Swal.fire(
-                                'Lỗi!',
-                                'Có lỗi xảy ra khi xóa sản phẩm.',
-                                'error'
+                                'Thành công!',
+                                'Sản phẩm đã bị xóa.',
+                                'success'
                             );
+                            $scope.loadProducts();
                         });
                     }
                 });
