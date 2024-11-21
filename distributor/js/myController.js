@@ -648,6 +648,15 @@ app.controller('baocaoCtrl', function ($scope, $http) {
         }
         console.log(filteredData[0].manhaPhanphoi);
 
+        // Tính tổng doanh thu và tổng lợi nhuận
+        let totalRevenue = 0;
+        let totalProfit = 0;
+
+        filteredData.forEach(function (item) {
+            totalRevenue += item.doanhThu;
+            totalProfit += item.loiNhuan;
+        });
+
         // Tạo bảng hoặc phần tử HTML cần xuất ra PDF
         let tableHTML = '<div id="report-content" style="font-family: Arial, sans-serif; color: #333; padding: 30px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">';
 
@@ -705,6 +714,14 @@ app.controller('baocaoCtrl', function ($scope, $http) {
             tableHTML += '</tr>';
         });
 
+        // Thêm dòng tổng vào cuối bảng
+        tableHTML += '<tr style="background-color: #fff8dd; font-weight: bold;">';
+        tableHTML += '<td colspan="3" style="padding: 6px 10px; text-align: center;">Tổng Cộng</td>';
+        tableHTML += `<td style="padding: 6px 10px; text-align: center;">${totalRevenue.toLocaleString('vi-VN')}</td>`;
+        tableHTML += `<td style="padding: 6px 10px; text-align: center;">${totalProfit.toLocaleString('vi-VN')}</td>`;
+        tableHTML += '<td style="padding: 6px 10px; text-align: center;"></td>';
+        tableHTML += '</tr>';
+
         tableHTML += '</tbody></table>';
         tableHTML += '</div>';
 
@@ -726,6 +743,7 @@ app.controller('baocaoCtrl', function ($scope, $http) {
                 alert('Có lỗi xảy ra khi xuất file PDF.');
             });
     };
+
 
     $scope.exportToExcel = function () {
         let filteredData = [];
@@ -762,7 +780,7 @@ app.controller('baocaoCtrl', function ($scope, $http) {
 
         // Định dạng thông tin nhà phân phối
         worksheet.mergeCells('A1:F2');
-        worksheet.getCell('A1').value = distributorText;// Thêm thông tin nhà phân phối vào ô A1:F2
+        worksheet.getCell('A1').value = distributorText; // Thêm thông tin nhà phân phối vào ô A1:F2
         worksheet.getCell('A1').font = { size: 12, color: { argb: 'black' }, bold: true }; // Màu đen và chữ nghiêng
         worksheet.getCell('A1').alignment = { horizontal: 'center' }; // Căn giữa và ngắt dòng
         worksheet.getCell('A1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'E5E5E5' } }; // Nền sáng xám
@@ -798,6 +816,10 @@ app.controller('baocaoCtrl', function ($scope, $http) {
         worksheet.getRow(5).fill = { type: 'pattern', pattern: 'solid' };
         worksheet.getRow(5).alignment = { horizontal: 'center', vertical: 'middle' };
 
+        // Khởi tạo các biến tổng doanh thu và tổng lợi nhuận
+        let totalRevenue = 0;
+        let totalProfit = 0;
+
         // Duyệt qua dữ liệu và thêm vào bảng
         filteredData.forEach(function (item, index) {
             const row = worksheet.addRow([
@@ -808,6 +830,10 @@ app.controller('baocaoCtrl', function ($scope, $http) {
                 item.loiNhuan.toLocaleString('vi-VN'),
                 $scope.getYear(item.thoiGian)
             ]);
+
+            // Tính tổng doanh thu và tổng lợi nhuận
+            totalRevenue += item.doanhThu;
+            totalProfit += item.loiNhuan;
 
             // Định dạng cho các dòng dữ liệu
             row.font = { size: 12, color: { argb: 'black' } };
@@ -825,6 +851,21 @@ app.controller('baocaoCtrl', function ($scope, $http) {
                 };
             });
         });
+
+        // Thêm dòng tổng vào cuối bảng
+        const totalRow = worksheet.addRow([
+            '',
+            'Tổng Cộng',
+            '',
+            totalRevenue.toLocaleString('vi-VN'),
+            totalProfit.toLocaleString('vi-VN'),
+            ''
+        ]);
+
+        // Định dạng cho dòng tổng
+        totalRow.font = { size: 12, bold: true, color: { argb: 'black' } };
+        totalRow.alignment = { horizontal: 'center', vertical: 'middle' };
+        totalRow.fill = { type: 'pattern', pattern: 'solid' };
 
         // Áp dụng định dạng cho tất cả các dòng (dòng 5 trở đi)
         worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
@@ -864,6 +905,7 @@ app.controller('baocaoCtrl', function ($scope, $http) {
             link.click();
         });
     };
+
 
 
 

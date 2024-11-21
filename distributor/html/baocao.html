@@ -149,6 +149,44 @@
 </style>
 
 <style>
+    /* Thiết kế cho select */
+    .form-select {
+        font-size: 1rem;
+        padding: 10px 20px;
+        border-radius: 30px;
+        /* Viền tròn hơn */
+        border: 1px solid #ccc;
+        /* Viền nhẹ */
+        background-color: #fff;
+        color: #333;
+        transition: all 0.3s ease;
+        /* Thêm hiệu ứng khi hover và focus */
+        width: 150px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Bóng mờ nhẹ */
+    }
+
+    /* Thay đổi khi focus */
+    .form-select:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Thêm hiệu ứng khi hover */
+    .form-select:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Thêm hiệu ứng cho phần label */
+    .form-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+
+
     /* From Uiverse.io by cybrejon */
     .xuatfile {
         color: rgba(9, 9, 9, 0.692);
@@ -204,13 +242,14 @@
             <h3 class="mb-0 me-4">Báo Cáo Doanh Thu</h3>
             <div class="d-flex align-items-center">
 
-                <select id="year" ng-model="selectedYear" ng-change="onYearChange()">
+                <select id="year" ng-model="selectedYear" ng-change="onYearChange()" class="form-select">
                     <option value="">Tất cả</option>
                     <option value="2022">2022</option>
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
                 </select>
             </div>
+
         </div>
 
 
