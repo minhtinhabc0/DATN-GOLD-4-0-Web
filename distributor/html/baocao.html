@@ -1,110 +1,292 @@
-<div>
+<style>
+    /* Thiết kế chung */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    /* Container chính */
+    .container {
+        max-width: 1140px;
+        margin: auto;
+    }
+
+    /* Tiêu đề */
+    h3 {
+        font-size: 2rem;
+        color: #333;
+    }
+
+    /* Thẻ canvas cho biểu đồ */
+    canvas {
+
+        background-color: #fff;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Định dạng cho các thẻ thông tin (doanh thu và lợi nhuận) */
+    .bg-light {
+        background-color: #f1f1f1 !important;
+    }
+
+    /* Các thẻ thông tin */
+    .bg-light h4 {
+        font-size: 1.5rem;
+        color: #333;
+    }
+
+    .bg-light h6 {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    /* Bảng thông tin */
+    .table {
+        font-size: 0.875rem;
+        color: #333;
+        background-color: #fff;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #fff8dd;
+        color: #a88206;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Nút xuất báo cáo */
+    .btn {
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 25px;
+        padding: 10px 20px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn i {
+        margin-right: 8px;
+    }
+
+
+
+    .btn-outline-secondary {
+        background-color: transparent;
+        color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Điều chỉnh bóng mờ để hài hòa hơn */
+    .shadow-sm {
+        box-shadow: 0 8px 24px rgba(38, 37, 37, 0.38) !important;
+    }
+
+    /* Căn chỉnh các phần tử theo chiều ngang */
+    .d-flex {
+        display: flex;
+        align-items: center;
+        /* Căn giữa các phần tử theo chiều dọc */
+    }
+
+    /* Tiêu đề */
+    h3 {
+        font-size: 1.75rem;
+        font-weight: 700 !important;
+
+        /* In đậm */
+        color: #a88206 !important;
+
+        /* Màu xanh cho tiêu đề */
+    }
+
+
+
+    /* Style cho select */
+    .form-select {
+        font-size: 1rem;
+        padding: 10px 15px;
+        border-radius: 25px;
+        /* Viền tròn cho dropdown */
+        border: 1px solid #ccc;
+        /* Màu viền nhẹ */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* Bóng mờ cho dropdown */
+        background-color: #fff;
+        color: #333;
+        width: 150px;
+        /* Chiều rộng của select */
+    }
+
+    /* Khi select được focus */
+    .form-select:focus {
+        border-color: #007bff;
+        /* Màu viền khi focus */
+        outline: none;
+        box-shadow: 0 0 10px rgba(38, 123, 255, 0.3);
+        /* Hiệu ứng bóng khi focus */
+    }
+
+    #myChart {
+        width: 100% !important;
+        height: 455px !important;
+        /* Hoặc giá trị phù hợp */
+    }
+</style>
+
+<style>
+    /* From Uiverse.io by cybrejon */
+    .xuatfile {
+        color: rgba(9, 9, 9, 0.692);
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.397);
+        background: #F5B16D;
+        overflow: hidden;
+        font-size: 0.9rem;
+        font-weight: 400;
+        gap: 8px;
+        border-radius: 25px;
+        margin: 0 5px;
+        transition: 0.2s;
+        font-weight: bold;
+        border: 1px solid transparent;
+    }
+
+    .xuatfile:hover {
+        border-color: #fff8dd;
+        color: black;
+        background: linear-gradient(to bottom,
+                rgba(248, 242, 133, 0.19),
+                rgba(248, 242, 133, 0.29),
+                rgba(248, 242, 133, 0.39));
+        box-shadow: 0 6px rgba(14, 10, 10, 0.623);
+        transform: translateY(-6px);
+    }
+
+    .xuatfile:active {
+        transform: translateY(2px);
+        box-shadow: none;
+    }
+</style>
+
+<head>
+    <!-- Tải jsPDF từ CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Tải plugin autoTable cho jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.19/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+
+</head>
+
+<div ng-app="" ng-controller="baocaoCtrl">
     <div class="container-fluid py-4">
-        <h3 class="fw-bold">Báo cáo</h3>
-        <div class="row">
-            <!-- Doanh thu Chart -->
-            <div class="col-md-8 mb-4">
-                <div class="bg-white p-3 rounded-3 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Doanh thu</h5>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Năm
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">2022</a></li>
-                                <li><a class="dropdown-item" href="#">2023</a></li>
-                                <li><a class="dropdown-item" href="#">2024</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div id="chart-container" style="height: 300px;">
-                        <!-- Placeholder for chart -->
-                        <canvas id="revenueChart1"></canvas>
-                    </div>
-                </div>
-            </div>
+        <!-- Flexbox để căn chỉnh tiêu đề và chọn năm ngang hàng -->
+        <div class="d-flex align-items-center mb-4">
+            <h3 class="mb-0 me-4">Báo Cáo Doanh Thu</h3>
+            <div class="d-flex align-items-center">
 
-            <!-- Tổng doanh thu và thông tin khác -->
-            <div class="col-md-4">
-                <div class="bg-white p-3 mb-4 rounded-3 shadow-sm">
-                    <h6 class="fw-bold">Tổng doanh thu</h6>
-                    <h4>5 triệu tỷ VND</h4>
-                    <small>Tăng 10% so với tháng trước</small>
-                </div>
-
-                <div class="bg-white p-3 mb-4 rounded-3 shadow-sm">
-                    <h6 class="fw-bold">Tổng sản phẩm được bán</h6>
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>Loại sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Doanh thu</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Sản phẩm A</td>
-                                <td>100</td>
-                                <td>2 triệu</td>
-                            </tr>
-                            <tr>
-                                <td>Sản phẩm B</td>
-                                <td>150</td>
-                                <td>3 triệu</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="bg-white p-3 rounded-3 shadow-sm">
-                    <h6 class="fw-bold">Tổng lợi nhuận</h6>
-                    <p>Lợi nhuận: 1 triệu</p>
-                </div>
+                <select id="year" ng-model="selectedYear" ng-change="onYearChange()">
+                    <option value="">Tất cả</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                </select>
             </div>
         </div>
 
-        <!-- Export Buttons -->
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-outline-secondary me-2">Xuất ra PDF</button>
-            <button class="btn btn-outline-secondary">Xuất ra Excel</button>
+
+        <div class="row">
+            <div class="col-5" style="display: flex; flex-direction: column; height: 100%;">
+                <!-- Biểu đồ -->
+                <canvas id="myChart" width="550" height="330"></canvas>
+
+
+            </div>
+
+            <div class="col-7">
+                <!-- Thông tin tổng hợp -->
+                <div class="row mb-4">
+                    <!-- Tổng doanh thu -->
+                    <div class="col-md-6 bg-white p-4 rounded-3 shadow-sm">
+                        <h6 class="fw-bold text-uppercase text-muted">Tổng doanh thu</h6>
+                        <h4 class="fw-bold text-primary">{{reportData.totalRevenue | number:0}} VND</h4>
+                    </div>
+
+                    <!-- Tổng lợi nhuận -->
+                    <div class="col-5 bg-white p-4 rounded-3 shadow-sm" style="margin-left: 54px;">
+                        <h6 class="fw-bold text-uppercase text-muted">Tổng lợi nhuận</h6>
+                        <h4 class="fw-bold text-success">{{reportData.totalProfit | number:0}} VND</h4>
+                    </div>
+
+                    <!-- Tổng sản phẩm được bán -->
+                    <div class="col-12 mt-4 bg-white p-4 rounded-3 shadow-sm mb-4">
+                        <h6 class="fw-bold text-uppercase text-muted">Tổng sản phẩm được bán</h6>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Loại sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Doanh thu</th>
+                                    <th>Lợi Nhuận</th>
+                                    <th>Năm</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="product in productDetails">
+                                    <td>{{product.masanPham.tenSanPham}}</td>
+                                    <td>{{product.soLuong}}</td>
+                                    <td>{{product.doanhThu | number:0}} VND</td>
+                                    <td>{{product.loiNhuan | number:0}} VND</td>
+                                    <td>{{ getYear(product.thoiGian) }}</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Các nút xuất báo cáo -->
+                <div class="d-flex justify-content-end">
+                    <button class="xuatfile btn btn-outline-secondary me-2" ng-click="exportToPDF()">Xuất File <i
+                            class="fa-regular fa-file-pdf" style="font-size:larger;"></i>
+                    </button>
+                    <button class="xuatfile btn btn-outline-secondary" ng-click="exportToExcel()">Xuất File <i
+                            class="fa-regular fa-file-excel" style="font-size:larger;"></i></button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+
 <!-- Thêm mã JavaScript cho biểu đồ -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ctx1 = document.getElementById('revenueChart1').getContext('2d');
-        const revenueChart1 = new Chart(ctx1, {
-            type: 'line',
-            data: {
-                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                datasets: [{
-                    label: 'Doanh thu',
-                    data: [30, 50, 20, 60, 90, 40, 50, 80, 30, 100, 60, 80],
-                    borderColor: 'green',
-                    borderWidth: 2,
-                    fill: false
-                }, {
-                    label: 'Chi phí',
-                    data: [20, 40, 10, 50, 70, 30, 40, 70, 20, 90, 50, 70],
-                    borderColor: 'red',
-                    borderWidth: 2,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
-</script>
+<!-- Thêm thư viện html2pdf.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
