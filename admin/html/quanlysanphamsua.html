@@ -3,163 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm sản phẩm</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <title>Chi Tiết Sản Phẩm</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             background-color: #3b3b3b;
             color: #fff;
             margin: 0;
+            padding: 20px;
         }
-
 
         .content-wrapper {
-        background-color: #fff;
-        border-radius: 15px;
-        max-width: 1200px;
-        margin: auto;
-        padding: 10px;
-        color: #000;
-        margin-right: 30px;
-        margin-top: 60px;
-    }
+            background-color: #fff;
+            color: #000;
+            border-radius: 15px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
         h2 {
-            color: #333;
             text-align: center;
+            color: #333;
         }
 
-        .product-form {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px; /* Keep consistent gap */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
         }
 
-        .product-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            color: #fff;
-            margin: 0 auto 10px auto;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 2px; /* Added margin to separate form fields */
-        }
-
-        label {
-            font-weight: bold;
-            margin-bottom: 2px;
-        }
-
-        input[type="text"], select {
-            padding: 5px;
-            border-radius: 5px;
+        table th, table td {
             border: 1px solid #ccc;
-            width: 90%;
+            padding: 10px;
+            text-align: left;
         }
 
-        .form-actions {
-            grid-column: span 2;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
+        table th {
+            background-color: #f4f4f4;
+            color: #333;
         }
 
-        .btn {
-            padding: 10px 20px;
-            border: none;
+        table td img {
+            max-width: 100px;
             border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
         }
 
-        .btn-cancel {
-            background-color: #6c757d;
-            color: white;
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .btn-add {
-            background-color: #28a745;
-            color: white;
+        .back-btn a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
-        .btn-add1 {
-            background-color:red;
-            color: white;
+
+        .back-btn a:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
-
 <body>
-
     <div class="content-wrapper">
-        <h2>Thêm sản phẩm</h2>
-        <div class="product-img">Image</div>
-        
-        <form class="product-form">
-            <div class="form-group">
-                <label for="productName">Tên sản phẩm</label>
-                <input type="text" id="productName" placeholder="Tên sản phẩm">
-            </div>
-            <div class="form-group">
-                <label for="price">Giá</label>
-                <input type="text" id="price" placeholder="Giá">
-            </div>
-            <div class="form-group">
-                <label for="description">Chi tiết sản phẩm</label>
-                <input type="text" id="description" placeholder="Chi tiết sản phẩm">
-            </div>
-            <div class="form-group">
-                <label for="productType">Loại sản phẩm</label>
-                <input type="text" id="productType" placeholder="Loại sản phẩm">
-            </div>
-            <div class="form-group">
-                <label for="size">Kích cỡ</label>
-                <input type="text" id="size" placeholder="Kích cỡ">
-            </div>
-            <div class="form-group">
-                <label for="goldType">Loại vàng</label>
-                <input type="text" id="goldType" placeholder="Loại vàng">
-            </div>
-            <div class="form-group">
-                <label for="weight">Trọng lượng</label>
-                <input type="text" id="weight" placeholder="Trọng lượng">
-            </div>
-            <div class="form-group">
-                <label for="gemstoneType">Loại đá</label>
-                <input type="text" id="gemstoneType" placeholder="Loại đá">
-            </div>
-            <div class="form-group">
-                <label for="catalogId">Danh mục</label>
-                <select id="catalogId">
-                    <option value="1">Danh mục 1</option>
-                    <option value="2">Danh mục 2</option>
-                    <option value="3">Danh mục 3</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="distributorId">Nhà phân phối</label>
-                <select id="distributorId">
-                    <option value="1">Nhà phân phối 1</option>
-                    <option value="2">Nhà phân phối 2</option>
-                    <option value="3">Nhà phân phối 3</option>
-                </select>
-            </div>
+        <h2>Chi Tiết Sản Phẩm</h2>
+        <table>
+            <tr>
+                <th>Hình ảnh</th>
+                <td><img ng-src="{{product.hinhAnh}}" alt="Vòng tay"></td>
+            </tr>
+            <tr>
+                <th>Mã sản phẩm</th>
+                <td>{{product.maSanPham}}</td>
+            </tr>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <td>{{product.tenSanPham}} </td>
+            </tr>
+            <tr>
+                <th>Giá</th>
+                <td>{{product.gia}}</td>
+            </tr>
+            <tr>
+                <th>Kích cỡ</th>
+                <td>{{product.kichCo}}</td>
+            </tr>
+            <tr>
+                <th>Loại</th>
+                <td>{{product.loai}}</td>
+            </tr>
+            <tr>
+                <th>Loại vàng</th>
+                <td>{{product.loaiVang}}</td>
+            </tr>
+            <tr>
+                <th>Loại đá</th>
+                <td>{{product.loaiDa}}</td>
+            </tr>
+            <tr>
+                <th>Trọng lượng</th>
+                <td>{{product.trongLuong}}</td>
+            </tr>
+            <tr>
+                <th>Tiền công</th>
+                <td>{{product.tienCong}}</td>
+            </tr>
+            <tr>
+                <th>Chi tiết</th>
+                <td>{{product.chiTiet}}</td>
+            </tr>
+            <tr>
+                <th>Nhà phân phối</th>
+                <td>
+                    Tên cửa hàng: {{product.nhaPhanPhoi.tenCuaHang}}<br>
+                    Email: {{product.nhaPhanPhoi.email}}<br>
+                    Số điện thoại: {{product.nhaPhanPhoi.sdt}}<br>
+                    Địa chỉ: {{product.nhaPhanPhoi.diaChi}}
+                </td>
+            </tr>
+            <tr>
+                <th>Số lượng</th>
+                <td>{{product.soLuong}}</td>
+            </tr>
+            <tr>
+                <th>Trạng thái</th>
+                <td>  <b style="color: {{product.trangThai ? 'green' : 'red'}} ">{{product.trangThai ? 'Đã duyệt' : 'Đợi duyệt'}}</b> </td>
+                
+            </tr>
             
-            <div class="form-actions">
-                <a href="#!/admin/quanlysanpham">
-                    <button type="button" class="btn btn-cancel">Hủy</button>
-                </a>
-                <button type="submit" class="btn btn-add1">Xóa</button>
-                <button type="submit" class="btn btn-add">Sửa</button>
-            </div>
-        </form>
-    </div>
+        </table>
 
+        
+        <div class="back-btn">
+            <a href="#!/admin/quanlysanpham">Quay lại</a>
+            <button type="button" class="btn btn-success" ng-click="duyetsp(product.maSanPham)" ng-show="product.trangThai == false">duyệt sản phẩm</button>
+            <button type="button" class="btn btn-warning" ng-click="kduyetsp(product.maSanPham)" ng-show="product.trangThai == true">Khóa sản phẩm</button>
+            <button type="button" class="btn btn-danger" ng-click="xoasp(product.maSanPham)" >xóa sản phẩm</button>
+           
+        </div>
+        <div>   
+          
+        </div>
+    </div>
 </body>
 </html>

@@ -559,7 +559,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
 
             $http({
                 method: 'POST',
-                url: 'http://localhost:9999/api/checkout/create-payment-link',
+                url: 'http://localhost:9999/api/checkout/create',
                 data: paymentData,
                 headers: {
                     'Content-Type': 'application/json',
@@ -1228,6 +1228,22 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
     // Định nghĩa controller detailsCtrl
     // Assume product ID is available in the route params or scope
     .controller('productDetailCtrl', function ($scope, $routeParams, $http) {
+        $scope.calculatePrice = function (gia) {
+            if (gia > 70000000) {
+                return gia + 20000000;
+            } else if (gia > 50000000) {
+                return gia + 10000000;
+            } else if (gia > 20000000) {
+                return gia + 7000000;
+            } else if (gia > 10000000) {
+                return gia + 5000000;
+            } else if (gia > 5000000) {
+                return gia + 2000000;
+            } else if(gia <=1000000){
+                return gia + 200000;
+            }
+        };
+        
         const productId = $routeParams.id; // Lấy maSanPham từ URL
         console.log("Product ID from URL:", productId);
 

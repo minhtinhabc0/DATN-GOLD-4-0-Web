@@ -88,7 +88,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="product in filteredProducts">
+                    <tr ng-repeat="product in paginatedProducts">
                         <td >
                             <img ng-src="{{product.hinhAnh}}" style="height: 150px; width: 150px;" alt="">
                         </td>
@@ -96,11 +96,8 @@
                         <td>{{product.gia}}</td>
                         <td>{{product.soLuong}}</td>
                         <td>{{product.nhaPhanPhoi.tenCuaHang}}</td>
-                        <td>
-                            
-                            <a href="#!/admin/quanlysanphamsua">
-                                <button class="btn btn-outline-secondary">Sửa</button>
-                            </a>
+                        <td> 
+                                <button class="btn btn-outline-secondary" ng-click="goToDetail(product)">Xem Thêm</button>
                             <hr>
                            <b style="color: {{product.trangThai ? 'green' : 'red'}} ">{{product.trangThai ? 'Đã duyệt' : 'Đợi duyệt'}}</b> 
                         </td>
@@ -112,6 +109,13 @@
             
        
              
+        </div>
+        <div class="pagination">
+            <button class="btn btn-light" ng-click="goToPage(1)" ng-disabled="currentPage === 1">First</button>
+            <button class="btn btn-light" ng-click="goToPage(currentPage - 1)" ng-disabled="currentPage === 1">Previous</button>
+            <span>Page {{currentPage}} of {{totalPages}}</span>
+            <button class="btn btn-light" ng-click="goToPage(currentPage + 1)" ng-disabled="currentPage === totalPages">Next</button>
+            <button class="btn btn-light" ng-click="goToPage(totalPages)" ng-disabled="currentPage === totalPages">Last</button>
         </div>
     </div>
 </body>

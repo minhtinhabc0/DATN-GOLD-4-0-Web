@@ -397,11 +397,11 @@
             </div>
             <div id="tab-2" class="tab-content">
                 <h3>Mô tả sản phẩm</h3>
-                <p>{{ product.chiTiet }}</p>
-                <p>{{ product.loaiDa}}</p>
+                <p ng-repeat="chitiett in product.chiTiet.split(',')">{{chitiett}}</p>
+                <p>Loại Dá: {{ product.loaiDa}}</p>
                 <p>Số lượng sản phẩm hiện còn: {{ product.soLuong }}</p>
                 <p>Các loại size : {{ product.kichCo }}</p>
-                <p>Trọng lượng sản phẩm: {{ product.trongLuong }}</p>
+                <p>Trọng lượng sản phẩm: {{ product.trongLuong }}g</p>
             </div>
             <div id="tab-3" class="tab-content">
                 <h3>Câu hỏi thường gặp</h3>
@@ -418,7 +418,8 @@
         <h1 class="product-title" style="color: #2a3356;font-weight: 300;">{{ product.tenSanPham }}</h1>
         <p class="product-code" style="color: #2a3356;">Mã sản phẩm: {{ product.maSanPham }}</p>
         <p class="product-price" style="color: red; font-weight: lighter;">{{ product.gia | number: 0 }} VND
-        <span style="color: gray; text-decoration: line-through; font-size: 16px;">15,000,000 VND</p>
+        <span style="color: gray; text-decoration: line-through; font-size: 16px;"><span>{{ calculatePrice(product.gia) | number: 0 }} VND</span>
+    </p>
         </span>
         <p class="product-note">(Giá sản phẩm có thể thay đổi tùy trọng lượng vàng và đá quý.)</p>
 
@@ -473,16 +474,9 @@
         </div>
         <div class="store-check">
             <h3>Xem Cửa Hàng Còn Hàng</h3>
-            <div class="dropdowns">
-                <select>
-                    <option selected>Tỉnh/Thành phố</option>
-                    <!-- Thêm các tùy chọn khác -->
-                </select>
-                <select>
-                    <option selected>Quận/Huyện</option>
-                    <!-- Thêm các tùy chọn khác -->
-                </select>
-            </div>
+            <p>Cửa hàng: <b>{{product.nhaPhanPhoi.tenCuaHang}}</b> </p>
+            <p>Địa chỉ cửa hàng: <b>{{product.nhaPhanPhoi.diaChi}}</b> </p>
+         
             <p>Chọn <strong>Tỉnh/Thành Phố</strong> để xem danh sách cửa hàng có sẵn sản phẩm của bạn</p>
         </div>
 

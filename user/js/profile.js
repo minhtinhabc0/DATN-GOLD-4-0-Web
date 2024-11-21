@@ -150,4 +150,6 @@ app.controller('ProfileController', ['$scope', '$window', '$http', function($sco
     $scope.enableEdit = function() {
         $scope.isEditing = true; // Bật chế độ chỉnh sửa
     };
+
+ 
 }]);
