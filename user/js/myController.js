@@ -360,7 +360,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
     // Tính toán giá trị Gcoin
     $scope.calculateGcoinValue = function () {
         if ($scope.firstProduct) {
-            $scope.totalGcoinValue = $scope.gcoinBalance * $scope.firstProduct.priceBuy;
+            $scope.totalGcoinValue =   $scope.firstProduct.priceBuy *(0.1/100)* $scope.gcoinBalance;
         }
     };
     $scope.hasPin = function () {
