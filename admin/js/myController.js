@@ -32,7 +32,7 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'html/quanlysanphamthem.html',
             controller: 'quanlysanphamthemCtrl'
         })
-        .when('/admin/quanlysanphamsua', {
+        .when('/admin/quanlysanphamsua/:id', {
             templateUrl: 'html/quanlysanphamsua.html',
             controller: 'quanlysanphamsuaCtrl'
         })
@@ -121,9 +121,223 @@ app.controller('MainController', function ($scope, $location, $window) {
 });
 
 app.controller('bangdieukhienCtrl', function ($scope) { });
-app.controller('quanlysanphamCtrl', function ($scope) { });
+app.controller('quanlysanphamCtrl', function ($scope, $http, $location) {
+    
+
+
+    $scope.products = [];
+    $scope.filteredProducts = [];
+    $scope.paginatedProducts = [];
+    $scope.currentPage = 1;
+    $scope.itemsPerPage = 5; // Số sản phẩm trên mỗi trang
+    $scope.totalPages = 0;
+    $scope.selectedFilter = '3';
+    $scope.searchQuery = '';
+
+     // Tải dữ liệu sản phẩm
+     $scope.loadProducts = function () {
+        $http.get('http://localhost:9999/api/adctrl/productsall', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.products = response.data;
+            console.log($scope.products);
+            $scope.filterProducts(); 
+        }, function (error) {
+            console.log('Lỗi khi lấy sản phẩm:', error);
+        });
+    };
+
+      // Lọc sản phẩm
+      $scope.filterProducts = function () {
+        $scope.filteredProducts = $scope.products.filter(function (product) {
+            let matchesStatus = false;
+            if ($scope.selectedFilter == '1') {
+                matchesStatus = product.trangThai == true;
+            } else if ($scope.selectedFilter == '2') {
+                matchesStatus = product.trangThai == false;
+            } else {
+                matchesStatus = true;
+            }
+
+            let matchesSearch = product.tenSanPham.toLowerCase().includes($scope.searchQuery.toLowerCase());
+            return matchesStatus && matchesSearch;
+        });
+        $scope.currentPage = 1; // Reset về trang đầu tiên khi lọc
+        $scope.updatePagination();
+    };
+
+    // Cập nhật phân trang
+    $scope.updatePagination = function () {
+        $scope.totalPages = Math.ceil($scope.filteredProducts.length / $scope.itemsPerPage);
+        const startIndex = ($scope.currentPage - 1) * $scope.itemsPerPage;
+        const endIndex = startIndex + $scope.itemsPerPage;
+        $scope.paginatedProducts = $scope.filteredProducts.slice(startIndex, endIndex);
+    };
+
+    // Chuyển trang
+    $scope.goToPage = function (pageNumber) {
+        if (pageNumber >= 1 && pageNumber <= $scope.totalPages) {
+            $scope.currentPage = pageNumber;
+            $scope.updatePagination();
+        }
+    };
+
+    // Tải dữ liệu ban đầu
+    
+    $scope.goToDetail = function (product) {
+        if (!product || !product.maSanPham) {
+            console.error("Product ID is undefined:", product);
+            alert("Sản phẩm không có mã hợp lệ.");
+            return;
+        }
+        console.log("Navigating to product detail:", product);
+        $location.path('/admin/quanlysanphamsua/' + product.maSanPham);
+    };
+
+    $scope.loadProducts();
+
+});
 app.controller('quanlysanphamthemCtrl', function ($scope) { });
-app.controller('quanlysanphamsuaCtrl', function ($scope) { });
+app.controller('quanlysanphamsuaCtrl', function ($scope,$routeParams, $http) {
+$scope.loadProducts = function () {
+    
+
+         const productId = $routeParams.id; // Lấy maSanPham từ URL
+        console.log("Product ID from URL:", productId);
+
+        const apiUrl = `http://localhost:9999/api/adctrl/products/${productId}`;
+        const token = localStorage.getItem('token');
+
+        const config = token ? { headers: { 'Authorization': 'Bearer ' + token } } : {};
+
+        $http.get(apiUrl, config)
+            .then(function (response) {
+                console.log("API Response:", response.data);
+                $scope.product = response.data;
+            })
+            .catch(function (error) {
+                console.error("Error loading product details:", error);
+                alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
+            });
+
+        }
+        $scope.loadProducts();
+
+            $scope.duyetsp = function (id) {
+                Swal.fire({
+                    title: 'Bạn muốn duyệt sản phẩm này?',
+                    text: 'Sau khi duyệt, sản phẩm sẽ được công nhận.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Duyệt',
+                    cancelButtonText: 'Hủy',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $http.put('http://localhost:9999/api/adctrl/duyetsp/' + id, {
+                            headers: {
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            }
+                        }).then(function (response) {
+                            console.log("API Response:", response.data);
+                            Swal.fire(
+                                'Thành công!',
+                                'Sản phẩm đã được duyệt.',
+                                'success'
+                            );
+                            $scope.loadProducts();
+                        }, function (error) {
+                            console.log("Error:", error);
+                            Swal.fire(
+                                'Thành công!',
+                                'Sản phẩm đã được duyệt.',
+                                'success'
+                            );
+                            $scope.loadProducts();
+                        });
+                    }
+                });
+            };
+            
+            $scope.kduyetsp = function (id) {
+                Swal.fire({
+                    title: 'Bạn muốn khóa sản phẩm này?',
+                    text: 'Sản phẩm sẽ bị khóa và không thể hiển thị.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Khóa',
+                    cancelButtonText: 'Hủy',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $http.put('http://localhost:9999/api/adctrl/kduyetsp/' + id, {
+                            headers: {
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            }
+                        }).then(function (response) {
+                            console.log("API Response:", response.data);
+                            Swal.fire(
+                                'Thành công!',
+                                'Sản phẩm đã bị khóa.',
+                                'success'
+                            );
+                            $scope.loadProducts();
+                        }, function (error) {
+                            console.log("Error:", error);
+                            Swal.fire(
+                                'Thành công!',
+                                'Sản phẩm đã bị khóa.',
+                                'success'
+                            );
+                            $scope.loadProducts();
+                        });
+                    }
+                });
+            };
+            
+            $scope.xoasp = function (id) {
+                Swal.fire({
+                    title: 'Bạn muốn xóa sản phẩm này?',
+                    text: 'Hành động này sẽ không thể khôi phục lại dữ liệu.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $http.delete('http://localhost:9999/api/adctrl/delete-product/' + id, {
+                            headers: {
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            }
+                        }).then(function (response) {
+                            console.log("API Response:", response.data);
+                            Swal.fire(
+                                'Thành công!',
+                                'Sản phẩm đã bị xóa.',
+                                'success'
+                            );
+                            $scope.loadProducts();
+                        }, function (error) {
+                            console.log("Error:", error);
+                            Swal.fire(
+                                'Thành công!',
+                                'Sản phẩm đã bị xóa.',
+                                'success'
+                            );
+                            $scope.loadProducts();
+                        });
+                    }
+                });
+            };
+            
+
+ });
 app.controller('quanlydonhangCtrl', function ($scope) { });
 app.controller('baocaoCtrl', function ($scope) { });
 app.controller('quanlytaikhoanCtrl', function ($scope) { });
