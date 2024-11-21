@@ -1239,8 +1239,8 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 return gia + 5000000;
             } else if (gia > 5000000) {
                 return gia + 2000000;
-            } else {
-                return gia;
+            } else if(gia <=1000000){
+                return gia + 200000;
             }
         };
         

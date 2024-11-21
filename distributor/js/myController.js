@@ -51,7 +51,7 @@ app.controller("MainController", function ($scope, $location, $window) {
         }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem('distributorInfo');
-                localStorage.removeItem('token');
+                localStorage.removeItem('token1');
                 window.location.href = '/distributor/html/login.html'; // Redirect to login page
             }
         });
@@ -189,7 +189,7 @@ $scope.saveProductChanges = function() {
     if ($scope.selectedProduct) {
         $http.put('http://localhost:9999/api/nppctrl/update-product/' + $scope.selectedProduct.maSanPham, $scope.selectedProduct, {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + localStorage.getItem('token1')
             }
         }).then(function(response) {
             console.log('Cập nhật sản phẩm thành công.');
@@ -262,7 +262,7 @@ $scope.uploadAvatar = function() {
     console.log(localStorage.getItem('distributorInfo'));
         $http.post('http://localhost:9999/api/nppctrl/add-product',newProduct, {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + localStorage.getItem('token1')
             }
         }).then(function(response) {
              // Sau khi thêm thành công, tải lại danh sách sản phẩm
@@ -284,7 +284,7 @@ $scope.uploadAvatar = function() {
     // Gọi API xóa sản phẩm
     $http.delete(`http://localhost:9999/api/nppctrl/delete-product/${$scope.selectedProduct.maSanPham}`, {
         headers: {
-            'Authorization': 'Bearer '  + localStorage.getItem('token')
+            'Authorization': 'Bearer '  + localStorage.getItem('token1')
         }
     }).then(function(response) {
         console.log('Xóa sản phẩm thành công.');
@@ -324,7 +324,7 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
     // Hàm lấy danh sách đơn hàng từ API và phân trang
     $scope.getDanhSachDonHang = function () {
         $http.get('http://localhost:9999/api/donhang', {
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token1') }
         })
             .then(function (response) {
                 // console.log('Kết quả API:', response.data);
@@ -370,7 +370,7 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
     // hàm lấy số lượng đơn hoàn thành
     $scope.getSoluongHoanThanh = function () {
         // Lấy token từ localStorage (hoặc sessionStorage) nếu đã lưu sau khi đăng nhập
-        const token = localStorage.getItem("token");  // Hoặc sử dụng sessionStorage nếu bạn lưu token ở đó
+        const token = localStorage.getItem("token1");  // Hoặc sử dụng sessionStorage nếu bạn lưu token ở đó
 
         if (token) {
             $http.get('http://localhost:9999/api/donhang/demsl/hoanthanh', {
