@@ -123,6 +123,35 @@
             color: #6c757d;
         }
     </style>
+    <style>
+        /* From Uiverse.io by cssbuttons-io */
+        button {
+            padding: 1.3em 3em;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 400;
+            color: white;
+            background-color: rgb(10, 183, 10);
+            border: none;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease 0s;
+            cursor: pointer;
+            outline: none;
+        }
+
+        button:hover {
+            background-color: #23c483;
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            color: #fff;
+            transform: translateY(-7px);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+    </style>
 </head>
 
 <body>
@@ -173,20 +202,26 @@
                     <th>Trạng thái</th>
                     <th>Tổng tiền</th>
                     <th></th>
+                    <th ng-if="donHang.trangThai === 'Đang xử lý'"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="donHang in donHangsPage">
-                    <td>{{donHang.maDonHang}}</td>
-                    <td>{{donHang.soLuong}}</td>
-                    <td>{{donHang.donGia | number:0}} VND</td>
-                    <td>{{donHang.thoiGian | date:'HH:mm, dd/MM/yyyy'}}</td>
-                    <td>{{donHang.trangThai}}</td>
-                    <td>{{donHang.tongTien | number:0}} VND</td>
+                    <td style="padding: 15px !important;">{{donHang.maDonHang}}</td>
+                    <td style="padding: 15px !important;">{{donHang.soLuong}}</td>
+                    <td style="padding: 15px !important;">{{donHang.donGia | number:0}} VND</td>
+                    <td style="padding: 15px !important;">{{donHang.thoiGian | date:'HH:mm, dd/MM/yyyy'}}</td>
+                    <td style="padding: 15px !important;">{{donHang.trangThai}}</td>
+                    <td style="padding: 15px !important;">{{donHang.tongTien | number:0}} VND</td>
                     <td>
-                        <a ng-click="getChiTietDonHang(donHang.maDonHang)" data-bs-toggle="modal"
-                            data-bs-target="#orderDetailModal">Xem chi tiết</a>
+                        <button style=" background-color: white !important;color: #000;"><a
+                                ng-click="getChiTietDonHang(donHang.maDonHang)" data-bs-toggle="modal"
+                                data-bs-target="#orderDetailModal">Xem chi tiết</a></button>
                     </td>
+                    <td>
+                        <button ng-if="donHang.trangThai === 'Đang xử lý'">Xác Nhận</button>
+                    </td>
+
                 </tr>
             </tbody>
         </table>
@@ -224,11 +259,7 @@
                             <div class="col-6"><strong class="text-dark">Số lượng:</strong></div>
                             <div class="col-6" id="modalSoLuong">{{donHangChiTiet.soLuong}}</div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-6"><strong class="text-dark">Mã Giảm giá:</strong></div>
 
-                            <div class="col-6" id="modalGiamGia">{{donHangChiTiet.giamGia.giaTri}}%</div>
-                        </div>
                         <div class="row mb-3">
                             <div class="col-6"><strong class="text-dark">Tổng tiền:</strong></div>
                             <div class="col-6" id="modalTongTien">{{donHangChiTiet.tongTien | number:0}} VND</div>

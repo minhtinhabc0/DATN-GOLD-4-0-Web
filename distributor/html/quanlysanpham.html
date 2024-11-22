@@ -1,18 +1,48 @@
+<style>
+    /* From Uiverse.io by cssbuttons-io */
+    button {
+        padding: 1.3em 3em;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        font-weight: 400;
+        color: white;
+        background-color: rgb(10, 183, 10);
+        border: none;
+        border-radius: 45px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease 0s;
+        cursor: pointer;
+        outline: none;
+    }
+
+    button:hover {
+        background-color: #23c483;
+        box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+        color: #fff;
+        transform: translateY(-7px);
+    }
+
+    button:active {
+        transform: translateY(-1px);
+    }
+</style>
 <div>
     <div class="container-fluid py-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="fw-bold">Danh sách sản phẩm</h3>
             <div class="d-flex">
-                <input type="text" class="form-control" ng-model="searchQuery" placeholder="Tìm kiếm sản phẩm..." ng-change="filterProducts()">
+                <input type="text" class="form-control" ng-model="searchQuery" placeholder="Tìm kiếm sản phẩm..."
+                    ng-change="filterProducts()">
                 <select class="form-select" ng-model="selectedFilter" ng-change="filterProducts()">
                     <option value="3">Tất cả</option>
                     <option value="1">Sản phẩm đã duyệt</option>
                     <option value="2">Sản phẩm đợi duyệt</option>
                 </select>
-                
-              
+
+
             </div>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            <button data-bs-toggle="modal" data-bs-target="#addProductModal">
                 Thêm sản phẩm
             </button>
         </div>
@@ -25,24 +55,27 @@
                     <th>Tên sản phẩm</th>
                     <th>Giá sản phẩm</th>
                     <th>Số lượng</th>
-                 
+
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Product Rows will be dynamically filled by AngularJS -->
                 <tr ng-repeat="product in filteredProducts">
-                    
-                    <td><img style="height: 200px; width: 200px" ng-src="{{ product.hinhAnh }}" alt="Product Image" ></td>
+
+                    <td><img style="height: 200px; width: 200px" ng-src="{{ product.hinhAnh }}" alt="Product Image">
+                    </td>
                     <td>{{ product.tenSanPham }}</td>
                     <td>{{ product.gia | number }} VNĐ</td>
                     <td>{{ product.soLuong }}</td>
-                    <td style="color: {{product.trangThai ? 'green' : 'red'}} "><b>{{product.trangThai ? 'Đã duyệt' : 'Đợi duyệt'}}</b></td>
-                   
-                    <td><button type="button" class="btn btn-primary" ng-click="viewProductDetails(product)">
+                    <td style="color: {{product.trangThai ? 'green' : 'red'}} "><b>{{product.trangThai ? 'Đã duyệt' :
+                            'Đợi duyệt'}}</b></td>
+
+                    <td><button style=" background-color: white;color: black;border: black 1px solid;"
+                            ng-click="viewProductDetails(product)">
                             Chi tiết
                         </button></td>
-                        
+
                 </tr>
             </tbody>
         </table>
@@ -81,62 +114,78 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12 text-center mb-4">
-                            <img ng-src="{{ selectedProduct.hinhAnh }}" alt="Product Image" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                            <img ng-src="{{ selectedProduct.hinhAnh }}" alt="Product Image" class="rounded-circle"
+                                style="width: 150px; height: 150px; object-fit: cover;">
                             <div class="mt-3" ng-show="isEditing">
-                                <input type="file" id="avatar"  ng-file-select ng-model="avatarFile"
-                            accept="image/*" ng-change="uploadAvatar(false)">
-                              
+                                <input type="file" id="avatar" ng-file-select ng-model="avatarFile" accept="image/*"
+                                    ng-change="uploadAvatar(false)">
+
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="productName" class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="productName" ng-model="selectedProduct.tenSanPham" ng-readonly="!isEditing" readonly>
+                                <input type="text" class="form-control" id="productName"
+                                    ng-model="selectedProduct.tenSanPham" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productDescription" class="form-label">Chi tiết sản phẩm</label>
-                                <textarea class="form-control" id="productDescription" rows="2" ng-model="selectedProduct.chiTiet" ng-readonly="!isEditing" readonly></textarea>
+                                <textarea class="form-control" id="productDescription" rows="2"
+                                    ng-model="selectedProduct.chiTiet" ng-readonly="!isEditing" readonly></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="productSize" class="form-label">Kích cỡ</label>
-                                <input type="text" class="form-control" id="productSize" ng-model="selectedProduct.kichCo" ng-readonly="!isEditing" readonly>
+                                <input type="text" class="form-control" id="productSize"
+                                    ng-model="selectedProduct.kichCo" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productWeight" class="form-label">Trọng lượng</label>
-                                <input type="text" class="form-control" id="productWeight" ng-model="selectedProduct.trongLuong" ng-readonly="!isEditing" readonly>
+                                <input type="text" class="form-control" id="productWeight"
+                                    ng-model="selectedProduct.trongLuong" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="productCategory" class="form-label">Danh mục</label>
-                                <input type="text" class="form-control" id="productCategory" ng-model="selectedProduct.loai" ng-readonly="!isEditing" readonly>
+                                <input type="text" class="form-control" id="productCategory"
+                                    ng-model="selectedProduct.loai" ng-readonly="!isEditing" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="productPrice" class="form-label">Giá</label>
-                                <input type="text" class="form-control" id="productPrice" ng-model="selectedProduct.gia" ng-readonly="!isEditing" readonly>
+                                <input type="text" class="form-control" id="productPrice" ng-model="selectedProduct.gia"
+                                    ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="goldType" class="form-label">Loại vàng</label>
-                                <input type="text" class="form-control" id="goldType" ng-model="selectedProduct.loaiVang" ng-readonly="!isEditing" readonly>
+                                <input type="text" class="form-control" id="goldType"
+                                    ng-model="selectedProduct.loaiVang" ng-readonly="!isEditing" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="gemstoneType" class="form-label">Loại đá</label>
-                                <input type="text" class="form-control" id="gemstoneType" ng-model="selectedProduct.loaiDa" ng-readonly="!isEditing" readonly>
+                                <input type="text" class="form-control" id="gemstoneType"
+                                    ng-model="selectedProduct.loaiDa" ng-readonly="!isEditing" readonly>
                             </div>
-                        
+
                         </div>
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" ng-click="toggleEdit()">
-                {{ isEditing ? 'Hủy chỉnh sửa' : 'Chỉnh sửa' }}
-            </button>
-            <button type="button" class="btn btn-success" ng-show="isEditing" ng-click="saveProductChanges()">
-                Lưu thay đổi
-            </button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            <button ng-click="deleteProduct(product.maSanPham)">Xóa sản phẩm</button>
+            <div class="d-flex align-content-between mb-3">
+                <button style="width: 150px;  margin-left: 20px; background-color: goldenrod;" ng-click="toggleEdit()">
+                    {{ isEditing ? 'Hủy chỉnh sửa' : 'Chỉnh sửa' }}
+                </button>
+                <button style="width: 170px; margin-left: 20px;" ng-show="isEditing" ng-click="saveProductChanges()">
+                    Lưu thay đổi
+                </button>
+
+                <button style="width: 170px; margin-left: 20px; background-color: rgb(226, 69, 69);"
+                    ng-click="deleteProduct(product.maSanPham)">Xóa sản
+                    phẩm</button>
+                <button class="ms-auto" style="width: 100px;  margin-right: 10px; background-color: rgb(140, 139, 139);"
+                    data-bs-dismiss="modal">Đóng</button>
+            </div>
+
 
         </div>
     </div>
@@ -154,17 +203,19 @@
                 <form ng-submit="addProduct()">
                     <div class="form-group">
                         <label for="addProductImage">Hình ảnh sản phẩm</label>
-                          <input type="file" id="avatar"  ng-file-select ng-model="avatarFile"
-                         accept="image/*" ng-change="uploadAvatar(true)" />
-                         <img style="height: 100px; width: 100px" ng-src="{{newProduct.hinhAnh}}" alt="">
+                        <input type="file" id="avatar" ng-file-select ng-model="avatarFile" accept="image/*"
+                            ng-change="uploadAvatar(true)" />
+                        <img style="height: 100px; width: 100px" ng-src="{{newProduct.hinhAnh}}" alt="">
                     </div>
                     <div class="mb-3">
                         <label for="productName" class="form-label">Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="productName" ng-model="newProduct.tenSanPham" required>
+                        <input type="text" class="form-control" id="productName" ng-model="newProduct.tenSanPham"
+                            required>
                     </div>
                     <div class="mb-3">
                         <label for="productDescription" class="form-label">Chi tiết sản phẩm</label>
-                        <textarea class="form-control" id="productDescription" rows="2" ng-model="newProduct.chiTiet" required></textarea>
+                        <textarea class="form-control" id="productDescription" rows="2" ng-model="newProduct.chiTiet"
+                            required></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="productSize" class="form-label">Kích cỡ</label>
@@ -176,22 +227,25 @@
                     </div>
                     <div class="mb-3">
                         <label for="productWeight" class="form-label">Trọng lượng</label>
-                        <input type="text" class="form-control" id="productWeight" ng-model="newProduct.trongLuong" required>
+                        <input type="text" class="form-control" id="productWeight" ng-model="newProduct.trongLuong"
+                            required>
                     </div>
                     <div class="mb-3">
                         <label for="productCategory" class="form-label">Danh mục</label>
-                        <select class="form-control" id="productCategory" ng-model="newProduct.loai" ng-change="checkCategory()" required>
+                        <select class="form-control" id="productCategory" ng-model="newProduct.loai"
+                            ng-change="checkCategory()" required>
                             <option value="Vòng tay">Vòng tay</option>
                             <option value="Nhẫn">Nhẫn</option>
                             <option value="Dây chuyền">Dây chuyền</option>
                             <option value="Khác">Khác</option>
                         </select>
                     </div>
-                    
+
                     <!-- Hiển thị ô nhập liệu khi chọn "Khác" -->
                     <div class="mb-3" ng-show="newProduct.loai === 'Khác'">
                         <label for="otherCategory" class="form-label">Nhập danh mục khác</label>
-                        <input type="text" class="form-control" id="otherCategory" ng-model="newProduct.loai" placeholder="Nhập danh mục" required>
+                        <input type="text" class="form-control" id="otherCategory" ng-model="newProduct.loai"
+                            placeholder="Nhập danh mục" required>
                     </div>
                     <div class="mb-3">
                         <label for="productPrice" class="form-label">Giá</label>
@@ -199,7 +253,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="productPrice" class="form-label">Tiền công</label>
-                        <input type="number" class="form-control" id="productPrice" ng-model="newProduct.tienCong" required>
+                        <input type="number" class="form-control" id="productPrice" ng-model="newProduct.tienCong"
+                            required>
                     </div>
                     <div class="mb-3">
                         <label for="goldType" class="form-label">Loại vàng</label>
@@ -209,8 +264,8 @@
                         <label for="gemstoneType" class="form-label">Loại đá</label>
                         <input type="text" class="form-control" id="gemstoneType" ng-model="newProduct.loaiDa" required>
                     </div>
-                  
-                    <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+
+                    <button type="submit">Thêm sản phẩm</button>
                 </form>
             </div>
         </div>
