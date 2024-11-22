@@ -549,9 +549,129 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
 
 
 
-    .controller('spyeuthichCtrl', function ($scope) {
+app.controller('spyeuthichCtrl', function ($scope, $http, $location) {
+    // Khai báo các biến trong scope
+    $scope.favoriteProducts = []; // Danh sách sản phẩm yêu thích
+    $scope.pageSize = 5; // Số lượng sản phẩm mỗi trang
+    $scope.currentPage = 1; // Trang hiện tại
+    $scope.totalPages = 1; // Tổng số trang
+    $scope.favoritesFiltered = []; // Dữ liệu đã lọc
+    $scope.productDetail = {}; // Chi tiết sản phẩm
+    $scope.searchKeyword = ""; // Từ khóa tìm kiếm
+    $scope.sortCriteria = ""; // Tiêu chí sắp xếp
+    $scope.goToDetail = function (product) {
+        if (!product || !product.maSanPham) {
+            console.error("Product ID is undefined:", product);
+            alert("Sản phẩm không có mã hợp lệ.");
+            return;
+        }
+        console.log("Navigating to product detail:", product);
+        $location.path('/user/product/' + product.maSanPham);
+    };
+    // Hàm khởi tạo khi controller được gọi
+    $scope.init = function () {
+        $scope.getFavoriteProducts();
+    };
 
-    })
+    // API lấy danh sách sản phẩm yêu thích
+    $scope.getFavoriteProducts = function () {
+        $http.get('http://localhost:9999/api/yeuthich', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
+            .then(function (response) {
+                console.log('Dữ liệu lấy được từ API:', response.data); // Log dữ liệu nhận được từ API
+                $scope.favoriteProducts = response.data; // Chỉ cần gán trực tiếp vào favoriteProducts
+                $scope.favoritesFiltered = angular.copy($scope.favoriteProducts);
+
+                $scope.calculateTotalPages();
+                $scope.paginateData();
+            })
+            .catch(function (error) {
+                console.error('Lỗi khi gọi API:', error);
+            });
+    };
+
+
+    // API thêm sản phẩm vào danh sách yêu thích
+    $scope.addProductToFavorites = function (maSanPham) {
+        const data = { maSanPham: maSanPham };
+        $http.post('http://localhost:9999/api/yeuthich/add', data, {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
+            .then(function (response) {
+                alert(response.data); // Hiển thị thông báo thành công
+                $scope.getFavoriteProducts(); // Lấy lại danh sách yêu thích
+            })
+            .catch(function (error) {
+                console.error('Lỗi khi thêm sản phẩm vào yêu thích:', error);
+            });
+    };
+
+    // API xóa sản phẩm khỏi danh sách yêu thích
+    $scope.removeProductFromFavorites = function (maSanPham) {
+
+        $http.delete('http://localhost:9999/api/yeuthich/remove', {
+            params: { maSanPham: maSanPham },
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
+            .then(function (response) {
+                alert(response.data); // Hiển thị thông báo thành công
+                $scope.getFavoriteProducts(); // Lấy lại danh sách yêu thích sau khi xóa
+            })
+            .catch(function (error) {
+                console.error('Lỗi khi xóa sản phẩm khỏi yêu thích:', error);
+            });
+    };
+
+
+    // Hàm phân trang dữ liệu
+    $scope.paginateData = function () {
+        const start = ($scope.currentPage - 1) * $scope.pageSize;
+        const end = start + $scope.pageSize;
+        $scope.favoriteProductsPage = $scope.favoritesFiltered.slice(start, end); // Hiển thị dữ liệu đã lọc cho trang hiện tại
+    };
+
+    // Tính tổng số trang
+    $scope.calculateTotalPages = function () {
+        $scope.totalPages = Math.ceil($scope.favoritesFiltered.length / $scope.pageSize);
+    };
+
+    // Chuyển trang
+    $scope.goToPage = function (pageNumber) {
+        if (pageNumber < 1 || pageNumber > $scope.totalPages) return; // Kiểm tra xem trang có hợp lệ không
+        $scope.currentPage = pageNumber;
+        $scope.paginateData(); // Cập nhật dữ liệu cho trang mới
+    };
+
+    // Hàm tìm kiếm sản phẩm yêu thích
+    $scope.filterFavorites = function () {
+        $scope.favoritesFiltered = $scope.favoriteProducts.filter(function (product) {
+            return product.tenSanPham.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+        });
+        $scope.calculateTotalPages();
+        $scope.currentPage = 1; // Reset lại trang hiện tại khi tìm kiếm
+        $scope.paginateData(); // Cập nhật dữ liệu sau khi lọc
+    };
+
+    // Hàm sắp xếp sản phẩm yêu thích
+    $scope.sortFavorites = function () {
+        if ($scope.sortCriteria === "1") {
+            $scope.favoritesFiltered.sort((a, b) => new Date(b.thoiGian) - new Date(a.thoiGian)); // Mới nhất
+        } else if ($scope.sortCriteria === "2") {
+            $scope.favoritesFiltered.sort((a, b) => new Date(a.thoiGian) - new Date(b.thoiGian)); // Cũ nhất
+        } else if ($scope.sortCriteria === "3") {
+            $scope.favoritesFiltered.sort((a, b) => b.gia - a.gia); // Giá trị cao nhất
+        }
+        $scope.calculateTotalPages();
+        $scope.currentPage = 1; // Reset lại trang hiện tại khi sắp xếp
+        $scope.paginateData(); // Cập nhật dữ liệu sau khi sắp xếp
+    };
+
+    // Gọi hàm khởi tạo khi controller được khởi tạo
+    $scope.init();
+})
+
+
     .controller('spvangCtrl', function ($scope, $http, GoldPriceService, SharedService) {
         $scope.goldPrices = [];
         $scope.SJCPrices = null;
