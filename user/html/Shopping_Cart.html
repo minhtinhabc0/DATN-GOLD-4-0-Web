@@ -180,7 +180,7 @@
                 <img ng-src="{{item.sanPham.hinhAnh}}" alt="{{item.sanPham.tenSanPham}}" class="product-image">
                 <div>
                     <h3 class="product-title">{{item.sanPham.tenSanPham}}</h3>
-                    <p class="product-price">Giá: {{item.sanPham.gia | number:0}} VND</p>
+                    <p class="product-price">Giá: {{item.sanPham.gia * item.soLuong | number:0}} VND</p>
                     <p style="color: #333;">Kích thước: {{item.kichThuoc}}</p>
                     <p style="color: #333;">Số lượng:
                         <button ng-click="updateQuantity(item, -1)" ng-disabled="item.soLuong <= 1">-</button>
@@ -194,7 +194,7 @@
     </div>
 
     <div class="summary">
-        <p>Tổng tiền: {{tinhTongTien() | number:0}} VND</p>
+        <p style="color: #ff0000;">Tổng tiền: {{ totalAmount | number:0 }} VND</p>
         <button class="btn-checkout">Thanh toán</button>
     </div>
 </div>
