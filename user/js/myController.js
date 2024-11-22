@@ -936,6 +936,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
     }
 
     // Lấy thông tin giỏ hàng
+    // Gọi API lấy giỏ hàng từ backend
     $scope.getCart = function () {
         const token = getAuthToken();
         if (!token) {
@@ -948,16 +949,12 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             headers: { 'Authorization': 'Bearer ' + token }
         }).then(function (response) {
             $scope.gioHang = response.data; 
-            console.log($scope.gioHang); // Cập nhật giỏ hàng trong UI
-
-            // Tính tổng tiền sau khi nhận được dữ liệu giỏ hàng
-            $scope.calculateTotal();
+            console.log($scope.gioHang); 
+            $scope.calculateTotal();// Cập nhật giỏ hàng trong UI
         }).catch(function (error) {
             alert('Có lỗi xảy ra khi lấy giỏ hàng!');
         });
     };
-
-    // Tính tổng tiền trong giỏ hàng
     $scope.calculateTotal = function () {
         $scope.totalAmount = 0; // Khởi tạo biến tổng tiền
         // Duyệt qua từng sản phẩm trong gioHang và cộng dồn vào tổng tiền
@@ -990,23 +987,48 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
             return;
         }
-
+        // Tạo đối tượng CartRequest để gửi lên API
+      
+    
+        // Gửi yêu cầu PUT (cập nhật giỏ hàng) thay vì POST, vì bạn đang chỉnh sửa giỏ hàng hiện tại
         $http.post('http://localhost:9999/api/user/giohang', item, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         }).then(function (response) {
-            $scope.getCart(); // Cập nhật lại giỏ hàng sau khi thay đổi
+            $scope.getCart();
         }).catch(function (error) {
-            $scope.getCart(); // Cập nhật lại giỏ hàng ngay cả khi có lỗi
+            $scope.getCart();
+        });
+    };
+  
+
+    // Hàm xóa sản phẩm khỏi giỏ hàng
+    $scope.removeFromCart = function (item) {
+        const token = getAuthToken();
+        if (!token) {
+            alert("Bạn cần đăng nhập để xóa sản phẩm khỏi giỏ hàng!");
+            $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
+            return;
+        }
+
+        // Gửi yêu cầu DELETE để xóa sản phẩm
+        $http.delete('http://localhost:9999/api/user/giohang/' + item.sanPham.maSanPham, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(function (response) {
+            alert('Sản phẩm đã được xóa khỏi giỏ hàng!');
+            $scope.getCart();
+            $scope.getCart(); // Tải lại giỏ hàng
+        }).catch(function (error) {
+            $scope.getCart();
         });
     };
 
-    // Lấy giỏ hàng khi controller được khởi tạo
+    // Khởi động: Lấy thông tin giỏ hàng khi trang được tải
     $scope.getCart();
-
 }])
-
 
 
 
