@@ -238,8 +238,7 @@ app.controller('quanlysanphamCtrl', function ($scope, $http) {
             // Hiển thị thành công
             console.log("Cập nhật hình ảnh thành công:", response.data.secure_url);
         }).catch(function (error) {
-            console.error('Lỗi khi tải lên avatar:', error);
-            alert('Tải lên không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
+         
         });
     };
 
