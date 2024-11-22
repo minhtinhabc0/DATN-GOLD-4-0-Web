@@ -301,11 +301,44 @@ app.service('GoldPriceBuyService', function ($http) {
         });
     };
 });
+app.run(function (SharedService) {
+    SharedService.fetchGcoinBalance().then(function (balance) {
+        console.log('Số dư Gcoin khởi tạo:', balance);
+    });
+});
 
+app.service('SharedService', function ($http, $q) {
+    let gcoinBalance = 0;
+
+    return {
+        getGcoinBalance: function () {
+            return gcoinBalance;
+        },
+        setGcoinBalance: function (value) {
+            gcoinBalance = value;
+        },
+        fetchGcoinBalance: function () {
+            const deferred = $q.defer();
+            $http.get('http://localhost:9999/api/user/profile/gcoin', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                gcoinBalance = response.data.balance; // Cập nhật giá trị
+                deferred.resolve(gcoinBalance);
+            }).catch(function (error) {
+                console.error('Lỗi khi tải số dư Gcoin:', error);
+                deferred.reject(error);
+            });
+            return deferred.promise; // Trả về Promise để xử lý bất đồng bộ
+        }
+    };
+});
 
 //===============================================================================================
 //controller profile
-app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceService) {
+app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceService, SharedService) {
+
     $scope.logout1 = function () {
         localStorage.removeItem('token');
         localStorage.removeItem('userInfo');
@@ -360,7 +393,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
     // Tính toán giá trị Gcoin
     $scope.calculateGcoinValue = function () {
         if ($scope.firstProduct) {
-            $scope.totalGcoinValue =   $scope.firstProduct.priceBuy *(0.1/100)* $scope.gcoinBalance;
+            $scope.totalGcoinValue = $scope.firstProduct.priceBuy * (0.1 / 100) * $scope.gcoinBalance;
         }
     };
     $scope.hasPin = function () {
@@ -376,7 +409,8 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             }
         }).then(function (response) {
             // Hiển thị số dư
-            $scope.gcoinBalance = response.data.balance; // Lấy số dư từ phản hồi
+            $scope.gcoinBalance = response.data.balance;
+            SharedService.setGcoinBalance($scope.gcoinBalance);// Lấy số dư từ phản hồi
             $scope.loadPrices(); // Tải giá vàng
             $scope.hasPin();
         }).catch(function (error) {
@@ -514,15 +548,20 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
 })
 
 
+
     .controller('spyeuthichCtrl', function ($scope) {
 
     })
-    .controller('spvangCtrl', function ($scope, $http, GoldPriceService) {
+    .controller('spvangCtrl', function ($scope, $http, GoldPriceService, SharedService) {
         $scope.goldPrices = [];
         $scope.SJCPrices = null;
         $scope.total_price = null; // Khởi tạo với giá trị hợp lệ
         $scope.gold_quantity = null; // Khởi tạo với giá trị hợp lệ
-
+        $scope.gcoinBalance = SharedService.getGcoinBalance();
+        SharedService.fetchGcoinBalance().then(function (balance) {
+            $scope.gcoinBalance = balance; // Cập nhật nếu cần thiết
+            console.log('Số dư Gcoin trong spvangCtrl:', balance);
+        });
         // Tải giá vàng
         $scope.loadPrices = function () {
             GoldPriceService.fetchGoldPrices().then(function (data) {
@@ -1239,11 +1278,11 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 return gia + 5000000;
             } else if (gia > 5000000) {
                 return gia + 2000000;
-            } else if(gia <=1000000){
+            } else if (gia <= 1000000) {
                 return gia + 200000;
             }
         };
-        
+
         const productId = $routeParams.id; // Lấy maSanPham từ URL
         console.log("Product ID from URL:", productId);
 
