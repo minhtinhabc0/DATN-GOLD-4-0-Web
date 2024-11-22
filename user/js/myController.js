@@ -948,8 +948,8 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
         $http.get('http://localhost:9999/api/user/giohang', {
             headers: { 'Authorization': 'Bearer ' + token }
         }).then(function (response) {
-            $scope.gioHang = response.data; 
-            console.log($scope.gioHang); 
+            $scope.gioHang = response.data;
+            console.log($scope.gioHang);
             $scope.calculateTotal();// Cập nhật giỏ hàng trong UI
         }).catch(function (error) {
             alert('Có lỗi xảy ra khi lấy giỏ hàng!');
@@ -962,7 +962,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             $scope.gioHang.forEach(function (item) {
                 // Tính tổng tiền cho từng sản phẩm
                 if (item.sanPham && item.soLuong) {
-                    $scope.totalAmount += item.sanPham.gia * item.soLuong; // Cộng dồn giá trị sản phẩm * số lượng
+                    $scope.totalAmount += (item.sanPham.gia + item.sanPham.tienCong) * item.soLuong; // Cộng dồn giá trị sản phẩm * số lượng
                 }
             });
         }
@@ -976,10 +976,10 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             alert("Số lượng không thể nhỏ hơn 1!");
             return;
         }
-    
+
         // Cập nhật số lượng sản phẩm trong giỏ hàng
         item.soLuong += change;
-    
+
         // Gửi yêu cầu cập nhật số lượng sản phẩm trong giỏ hàng
         const token = getAuthToken();
         if (!token) {
@@ -988,8 +988,8 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             return;
         }
         // Tạo đối tượng CartRequest để gửi lên API
-      
-    
+
+
         // Gửi yêu cầu PUT (cập nhật giỏ hàng) thay vì POST, vì bạn đang chỉnh sửa giỏ hàng hiện tại
         $http.post('http://localhost:9999/api/user/giohang', item, {
             headers: {
@@ -1001,7 +1001,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             $scope.getCart();
         });
     };
-  
+
 
     // Hàm xóa sản phẩm khỏi giỏ hàng
     $scope.removeFromCart = function (item) {
@@ -1384,12 +1384,12 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
 
         const productId = $routeParams.id; // Lấy maSanPham từ URL
         console.log("Product ID from URL:", productId);
-    
+
         const apiUrl = `http://localhost:9999/api/products/${productId}`;
         const token = localStorage.getItem('token');
-    
+
         const config = token ? { headers: { 'Authorization': 'Bearer ' + token } } : {};
-    
+
         // Lấy thông tin sản phẩm
         $http.get(apiUrl, config)
             .then(function (response) {
@@ -1400,55 +1400,55 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 console.error("Error loading product details:", error);
                 alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
             });
-    
+
         $scope.selectedSize = null; // Biến để lưu kích thước được chọn
-    
+
         // Chọn kích thước sản phẩm
-        $scope.selectSize = function(size) {
+        $scope.selectSize = function (size) {
             $scope.selectedSize = size;
             console.log("Kích thước được chọn:", $scope.selectedSize);
         };
-    
+
         // Thêm sản phẩm vào giỏ hàng
-        $scope.addToCart = function() {
+        $scope.addToCart = function () {
             const gioHangData = {
                 sanPham: $scope.product,
                 soLuong: 1,  // Ví dụ, số lượng mặc định là 1
                 kichThuoc: $scope.selectedSize
             };
-        
+
             // Lấy token từ localStorage hoặc sessionStorage
             const token = localStorage.getItem('token');
-            
+
             if (!token) {
                 alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
                 return;
             }
-        
+
             // Cấu hình header với Authorization
             const config = {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
             };
-        
+
             // Gửi yêu cầu POST để thêm sản phẩm vào giỏ hàng
             const addToCartUrl = 'http://localhost:9999/api/user/giohang';
             $http.post(addToCartUrl, gioHangData, config)
-                .then(function(response) {
+                .then(function (response) {
                     console.log("Sản phẩm đã được thêm vào giỏ hàng:", response.data);
                     alert("Thêm sản phẩm vào giỏ hàng thành công!");
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.error("Lỗi khi thêm vào giỏ hàng:", error);
                     alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
                 });
         };
-        
-        
+
+
     })
-    
-    
+
+
 
 
 
