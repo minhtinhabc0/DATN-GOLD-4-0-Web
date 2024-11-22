@@ -219,7 +219,7 @@ $scope.loadProducts = function () {
             })
             .catch(function (error) {
                 console.error("Error loading product details:", error);
-                alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
+             
             });
 
         }
