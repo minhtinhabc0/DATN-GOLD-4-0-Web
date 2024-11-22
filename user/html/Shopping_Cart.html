@@ -183,9 +183,9 @@
                     <p class="product-price">Giá: {{item.sanPham.gia | number:0}} VND</p>
                     <p style="color: #333;">Kích thước: {{item.kichThuoc}}</p>
                     <p style="color: #333;">Số lượng:
-                        <button ng-click="updateQuantity(item, item.soLuong - 1)" ng-disabled="item.soLuong <= 1">-</button>
+                        <button ng-click="updateQuantity(item, -1)" ng-disabled="item.soLuong <= 1">-</button>
                         {{item.soLuong}}
-                        <button ng-click="updateQuantity(item, item.soLuong + 1)">+</button>                        
+                        <button ng-click="updateQuantity(item, 1)">+</button>                        
                     </p>
                 </div>
             </div>
