@@ -718,7 +718,8 @@
 
                         <!-- Phần hiển thị giá sản phẩm -->
                         <div class="sub-card named">
-                            <span class="text_span" style="font-size: smaller;">{{ pro.gia | number:0 }} VND</span>
+                            <span class="text_span" style="font-size: smaller;">{{ pro.gia +pro.tienCong | number:0 }}
+                                VND</span>
                         </div>
                         <div class="button mt-3" data-tooltip="{{ pro.gia | number:0 }} VND"
                             ng-click="$event.stopPropagation(); addToCart(pro)">
