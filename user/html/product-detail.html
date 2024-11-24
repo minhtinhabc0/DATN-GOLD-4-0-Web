@@ -349,8 +349,36 @@
         color: #000000;
         border-color: rgb(62, 15, 231);
     }
-</style>
 
+    /* Hiệu ứng khi hover */
+    .add-to-favorites {
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .add-to-favorites i {
+        font-size: 24px;
+        color: #e74c3c;
+        transition: color 0.3s;
+    }
+
+    .add-to-favorites:hover i {
+        color: #c0392b;
+        /* Màu khi hover */
+    }
+</style>
+<style>
+    button:hover {
+        background-color: #23c483;
+        box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+        color: #fff;
+        transform: translateY(-7px);
+    }
+
+    button:active {
+        transform: translateY(-1px);
+    }
+</style>
 <div class="product-detail-container">
     <!-- Phần ảnh sản phẩm -->
     <div class="product-image-gallery">
@@ -397,8 +425,8 @@
                         <ul>
                             <li>Dây chuyền, lắc chế tác bị đứt gãy.</li>
                             <li>Sản phẩm bị lỗi do tác động bên ngoài, do quá trình sử dụng hoặc sử dụng không đúng cách
-                                dẫn đến sản phẩm bị biến dạng hoặc hư hỏng.</li>
-                            <li>Không bảo hành kiềng, vòng, nữ trang 22K, 24K, dây chuyền, dây cổ chế tác, lắc chế tác
+                                dẫn đến sản phẩm bị biến dạng hoặc hư hỏng.</li>/-strong/-heart:>:o:-((:-h <li>Không bảo
+                                hành kiềng, vòng, nữ trang 22K, 24K, dây chuyền, dây cổ chế tác, lắc chế tác
                                 bị đứt gãy và sản phẩm bị lỗi do tác động bên ngoài.</li>
                             <li>Khách hàng cung cấp thông tin truy lục hóa đơn không chính xác.</li>
                         </ul>
@@ -435,7 +463,12 @@
 
     <!-- Phần thông tin sản phẩm -->
     <div class="product-info">
-        <h1 class="product-title" style="color: #2a3356;font-weight: 300;">{{ product.tenSanPham }}</h1>
+        <h1 class="product-title d-flex align-content-between" style="color: #2a3356;font-weight: 300;">{{
+            product.tenSanPham }}
+
+
+
+        </h1>
         <p class="product-code" style="color: #2a3356;">Mã sản phẩm: {{ product.maSanPham }}</p>
         <p class="product-price" style="color: red; font-weight: lighter;">{{ product.gia + product.tienCong| number: 0
             }} VND
@@ -494,7 +527,9 @@
             <!-- Hai nút phụ -->
             <div class="secondary-buttons">
                 <button class="secondary-button" ng-click="addToCart()">Thêm vào giỏ hàng</button>
-                <button class="secondary-button">Gọi ngay (miễn phí)</button>
+
+                <button class="secondary-button" ng-click="addProductToFavorites(product.maSanPham)"> Thêm vào yêu
+                    thích</button>
             </div>
         </div>
         <div class="store-check">
@@ -517,8 +552,7 @@
 
             // Loại bỏ class active khỏi tất cả các tab
             document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            // Thêm class active vào tab được click
-            tab.classList.add("active");
+            // Thêm class active vào tab được click/-strong/-heart:>:o:-((:-h tab.classList.add("active");
 
             // Ẩn tất cả nội dung tab
             document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));

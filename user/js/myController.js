@@ -592,36 +592,44 @@ app.controller('spyeuthichCtrl', function ($scope, $http, $location) {
     };
 
 
-    // API thêm sản phẩm vào danh sách yêu thích
-    $scope.addProductToFavorites = function (maSanPham) {
-        const data = { maSanPham: maSanPham };
-        $http.post('http://localhost:9999/api/yeuthich/add', data, {
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-        })
-            .then(function (response) {
-                alert(response.data); // Hiển thị thông báo thành công
-                $scope.getFavoriteProducts(); // Lấy lại danh sách yêu thích
-            })
-            .catch(function (error) {
-                console.error('Lỗi khi thêm sản phẩm vào yêu thích:', error);
-            });
-    };
-
-    // API xóa sản phẩm khỏi danh sách yêu thích
     $scope.removeProductFromFavorites = function (maSanPham) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
+            return;
+        }
 
-        $http.delete('http://localhost:9999/api/yeuthich/remove', {
-            params: { maSanPham: maSanPham },
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        console.log("Đang xóa sản phẩm với mã:", maSanPham);
+
+        $http({
+            method: 'DELETE',
+            url: 'http://localhost:9999/api/yeuthich/' + maSanPham,
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
         })
             .then(function (response) {
-                alert(response.data); // Hiển thị thông báo thành công
-                $scope.getFavoriteProducts(); // Lấy lại danh sách yêu thích sau khi xóa
+                if (response.status === 200) {
+                    console.log("Dữ liệu trả về:", response.data);
+
+                    $scope.getFavoriteProducts();
+                } else {
+                    alert("Không thể xóa sản phẩm");
+                }
             })
             .catch(function (error) {
-                console.error('Lỗi khi xóa sản phẩm khỏi yêu thích:', error);
+                console.error("Lỗi khi gọi API:", error);
+                alert("Đã xảy ra lỗi khi xóa sản phẩm");
             });
+
+
+
+
     };
+
+
+
+
 
 
     // Hàm phân trang dữ liệu
@@ -1432,6 +1440,8 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 }
             };
 
+
+
             // Gửi yêu cầu POST để thêm sản phẩm vào giỏ hàng
             const addToCartUrl = 'http://localhost:9999/api/user/giohang';
             $http.post(addToCartUrl, gioHangData, config)
@@ -1445,7 +1455,56 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 });
         };
 
+        // Api thêm sản phẩm vào trang yêu thích
+        $scope.addProductToFavorites = function (maSanPham) {
+            // Lấy token từ localStorage hoặc từ nơi bạn lưu trữ token (có thể là sessionStorage, cookie, v.v.)
+            // Thay đổi theo cách bạn lưu trữ token
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
+                return;
+            }
 
+            $http({
+                method: 'POST',
+                url: 'http://localhost:9999/api/yeuthich/add',
+                headers: {
+                    'Authorization': 'Bearer ' + token // Gửi token trong header
+                },
+                params: {  // Truyền tham số qua URL thay vì body
+                    maSanPham: maSanPham
+                }
+            })
+                .then(function (response) {
+                    if (response.status === 200) {
+                        console.log("Dữ liệu trả về:", response.data);
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: 'Sản phẩm đã được thêm vào yêu thích',
+                            icon: 'success',  // Biểu tượng thành công
+                            confirmButtonText: 'Đóng',  // Nút xác nhận
+                            confirmButtonColor: '#3085d6',  // Màu của nút
+                            background: '#f8f9fa',  // Màu nền của thông báo
+                            backdrop: true,  // Hiển thị nền mờ
+                            timer: 3000,  // Thời gian tự động đóng thông báo (3 giây)
+                            timerProgressBar: true  // Hiển thị thanh tiến trình
+                        });
+                        $scope.getFavoriteProducts();
+                    } else {
+                        alert("Không thể thêm sản phẩm");
+                    }
+                })
+                .catch(function (error) {
+                    // Xử lý lỗi
+                    if (error.status === 401) {
+                        alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
+                    } else if (error.status === 403) {
+                        alert("Tài khoản không tồn tại.");
+                    } else if (error.status === 404) {
+                        alert("Sản phẩm không tồn tại.");
+                    }
+                });
+        };
     })
 
 
