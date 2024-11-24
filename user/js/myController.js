@@ -960,7 +960,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             console.log($scope.gioHang);
             $scope.calculateTotal();// Cập nhật giỏ hàng trong UI
         }).catch(function (error) {
-            alert('Có lỗi xảy ra khi lấy giỏ hàng!');
+
         });
     };
     $scope.calculateTotal = function () {
@@ -1447,7 +1447,17 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             $http.post(addToCartUrl, gioHangData, config)
                 .then(function (response) {
                     console.log("Sản phẩm đã được thêm vào giỏ hàng:", response.data);
-                    alert("Thêm sản phẩm vào giỏ hàng thành công!");
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: 'Sản phẩm đã được thêm vào giỏ hàng',
+                        icon: 'success',  // Biểu tượng thành công
+                        confirmButtonText: 'Đóng',  // Nút xác nhận
+                        confirmButtonColor: '#3085d6',  // Màu của nút
+                        background: '#f8f9fa',  // Màu nền của thông báo
+                        backdrop: true,  // Hiển thị nền mờ
+                        timer: 3000,  // Thời gian tự động đóng thông báo (3 giây)
+                        timerProgressBar: true  // Hiển thị thanh tiến trình
+                    });
                 })
                 .catch(function (error) {
                     console.error("Lỗi khi thêm vào giỏ hàng:", error);
