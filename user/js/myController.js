@@ -1399,7 +1399,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
         const config = token ? { headers: { 'Authorization': 'Bearer ' + token } } : {};
 
         // Lấy thông tin sản phẩm
-        $http.get(apiUrl, config)
+        $http.get(apiUrl)
             .then(function (response) {
                 console.log("API Response:", response.data);
                 $scope.product = response.data;
