@@ -366,6 +366,21 @@
         color: #c0392b;
         /* Màu khi hover */
     }
+
+    .tab {
+        position: relative;
+    }
+
+    .tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #1a73e8;
+        transition: width 0.3s ease-in-out;
+    }
 </style>
 
 <div class="product-detail-container">
@@ -533,27 +548,25 @@
 </div>
 
 <script>
-    // Thêm sự kiện click vào các phần tử có class "tab"
-    document.addEventListener("click", function (event) {
-        // Kiểm tra nếu phần tử được click là tab
-        if (event.target.classList.contains("tab")) {
-            const tab = event.target;
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
 
-            // Loại bỏ class active khỏi tất cả các tab
-            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            // Thêm class active vào tab được click/-strong/-heart:>:o:-((:-h tab.classList.add("active");
+    // Hàm chuyển tab
+    function switchTab(event) {
+        const targetTab = event.target;
+        const targetContentId = targetTab.getAttribute('data-tab');
 
-            // Ẩn tất cả nội dung tab
-            document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+        // Xóa lớp active khỏi tất cả tabs và nội dung
+        tabs.forEach(tab => tab.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
 
-            // Hiển thị nội dung của tab tương ứng
-            const tabId = tab.getAttribute("data-tab");
-            const targetContent = document.querySelector(`#tab-${tabId}`);
-            if (targetContent) {
-                targetContent.classList.add("active");
-            }
-        }
-    });
+        // Thêm lớp active vào tab và nội dung được chọn
+        targetTab.classList.add('active');
+        document.getElementById(`tab-${targetContentId}`).classList.add('active');
+    }
+
+    // Lắng nghe sự kiện click trên tất cả các tab
+    tabs.forEach(tab => tab.addEventListener('click', switchTab));
 
 
 </script>
