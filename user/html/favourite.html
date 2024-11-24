@@ -76,7 +76,7 @@
                         alt="{{ product.sanPham.tenSanPham }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.sanPham.tenSanPham }}</h5>
-                        <p class="card-text">Giá: {{ product.sanPham.gia | currency:"₫" }}</p>
+                        <p class="card-text">Giá: {{ product.sanPham.gia +product.sanPham.tienCong | currency:"₫" }}</p>
                         <a ng-click="goToDetail(product.sanPham)" class="btn btn-custom">Xem Chi Tiết</a>
                         <button ng-click="removeProductFromFavorites(product.sanPham.maSanPham)"
                             class="btn btn-danger mt-2">Xóa
