@@ -618,12 +618,12 @@
         </div>
 
     </div>
-    <div class="container my-4">
+    <div class="container my-4" style="color: #000;">
         <div class="review-section">
             <h3 class="mb-3">Đánh giá sản phẩm</h3>
             <form ng-submit="submitReview()" class="border p-3 rounded shadow-sm">
                 <div class="form-group">
-                    <label for="rating">Số sao:</label>
+                    
                     <div class="rating">
                         <i ng-repeat="star in [1, 2, 3, 4, 5]" 
                            class="fa" 
@@ -641,15 +641,17 @@
                 </div>
                 
                 
-                <div class="form-group mt-3">
+                <div class="form-group mt-3" >
                     <label for="comment">Nhận xét:</label>
                     <textarea id="comment" ng-model="review.comment" rows="4" class="form-control" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Gửi đánh giá</button>
             </form>
     
-            <h3 class="mt-5 mb-3">Đánh giá từ người dùng</h3>
+            <h3 class="mt-5 mb-3" style="color: #000;">Đánh giá từ người dùng</h3>
+           
             <div ng-repeat="rv in reviews" class="card mb-3">
+                
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <!-- Avatar -->
@@ -667,6 +669,7 @@
                 </div>
               
             </div>
+            <div ng-if="reviews == null" class="text-center"><h5>Không có đánh giá</h5></div>
             
             
         </div>
