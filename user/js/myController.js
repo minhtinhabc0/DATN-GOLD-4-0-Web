@@ -1515,6 +1515,96 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                     }
                 });
         };
+
+        app.filter('momentFormat', function() {
+            return function(input) {
+                return moment(input).fromNow();  // Tính thời gian đã trôi qua (ví dụ: "5 phút trước")
+            };
+        });
+        
+    
+        $scope.reviews = []; // Danh sách đánh giá
+        $scope.review = { rating: 5, comment: '' }; // Mặc định số sao và nhận xét
+    
+        // Lấy thông tin sản phẩm
+        $http.get(`http://localhost:9999/api/products/${productId}`)
+            .then(function (response) {
+                $scope.product = response.data;
+            })
+            .catch(function (error) {
+                console.error("Error loading product details:", error);
+                alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
+            });
+    
+        // Lấy danh sách đánh giá
+        $scope.loadReviews = function () {
+            $http.get(`http://localhost:9999/api/danhgia/sanpham/${productId}`)
+                .then(function (response) {
+                    $scope.reviews = response.data;
+                    console.log("Danh sách đánh giá:", $scope.reviews);
+                })
+                .catch(function (error) {
+                    console.error("Error loading reviews:", error);
+                    alert("Không thể tải danh sách đánh giá.");
+                });
+        };
+        $scope.loadReviews(); // Gọi khi khởi tạo
+    
+        // Gửi đánh giá mới
+        $scope.submitReview = function () {
+            if (!$scope.review.comment || !$scope.review.rating) {
+                alert("Vui lòng nhập đầy đủ thông tin đánh giá.");
+                return;
+            }
+        
+            // Prepare the review data to match the expected structure
+            const reviewData = {
+                maSanPham: productId,     // ID of the product
+                DiemDanhGia: $scope.review.rating, // Rating (soSao)
+                NoiDungDanhGia: $scope.review.comment  // Comment (nhanXet)
+            };
+        
+            console.log("Review Data:", reviewData);
+        
+            // Get the Authorization token (for example, from local storage or the user's session)
+            const token = localStorage.getItem('token');  // Adjust based on your actual token storage
+        
+            // Set the Authorization header in the config
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ` + localStorage.getItem('token')  // Pass the token in the Authorization header
+                }
+            };
+        
+            // Make the POST request to submit the review
+            $http.post(`http://localhost:9999/api/danhgia/add/${productId}`, reviewData, config
+              
+            )
+                .then(function (response) {
+                    alert("Đánh giá đã được gửi thành công!");
+                    $scope.review = { rating: 5, comment: '' }; // Reset form
+                    $scope.loadReviews(); // Reload reviews (or call your reviews fetching function)
+                })
+                .catch(function (error) {
+                    console.error("Error submitting review:", error);
+                    alert("Không thể gửi đánh giá. Vui lòng thử lại.");
+                });
+        };
+        
+
+        app.filter('range', function() {
+            return function(input, total) {
+                total = parseInt(total); // Convert total to an integer
+                for (var i = 0; i < total; i++) {
+                    input.push(i); // Push values into the array up to the 'total' value
+                }
+                return input;
+            };
+        });
+        
+        
+
+        
     })
 
 

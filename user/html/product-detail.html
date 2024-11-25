@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<script src="https://kit.fontawesome.com/e907e5cd51.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 <style>
     body {
         margin-top: 140px !important;
@@ -381,6 +385,75 @@
         background-color: #1a73e8;
         transition: width 0.3s ease-in-out;
     }
+
+    .rating .fa {
+        font-size: 2rem;
+        color: #f0ad4e;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+    
+    .rating .fa-star {
+        color: #f0ad4e;
+    }
+    
+    .rating .fa-star-o {
+        color: #ddd;
+    }
+    
+    .rating .fa:hover, .rating .fa:hover ~ .fa {
+        color: #f0ad4e;
+        
+    }
+    
+    .invalid-feedback {
+        display: block;
+        font-size: 0.875rem;
+        color: #dc3545;
+    }
+    
+    .card-body {
+        padding: 1rem;  /* Tăng padding để khoảng cách trong thẻ card rộng hơn */
+    }
+    
+    .d-flex {
+        display: flex;
+        align-items: center;
+    }
+    
+    .mr-3 {
+        margin-right: 1rem;  /* Khoảng cách giữa ảnh và nội dung bên phải */
+    }
+    
+    .ml-3 {
+        margin-left: 1rem;  /* Khoảng cách giữa ảnh và nội dung */
+    }
+    
+    .card-title {
+        font-size: 1.25rem;  /* Tăng kích thước chữ của tên người dùng */
+    }
+    
+    .card-text {
+        font-size: 1rem;
+    }
+    
+    .text-muted {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+    .text-warning {
+        color: #ffcc00; /* Màu vàng cho ngôi sao đầy */
+    }
+    
+    .text-muted {
+        color: #ccc; /* Màu xám cho ngôi sao rỗng */
+    }
+    
+    .fas {
+        font-size: 1.25rem; /* Kích thước sao */
+    }
+    
+    
 </style>
 
 <div class="product-detail-container">
@@ -545,6 +618,60 @@
         </div>
 
     </div>
+    <div class="container my-4">
+        <div class="review-section">
+            <h3 class="mb-3">Đánh giá sản phẩm</h3>
+            <form ng-submit="submitReview()" class="border p-3 rounded shadow-sm">
+                <div class="form-group">
+                    <label for="rating">Số sao:</label>
+                    <div class="rating">
+                        <i ng-repeat="star in [1, 2, 3, 4, 5]" 
+                           class="fa" 
+                           ng-class="{
+                             'fa-star': (tempRating || review.rating) >= star, 
+                             'fa-star-o': (tempRating || review.rating) < star
+                           }"
+                           ng-click="review.rating = star"
+                           ng-mouseover="tempRating = star"
+                           ng-mouseleave="tempRating = null"></i>
+                    </div>
+                    <div class="invalid-feedback">
+                        Vui lòng chọn số sao.
+                    </div>
+                </div>
+                
+                
+                <div class="form-group mt-3">
+                    <label for="comment">Nhận xét:</label>
+                    <textarea id="comment" ng-model="review.comment" rows="4" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Gửi đánh giá</button>
+            </form>
+    
+            <h3 class="mt-5 mb-3">Đánh giá từ người dùng</h3>
+            <div ng-repeat="rv in reviews" class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <!-- Avatar -->
+                        <img ng-src="{{rv.nguoiDung.avt}}" alt="{{rv.nguoiDung.hoTen}}" class="rounded-circle mr-3" width="50" height="50">
+                        
+                        <!-- Nội dung đánh giá -->
+                        <div class="ml-3">
+                            <h5 class="card-title mb-1"><b>{{ rv.nguoiDung.hoTen }}</b></h5>
+                            <p class="card-text">{{ rv.noiDungDanhGia }}</p>
+                            
+                          <p  class="card-text">{{rv.diemDanhGia}} <i class="fa-solid fa-star" style="color: #FFD43B;"></i></p>
+                       
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+            
+            
+        </div>
+    </div>
+    
 </div>
 
 <script>
@@ -568,5 +695,6 @@
     // Lắng nghe sự kiện click trên tất cả các tab
     tabs.forEach(tab => tab.addEventListener('click', switchTab));
 
+    
 
 </script>
