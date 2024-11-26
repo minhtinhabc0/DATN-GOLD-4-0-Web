@@ -238,7 +238,7 @@ app.controller('quanlysanphamCtrl', function ($scope, $http) {
             // Hiển thị thành công
             console.log("Cập nhật hình ảnh thành công:", response.data.secure_url);
         }).catch(function (error) {
-         
+
         });
     };
 
@@ -304,7 +304,7 @@ app.controller('quanlysanphamCtrl', function ($scope, $http) {
 app.controller('quanlydonhangCtrl', function ($scope, $http) {
     // Khai báo danh sách đơn hàng
     $scope.donHangs = [];
-    $scope.pageSize = 1; // Số lượng đơn hàng trên mỗi trang
+    $scope.pageSize = 5; // Số lượng đơn hàng trên mỗi trang
     $scope.currentPage = 1; // Trang hiện tại
     $scope.donHangsFiltered = []; // Dữ liệu đã lọc
     $scope.searchKeyword = ""; // Từ khóa tìm kiếm
@@ -318,7 +318,7 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
     $scope.soluongHoanThanh = 0;
 
     // khai báo chi tiết hóa đơn
-    $scope.hoaDonChiTiet = {};
+    $scope.hoaDonChiTiet = [];
 
     // Hàm lấy danh sách đơn hàng từ API và phân trang
     $scope.getDanhSachDonHang = function () {
@@ -327,10 +327,14 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
         })
             .then(function (response) {
                 // console.log('Kết quả API:', response.data);
+
                 $scope.donHangs = response.data;
+
+
                 $scope.donHangsFiltered = angular.copy($scope.donHangs);
                 $scope.totalPages = Math.ceil($scope.donHangs.length / $scope.pageSize);
                 $scope.paginateData();
+                console.log(response);
             })
             .catch(function (error) {
                 console.error('Lỗi khi gọi API:', error);
@@ -392,12 +396,16 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
     };
 
 
+
+
+
     // Hàm lấy chi tiết hóa đơn từ API
     $scope.getChiTietHoaDon = function (maHoaDon) {
         $http.get('http://localhost:9999/api/hoadon/' + maHoaDon) // API để lấy chi tiết hóa đơn theo mã
             .then(function (response) {
                 // Gán dữ liệu chi tiết vào biến hoaDonChiTiet
                 $scope.hoaDonChiTiet = response.data;
+
                 // Hiển thị chi tiết trong modal
                 $('#invoiceDetailModal').modal('show'); // Mở modal để hiển thị chi tiết
             })
@@ -405,6 +413,32 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
                 console.error('Có lỗi xảy ra khi lấy chi tiết hóa đơn:', error);
             });
     };
+    $scope.xacNhanDonHang = function (donHang) {
+        var token = localStorage.getItem('token'); // Hoặc từ sessionStorage
+
+        if (!token) {
+            alert("Token không hợp lệ");
+            return;
+        }
+
+        // Gửi yêu cầu POST tới API
+        $http.post('http://localhost:9999/api/donhang/' + donHang.maDonHang + '/xacnhan', 'Hoàn thành', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(function (response) {
+                donHang.trangThai = 'Hoàn thành';
+                alert("Đơn hàng đã được xác nhận thành công");
+                $scope.getDanhSachDonHang();
+            })
+            .catch(function (error) {
+                $scope.getDanhSachDonHang();
+            });
+    };
+
+
+
 
     $scope.filterOrders = function () {
         $scope.donHangsFiltered = $scope.donHangs.filter(function (donHang) {
@@ -421,12 +455,17 @@ app.controller('quanlydonhangCtrl', function ($scope, $http) {
 
     // Hàm sắp xếp đơn hàng
     $scope.sortOrders = function () {
+        if (!$scope.sortCriteria) {
+            $scope.donHangsFiltered = [...$scope.donHangs]; // Hoặc thiết lập lại dữ liệu ban đầu của bạn
+        }
         if ($scope.sortCriteria === "1") {
             $scope.donHangsFiltered.sort((a, b) => new Date(b.thoiGian) - new Date(a.thoiGian)); // Mới nhất
         } else if ($scope.sortCriteria === "2") {
             $scope.donHangsFiltered.sort((a, b) => new Date(a.thoiGian) - new Date(b.thoiGian)); // Cũ nhất
         } else if ($scope.sortCriteria === "3") {
             $scope.donHangsFiltered.sort((a, b) => b.tongTien - a.tongTien); // Giá trị cao nhất
+        } else if ($scope.sortCriteria === "4") {
+            $scope.donHangsFiltered.sort((a, b) => a.tongTien - b.tongTien); // Giá trị thấp nhất (thêm phần sắp xếp này)
         }
         $scope.totalPages = Math.ceil($scope.donHangsFiltered.length / $scope.pageSize);
         $scope.currentPage = 1; // Reset lại trang hiện tại khi sắp xếp

@@ -1,48 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/prof.css">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/master/qrcode.min.js"></script>
+
 </head>
+<!-- /* PHÂN TRANG */ -->
+<style>
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        border-color: #dee2e6;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #f7a100 !important;
+        color: white;
+        border: none;
+    }
+
+    .pagination .page-link {
+        border-radius: 50px;
+        padding: 8px 15px;
+    }
+
+    .pagination .page-item {
+        margin: 0 5px;
+    }
+
+    .pagination .page-item .page-link {
+        border-radius: 50px;
+        /* Bo tròn toàn bộ nút */
+        padding: 8px 15px;
+        /* Tăng độ rộng cho nút để dễ nhìn */
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        border-color: #dee2e6;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+</style>
+<!-- /* bảng */ -->
+<style>
+    .table {
+        border-radius: 15px;
+        /* Bo tròn 4 góc của bảng */
+        overflow: hidden;
+        /* Đảm bảo các ô không vượt ra ngoài góc bo tròn */
+    }
+
+    th,
+    td {
+        white-space: nowrap;
+        /* Ngăn chữ bị ngắt dòng */
+        text-align: center;
+        /* Căn giữa theo chiều ngang */
+        vertical-align: middle;
+        font-size: smaller;
+        /* Căn giữa theo chiều dọc */
+    }
+
+    .table th,
+    .table td {
+        border-right: 1px solid #dee2e6;
+        /* Đường viền giữa các ô */
+    }
+
+    .table th:last-child,
+    .table td:last-child {
+        border-right: none;
+        /* Xóa đường viền ở ô cuối cùng của mỗi hàng */
+    }
+
+    .table thead th {
+        border-bottom: 2px solid #dee2e6;
+        /* Đường viền dưới các tiêu đề */
+    }
+
+    .table-striped tbody tr:nth-child(odd) {
+        background-color: #2f2f2f;
+        /* Tạo hiệu ứng sọc cho các hàng chẵn */
+    }
+
+    .table-striped tbody tr:nth-child(even) {
+        background-color: #2f2f2f;
+        /* Tạo hiệu ứng sọc cho các hàng chẵn */
+    }
+
+
+    .text-center {
+        text-align: center;
+    }
+</style>
+<!-- MODAL ĐON HÀNG-->
+<style>
+    .order-details-modal .modal-content {
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .order-details-header {
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 20px;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .order-details-header h5 {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .order-details-body {
+        padding: 20px;
+        font-family: 'Roboto', sans-serif;
+        color: #495057;
+    }
+
+    .order-details-info {
+        padding-right: 15px;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .order-detail {
+        margin-bottom: 12px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .order-detail strong {
+        font-weight: 600;
+        color: #212529;
+    }
+
+    .order-detail span {
+        color: #495057;
+    }
+
+    .image-container {
+        margin-top: 20px;
+    }
+
+    .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        padding: 5px;
+        background-color: #ffffff;
+    }
+
+    .order-details-footer {
+        background-color: #f1f3f5;
+        padding: 15px 20px;
+        text-align: right;
+        border-top: 2px solid #dee2e6;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        color: #ffffff;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        /* Giữ nút đóng ở bên phải */
+        align-items: center;
+        /* Căn giữa theo chiều dọc */
+        padding: 20px;
+        background-color: #343a40;
+        color: #ffffff;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .modal-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+        flex-grow: 1;
+        /* Cho phép tiêu đề chiếm hết không gian còn lại */
+        text-align: center;
+        /* Căn giữa tiêu đề */
+    }
+</style>
+<!-- TICKET QR -->
+<style>
+    .ticket-modal .modal-dialog {
+        max-width: 900px;
+    }
+
+    .ticket-content {
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        background-color: #fdfdfd;
+    }
+
+    .ticket-header {
+        background-color: #343a40;
+        border-bottom: 2px solid #ffc107;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .ticket-header .modal-title {
+        font-family: 'Arial', sans-serif;
+        font-size: 24px;
+        color: #ffc107;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .ticket-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .ticket-left,
+    .ticket-right {
+        width: 48%;
+    }
+
+    .ticket-header-info .ticket-info {
+        font-family: 'Arial', sans-serif;
+        font-size: 16px;
+        color: #212529;
+        margin-bottom: 10px;
+    }
+
+    .ticket-right {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-left: 2px solid #dee2e6;
+        padding-left: 20px;
+        animation: bounce 2s infinite;
+    }
+
+    .qr-title {
+        font-family: 'Arial', sans-serif;
+        font-size: 18px;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    .qr-code-container {
+        width: 150px;
+        height: 150px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-6px);
+        }
+
+        60% {
+            transform: translateY(-3px);
+        }
+    }
+</style>
+<!-- MODAL HÓA ĐƠN -->
+<style>
+    .bill-details-modal .modal-dialog {
+        max-width: 900px;
+    }
+
+    .bill-details-content {
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        background-color: #ffffff;
+    }
+
+    .bill-details-header {
+        background-color: #343a40;
+
+        text-align: center;
+        padding: 15px 20px;
+    }
+
+
+
+    .bill-details-body {
+
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .bill-left,
+    .bill-right {
+        width: 45%;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .bill-left p,
+    .bill-right p {
+        font-family: 'Arial', sans-serif;
+        font-size: 16px;
+        color: #495057;
+        margin-bottom: 10px;
+    }
+
+    .bill-left p strong,
+    .bill-right p strong {
+        color: #212529;
+    }
+
+    .bill-details-footer {
+        background-color: #f8f9fa;
+        border-top: 2px solid #dee2e6;
+        text-align: right;
+        padding: 15px 20px;
+    }
+
+    .modal-footer .btn-secondary {
+        background-color: rgb(184, 134, 11);
+        color: #ffffff;
+    }
+
+    .modal-footer .btn-secondary:hover {
+        background-color: rgb(95, 70, 5);
+        ;
+    }
+
+    /* Điều chỉnh để thêm hình ảnh hoặc thông tin bổ sung nếu có */
+    .bill-right .product-image {
+        width: 120%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
 <body>
     <div class="container-fluid mt-5" style="height: 700px;">
         <div class="row" style="margin-top: 150px;">
             <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar" style="background-color: black !important;height: 750px; overflow-y: auto; margin-top: -15px;">
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar"
+                style="background-color: black !important;height: 750px; overflow-y: auto; margin-top: -15px;">
                 <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="pills-info-tab" data-bs-toggle="pill" href="#pills-info" role="tab"
-                            aria-controls="pills-info" aria-selected="true" style="margin-top: 50px;">Thông Tin Tài Khoản <i
-                                class="fa-regular fa-address-card"></i></a>
+                        <a class="nav-link active" id="pills-info-tab" data-bs-toggle="pill" href="#pills-info"
+                            role="tab" aria-controls="pills-info" aria-selected="true" style="margin-top: 50px;">Thông
+                            Tin Tài Khoản <i class="fa-regular fa-address-card"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-history-tab" data-bs-toggle="pill" href="#pills-history" role="tab"
-                            aria-controls="pills-history" aria-selected="false">Lịch Sử Giao Dịch <i
+                        <a class="nav-link" id="pills-history-tab" data-bs-toggle="pill" href="#pills-history"
+                            role="tab" aria-controls="pills-history" aria-selected="false">Lịch Sử Giao Dịch <i
                                 class="fa-solid fa-clock-rotate-left"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-password-tab" data-bs-toggle="pill" href="#pills-password" role="tab"
-                            aria-controls="pills-password" aria-selected="false">Mật Khẩu & Bảo Mật <i
+                        <a class="nav-link" id="pills-password-tab" data-bs-toggle="pill" href="#pills-password"
+                            role="tab" aria-controls="pills-password" aria-selected="false">Mật Khẩu & Bảo Mật <i
                                 class="fa-solid fa-shield-halved"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-order-tab" data-bs-toggle="pill" href="#pills-order" role="tab"
+                            aria-controls="pills-order" aria-selected="false">Đơn Hàng Của Bạn <i
+                                class="fa-solid fa-cart-shopping"></i></a>
                     </li>
                 </ul>
             </nav>
-    
+
             <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="tab-content" id="pills-tabContent" >
+                <div class="tab-content" id="pills-tabContent">
                     <!-- Tab thông tin tài khoản -->
-                    <div class="tab-pane fade show active" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
+                    <div class="tab-pane fade show active" id="pills-info" role="tabpanel"
+                        aria-labelledby="pills-info-tab">
                         <ul class="nav nav-tabs" id="infoTabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="user-info-tab" data-bs-toggle="tab" href="#user-info"
-                                    role="tab"style="color: white;">Thông Tin Người Dùng</a>
+                                    role="tab" style="color: white;">Thông Tin Người Dùng</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="asset-info-tab" data-bs-toggle="tab" href="#asset-info"
-                                    role="tab"style="color: white;">Tài Sản</a>
+                                    role="tab" style="color: white;">Tài Sản</a>
                             </li>
                         </ul>
                         <div class="tab-content mt-3" id="infoTabContent">
@@ -50,63 +432,72 @@
                             <div class="tab-pane fade show active" id="user-info" role="tabpanel">
                                 <div class="user-info-container">
                                     <div class="avatar-container">
-                                        <img ng-src="{{ userInfo.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain' }}" 
-                                        alt="User Avatar" 
-                                        class="img-fluid mb-3"
-                                        style="border-radius: 50%; width: 200px; height: 200px;" />
-                                   
-                                        <label for="avatar" class="btn btn-edit" ng-if="isEditing" style="cursor: pointer;">
+                                        <img ng-src="{{ userInfo.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain' }}"
+                                            alt="User Avatar" class="img-fluid mb-3"
+                                            style="border-radius: 50%; width: 200px; height: 200px;" />
+
+                                        <label for="avatar" class="btn btn-edit" ng-if="isEditing"
+                                            style="cursor: pointer;">
                                             <i class="fas fa-edit"></i>
                                         </label>
-                                        <input type="file" id="avatar" class="d-none" ng-file-select ng-model="avatarFile"
-                                            ng-disabled="!isEditing" accept="image/*" ng-change="uploadAvatar()" />
-                                        
+                                        <input type="file" id="avatar" class="d-none" ng-file-select
+                                            ng-model="avatarFile" ng-disabled="!isEditing" accept="image/*"
+                                            ng-change="uploadAvatar()" />
+
                                     </div>
-                                    
+
                                     <form class="user-info-form" ng-submit="updateProfile()" ng-show="!editemail">
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Họ tên</label>
-                                            <input type="text" class="form-control" id="fullName" ng-model="userInfo.hoTen"
-                                                required ng-disabled="!isEditing">
+                                            <input type="text" class="form-control" id="fullName"
+                                                ng-model="userInfo.hoTen" required ng-disabled="!isEditing">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label> 
-                                            <input type="email" class="form-control" id="email" ng-model="userInfo.email"
-                                                required disabled>
-                                               <button type="button" class="btn" ng-click="enableEditemail()"ng-if="isEditing">sửa email</button>
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email"
+                                                ng-model="userInfo.email" required disabled>
+                                            <button type="button" class="btn" ng-click="enableEditemail()"
+                                                ng-if="isEditing">sửa email</button>
                                         </div>
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">Số điện thoại</label>
-                                            <input type="text" class="form-control" id="phoneNumber" ng-model="userInfo.sdt"
-                                                required ng-disabled="!isEditing">
+                                            <input type="text" class="form-control" id="phoneNumber"
+                                                ng-model="userInfo.sdt" required ng-disabled="!isEditing">
                                         </div>
-                                        <button type="button" class="btn btn-secondary mt-3" ng-click="enableEdit()" ng-if="!isEditing">Chỉnh Sửa Thông Tin</button>
-                                        <button type="button" class="btn btn-secondary mt-3" ng-click="disableEdit()" ng-if="isEditing">Hủy</button>
-                                        <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật thông tin</button>
+                                        <button type="button" class="btn btn-secondary mt-3" ng-click="enableEdit()"
+                                            ng-if="!isEditing">Chỉnh Sửa Thông Tin</button>
+                                        <button type="button" class="btn btn-secondary mt-3" ng-click="disableEdit()"
+                                            ng-if="isEditing">Hủy</button>
+                                        <button type="submit" class="btn btn-primary mt-3" ng-if="isEditing">Cập nhật
+                                            thông tin</button>
                                     </form>
                                 </div>
-                                
+
                             </div>
-    
+
                             <!-- Tài Sản -->
                             <div class="tab-pane fade" id="asset-info" role="tabpanel">
                                 <div class="form-section">
                                     <h3>Tài sản của bạn</h3>
                                     <div class="mb-3" ng-if="gcoinBalance != null">
-                                        <label for="gcoinBalance" class="form-label" style="color: white;">Số dư Gcoin:</label>
+                                        <label for="gcoinBalance" class="form-label" style="color: white;">Số dư
+                                            Gcoin:</label>
                                         <h2 style="color: yellow; font-weight: bold;">{{gcoinBalance}}</h2>
                                     </div>
                                     <div class="mb-3" ng-if="gcoinBalance != null">
-                                        <label for="goldPrice" class="form-label" style="color: white;">Giá trị quy đổi ra vàng:</label>
-                                        <h2 style="color: yellow; font-weight: bold;">  {{ totalGcoinValue | number:0 }} VNĐ</h2>
+                                        <label for="goldPrice" class="form-label" style="color: white;">Giá trị quy đổi
+                                            ra vàng:</label>
+                                        <h2 style="color: yellow; font-weight: bold;"> {{ totalGcoinValue | number:0 }}
+                                            VNĐ</h2>
                                     </div>
                                     <div class="mb-3" ng-if="gcoinBalance == null">
                                         <p class="text-warning">Bạn chưa có ví Gcoin. Hãy tạo ví để bắt đầu sử dụng!</p>
-                                        <button class="btn btn-primary" ng-click="createGcoinWallet()">Tạo ví Gcoin</button>
+                                        <button class="btn btn-primary" ng-click="createGcoinWallet()">Tạo ví
+                                            Gcoin</button>
                                     </div>
                                 </div>
                             </div>
-    
+
                         </div>
                     </div>
                     <!-- TAB LICH SU GIAO DICH -->
@@ -131,16 +522,17 @@
                             </tbody>
                         </table>
                     </div>
-    
+
                     <!-- Tab mật khẩu & bảo mật -->
                     <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
                         <ul class="nav nav-tabs" id="securityTabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="password-tab" data-bs-toggle="tab" href="#password-content"
-                                    role="tab" style="color: white;">Mật Khẩu</a>
+                                <a class="nav-link active" id="password-tab" data-bs-toggle="tab"
+                                    href="#password-content" role="tab" style="color: white;">Mật Khẩu</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab" style="color: white;">Mã
+                                <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab"
+                                    style="color: white;">Mã
                                     PIN</a>
                             </li>
                         </ul>
@@ -151,13 +543,13 @@
                                 <form class="password-form" ng-submit="updatePassword()">
                                     <div class="mb-3">
                                         <label for="currentPassword" class="form-label">Mật Khẩu Hiện Tại</label>
-                                        <input type="password" class="form-control" id="oldPassword" ng-model="oldPassword"
-                                            required>
+                                        <input type="password" class="form-control" id="oldPassword"
+                                            ng-model="oldPassword" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
-                                        <input type="password" class="form-control" id="newPassword" ng-model="newPassword"
-                                            required>
+                                        <input type="password" class="form-control" id="newPassword"
+                                            ng-model="newPassword" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="confirmPassword" class="form-label">Nhập Lại Mật Khẩu Mới</label>
@@ -167,30 +559,571 @@
                                     <button type="submit" class="btn btn-dark">Đổi Mật Khẩu</button>
                                 </form>
                             </div>
-    
+
                             <!-- Mã PIN -->
                             <div class="tab-pane fade" id="pin-content" role="tabpanel">
                                 <h2>Thay Đổi Mã PIN</h2>
                                 <form class="password-form" ng-submit="updatePin()">
                                     <div class="mb-3" ng-show="hasPin()">
                                         <label for="currentPIN" class="form-label">Mã PIN Hiện Tại</label>
-                                        <input type="text" class="form-control" id="oldPin" ng-model="oldPin" ng-required="hasPin()">
+                                        <input type="text" class="form-control" id="oldPin" ng-model="oldPin"
+                                            ng-required="hasPin()">
                                     </div>
                                     <div class="mb-3">
                                         <label for="newPIN" class="form-label">Mã PIN Mới</label>
-                                        <input type="password" class="form-control" id="newPin" ng-model="newPin" required>
+                                        <input type="password" class="form-control" id="newPin" ng-model="newPin"
+                                            required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="confirmPIN" class="form-label">Nhập Lại Mã PIN Mới</label>
-                                        <input type="password" class="form-control" id="confirmNewPin" ng-model="confirmNewPin" required>
+                                        <input type="password" class="form-control" id="confirmNewPin"
+                                            ng-model="confirmNewPin" required>
                                     </div>
                                     <button type="submit" class="btn btn-dark">Đổi Mã PIN</button>
                                 </form>
                             </div>
-                            
-                        </div>
-                        <script>
-                        </script>
-</body>
-</html>
 
+                        </div>
+                    </div>
+                    <!-- Tab Đơn Hàng HÓA ĐƠN-->
+                    <div class="tab-pane fade" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
+                        <ul class="nav nav-tabs" id="infoTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="order-tab" data-bs-toggle="tab" href="#order" role="tab"
+                                    style="color: white;">Đơn Hàng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="bill-tab" data-bs-toggle="tab" href="#bill" role="tab"
+                                    style="color: white;">Hóa Đơn</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3" id="infoTabContent">
+                            <div class="tab-pane fade show active" id="order" role="tabpanel">
+                                <div class="container py-4">
+                                    <h2 class="text-center" style="
+                                            font-family: 'Montserrat', sans-serif;
+                                            color: #d4d400;
+                                            text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3);
+                                            letter-spacing: 2px;
+                                            background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
+                                            color: transparent;">Đơn Hàng Của Bạn </h2>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <!-- Tìm kiếm mã đơn hàng -->
+                                        <div class="input-group w-50 me-2">
+                                            <input type="text" class="form-control" placeholder="Tìm kiếm mã đơn hàng"
+                                                aria-label="Search Orders" ng-model="searchKeyword"
+                                                ng-change="filterOrders()">
+                                        </div>
+
+                                        <!-- Lọc trạng thái -->
+                                        <select class="form-select w-25 me-2" ng-model="selectedStatus"
+                                            ng-change="filterOrders()">
+                                            <option value="">Trạng thái</option>
+                                            <option value="Đang xử lý">Đang xử lý</option>
+                                            <option value="Hoàn thành">Hoàn thành</option>
+                                            <option value="Hủy">Hủy</option>
+                                        </select>
+
+                                        <!-- Sắp xếp theo -->
+                                        <select class="form-select w-25" ng-model="sortCriteria"
+                                            ng-change="sortOrders()">
+                                            <option value="">Sắp xếp theo...</option>
+                                            <option value="1">Mới nhất</option>
+                                            <option value="2">Cũ nhất</option>
+                                            <option value="3">Giá trị cao nhất</option>
+                                            <option value="4">Giá trị thấp nhất</option>
+
+                                        </select>
+                                    </div>
+
+                                    <!-- Orders Table Section -->
+                                    <div class="table-responsive">
+                                        <table class="table table-striped ">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th class="text-warning bg-dark text-center">Mã Đơn Hàng</th>
+                                                    <th class="text-warning bg-dark text-center">Mã Hóa Đơn</th>
+                                                    <th class="text-warning bg-dark text-center">Tên Sản
+                                                        Phẩm</th>
+                                                    <th class="text-warning bg-dark text-center">Hình Ảnh</th>
+                                                    <th class="text-warning bg-dark text-center">Số Lượng</th>
+                                                    <th class="text-warning bg-dark text-center">Size</th>
+                                                    <th class="text-warning bg-dark text-center">Tổng Tiền</th>
+                                                    <th class="text-warning bg-dark text-center">Ngày Đặt</th>
+                                                    <th class="text-warning bg-dark text-center">Trạng Thái</th>
+                                                    <th rowspan="2" class="text-warning bg-dark text-center">Thao Tác
+                                                    </th>
+                                                    <!-- <th class="text-warning bg-dark text-center">Ticket QR</th> -->
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="order in oderfillterPage">
+                                                    <td class="text-light text-center">{{order.maDonHang}}</td>
+                                                    <td class="text-light text-center">{{order.hoaDon ?
+                                                        order.hoaDon.maHoaDon :
+                                                        'N/A'}}</td>
+                                                    <td class="text-light">
+                                                        {{order.sanPham.tenSanPham}}
+
+                                                    </td>
+                                                    <td class="text-light text-center"> <img
+                                                            src="{{order.sanPham.hinhAnh}}" width="90px" alt=""></td>
+                                                    <td class="text-light text-center">{{order.soLuong}}</td>
+                                                    <td class="text-light text-center">{{order.kichThuoc}}</td>
+                                                    <td class="text-light text-center text- ">{{order.tongTien |
+                                                        number:0}}
+                                                        VND
+                                                    </td>
+                                                    <td class="text-light text-center text- ">{{order.thoiGian |
+                                                        date:'dd/MM/yyyy'}}
+                                                    </td>
+                                                    <td style="color: black !important;">
+                                                        <span class="badge rounded-pill" ng-class="{
+                                                            'bg-success': order.trangThai === 'Hoàn thành',
+                                                            'bg-warning text-dark': order.trangThai === 'Đang xử lý',
+                                                            
+                                                        }">{{order.trangThai}}</span>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn" data-bs-toggle="modal"
+                                                            data-bs-target="#orderDetailsModal"
+                                                            ng-click="showOrderDetails(order)" style=" 
+                                                            font-size: 13px;
+                                                            
+                                                            letter-spacing: 2.5px;
+                                                            font-weight: 400;
+                                                            color: black;
+                                                            background-color:white;
+                                                            border: none;
+                                                            border-radius: 45px;
+                                                            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+                                                            transition: all 0.3s ease 0s;
+                                                            cursor: pointer;
+                                                            outline: none;">Chi Tiết</button>
+                                                        <svg ng-if="order.trangThai === 'Đang xử lý'" fill="white"
+                                                            width="80px" height="80px" viewBox="0 0 24 24"
+                                                            xmlns="http://www.w3.org/2000/svg" data-bs-toggle="modal"
+                                                            data-bs-target="#ticketModal" ng-click="showQRCode(order)"
+                                                            style=" cursor: pointer;">
+                                                            <path
+                                                                d="M16.1666667,6 C16.0746192,6 16,6.07461921 16,6.16666667 L16,7.83333333 C16,7.92538079 16.0746192,8 16.1666667,8 L17.8333333,8 C17.9253808,8 18,7.92538079 18,7.83333333 L18,6.16666667 C18,6.07461921 17.9253808,6 17.8333333,6 L16.1666667,6 Z M16,18 L16,17.5 C16,17.2238576 16.2238576,17 16.5,17 C16.7761424,17 17,17.2238576 17,17.5 L17,18 L18,18 L18,17.5 C18,17.2238576 18.2238576,17 18.5,17 C18.7761424,17 19,17.2238576 19,17.5 L19,18.5 C19,18.7761424 18.7761424,19 18.5,19 L14.5,19 C14.2238576,19 14,18.7761424 14,18.5 L14,17.5 C14,17.2238576 14.2238576,17 14.5,17 C14.7761424,17 15,17.2238576 15,17.5 L15,18 L16,18 L16,18 Z M13,11 L13.5,11 C13.7761424,11 14,11.2238576 14,11.5 C14,11.7761424 13.7761424,12 13.5,12 L11.5,12 C11.2238576,12 11,11.7761424 11,11.5 C11,11.2238576 11.2238576,11 11.5,11 L12,11 L12,10 L10.5,10 C10.2238576,10 10,9.77614237 10,9.5 C10,9.22385763 10.2238576,9 10.5,9 L13.5,9 C13.7761424,9 14,9.22385763 14,9.5 C14,9.77614237 13.7761424,10 13.5,10 L13,10 L13,11 Z M18,12 L17.5,12 C17.2238576,12 17,11.7761424 17,11.5 C17,11.2238576 17.2238576,11 17.5,11 L18,11 L18,10.5 C18,10.2238576 18.2238576,10 18.5,10 C18.7761424,10 19,10.2238576 19,10.5 L19,12.5 C19,12.7761424 18.7761424,13 18.5,13 C18.2238576,13 18,12.7761424 18,12.5 L18,12 Z M13,14 L12.5,14 C12.2238576,14 12,13.7761424 12,13.5 C12,13.2238576 12.2238576,13 12.5,13 L13.5,13 C13.7761424,13 14,13.2238576 14,13.5 L14,15.5 C14,15.7761424 13.7761424,16 13.5,16 L10.5,16 C10.2238576,16 10,15.7761424 10,15.5 C10,15.2238576 10.2238576,15 10.5,15 L13,15 L13,14 L13,14 Z M16.1666667,5 L17.8333333,5 C18.4776655,5 19,5.52233446 19,6.16666667 L19,7.83333333 C19,8.47766554 18.4776655,9 17.8333333,9 L16.1666667,9 C15.5223345,9 15,8.47766554 15,7.83333333 L15,6.16666667 C15,5.52233446 15.5223345,5 16.1666667,5 Z M6.16666667,5 L7.83333333,5 C8.47766554,5 9,5.52233446 9,6.16666667 L9,7.83333333 C9,8.47766554 8.47766554,9 7.83333333,9 L6.16666667,9 C5.52233446,9 5,8.47766554 5,7.83333333 L5,6.16666667 C5,5.52233446 5.52233446,5 6.16666667,5 Z M6.16666667,6 C6.07461921,6 6,6.07461921 6,6.16666667 L6,7.83333333 C6,7.92538079 6.07461921,8 6.16666667,8 L7.83333333,8 C7.92538079,8 8,7.92538079 8,7.83333333 L8,6.16666667 C8,6.07461921 7.92538079,6 7.83333333,6 L6.16666667,6 Z M6.16666667,15 L7.83333333,15 C8.47766554,15 9,15.5223345 9,16.1666667 L9,17.8333333 C9,18.4776655 8.47766554,19 7.83333333,19 L6.16666667,19 C5.52233446,19 5,18.4776655 5,17.8333333 L5,16.1666667 C5,15.5223345 5.52233446,15 6.16666667,15 Z M6.16666667,16 C6.07461921,16 6,16.0746192 6,16.1666667 L6,17.8333333 C6,17.9253808 6.07461921,18 6.16666667,18 L7.83333333,18 C7.92538079,18 8,17.9253808 8,17.8333333 L8,16.1666667 C8,16.0746192 7.92538079,16 7.83333333,16 L6.16666667,16 Z M13,6 L10.5,6 C10.2238576,6 10,5.77614237 10,5.5 C10,5.22385763 10.2238576,5 10.5,5 L13.5,5 C13.7761424,5 14,5.22385763 14,5.5 L14,7.5 C14,7.77614237 13.7761424,8 13.5,8 C13.2238576,8 13,7.77614237 13,7.5 L13,6 Z M10.5,8 C10.2238576,8 10,7.77614237 10,7.5 C10,7.22385763 10.2238576,7 10.5,7 L11.5,7 C11.7761424,7 12,7.22385763 12,7.5 C12,7.77614237 11.7761424,8 11.5,8 L10.5,8 Z M5.5,14 C5.22385763,14 5,13.7761424 5,13.5 C5,13.2238576 5.22385763,13 5.5,13 L7.5,13 C7.77614237,13 8,13.2238576 8,13.5 C8,13.7761424 7.77614237,14 7.5,14 L5.5,14 Z M9.5,14 C9.22385763,14 9,13.7761424 9,13.5 C9,13.2238576 9.22385763,13 9.5,13 L10.5,13 C10.7761424,13 11,13.2238576 11,13.5 C11,13.7761424 10.7761424,14 10.5,14 L9.5,14 Z M11,18 L11,18.5 C11,18.7761424 10.7761424,19 10.5,19 C10.2238576,19 10,18.7761424 10,18.5 L10,17.5 C10,17.2238576 10.2238576,17 10.5,17 L12.5,17 C12.7761424,17 13,17.2238576 13,17.5 C13,17.7761424 12.7761424,18 12.5,18 L11,18 Z M9,11 L9.5,11 C9.77614237,11 10,11.2238576 10,11.5 C10,11.7761424 9.77614237,12 9.5,12 L8.5,12 C8.22385763,12 8,11.7761424 8,11.5 L8,11 L7.5,11 C7.22385763,11 7,10.7761424 7,10.5 C7,10.2238576 7.22385763,10 7.5,10 L8.5,10 C8.77614237,10 9,10.2238576 9,10.5 L9,11 Z M5,10.5 C5,10.2238576 5.22385763,10 5.5,10 C5.77614237,10 6,10.2238576 6,10.5 L6,11.5 C6,11.7761424 5.77614237,12 5.5,12 C5.22385763,12 5,11.7761424 5,11.5 L5,10.5 Z M15,10.5 C15,10.2238576 15.2238576,10 15.5,10 C15.7761424,10 16,10.2238576 16,10.5 L16,12.5 C16,12.7761424 15.7761424,13 15.5,13 C15.2238576,13 15,12.7761424 15,12.5 L15,10.5 Z M17,15 L17,14.5 C17,14.2238576 17.2238576,14 17.5,14 L18.5,14 C18.7761424,14 19,14.2238576 19,14.5 C19,14.7761424 18.7761424,15 18.5,15 L18,15 L18,15.5 C18,15.7761424 17.7761424,16 17.5,16 L15.5,16 C15.2238576,16 15,15.7761424 15,15.5 L15,14.5 C15,14.2238576 15.2238576,14 15.5,14 C15.7761424,14 16,14.2238576 16,14.5 L16,15 L17,15 Z M3,6.5 C3,6.77614237 2.77614237,7 2.5,7 C2.22385763,7 2,6.77614237 2,6.5 L2,4.5 C2,3.11928813 3.11928813,2 4.5,2 L6.5,2 C6.77614237,2 7,2.22385763 7,2.5 C7,2.77614237 6.77614237,3 6.5,3 L4.5,3 C3.67157288,3 3,3.67157288 3,4.5 L3,6.5 Z M17.5,3 C17.2238576,3 17,2.77614237 17,2.5 C17,2.22385763 17.2238576,2 17.5,2 L19.5,2 C20.8807119,2 22,3.11928813 22,4.5 L22,6.5 C22,6.77614237 21.7761424,7 21.5,7 C21.2238576,7 21,6.77614237 21,6.5 L21,4.5 C21,3.67157288 20.3284271,3 19.5,3 L17.5,3 Z M6.5,21 C6.77614237,21 7,21.2238576 7,21.5 C7,21.7761424 6.77614237,22 6.5,22 L4.5,22 C3.11928813,22 2,20.8807119 2,19.5 L2,17.5 C2,17.2238576 2.22385763,17 2.5,17 C2.77614237,17 3,17.2238576 3,17.5 L3,19.5 C3,20.3284271 3.67157288,21 4.5,21 L6.5,21 Z M21,17.5 C21,17.2238576 21.2238576,17 21.5,17 C21.7761424,17 22,17.2238576 22,17.5 L22,19.5 C22,20.8807119 20.8807119,22 19.5,22 L17.5,22 C17.2238576,22 17,21.7761424 17,21.5 C17,21.2238576 17.2238576,21 17.5,21 L19.5,21 C20.3284271,21 21,20.3284271 21,19.5 L21,17.5 Z">
+                                                            </path>
+                                                        </svg>
+                                                    </td>
+
+
+
+
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Pagination -->
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            <!-- Trang trước -->
+                                            <li class="page-item" ng-class="{'disabled': currentPage === 1}">
+                                                <a class="page-link" href="" ng-click="goToPage(currentPage - 1)"
+                                                    aria-label="Previous">
+                                                    <span aria-hidden="true"> <i class="fa-solid fa-chevron-left"></i>
+                                                        Trước</span>
+                                                </a>
+                                            </li>
+
+                                            <!-- Các trang -->
+                                            <li class="page-item"
+                                                ng-repeat="page in [].constructor(totalPages) track by $index"
+                                                ng-class="{'active': currentPage === $index + 1}">
+                                                <a class="page-link" href="" ng-click="goToPage($index + 1)">{{$index +
+                                                    1}}</a>
+                                            </li>
+
+                                            <!-- Trang sau -->
+                                            <li class="page-item" ng-class="{'disabled': currentPage === totalPages}">
+                                                <a class="page-link" href="" ng-click="goToPage(currentPage + 1)"
+                                                    aria-label="Next">
+                                                    <span aria-hidden="true">Sau <i
+                                                            class="fa-solid fa-chevron-right"></i></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show" id="bill" role="tabpanel">
+                                <div class="container py-4">
+                                    <h2 class="text-center" style="
+                                             font-family: 'Montserrat', sans-serif;
+                                            color: #d4d400;
+                                            text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3);
+                                            letter-spacing: 2px;
+                                            background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
+                                            color: transparent;">Hóa Đơn Của Bạn</h2>
+
+                                    <div class="table-responsive">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th class="text-warning bg-dark text-center">Mã Hóa Đơn</th>
+                                                        <th class="text-warning bg-dark text-center">OrderCode</th>
+                                                        <th class="text-warning bg-dark text-center">Mã Người Dùng</th>
+
+
+                                                        <th class="text-warning bg-dark text-center">Tổng Tiền</th>
+                                                        <th class="text-warning bg-dark text-center">Trạng Thái</th>
+                                                        <th class="text-warning bg-dark text-center">Thời Gian</th>
+                                                        <th class="text-warning bg-dark text-center">Thao Tác</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="hoaDon in billfillterPage">
+                                                        <td class="text-center text-light">{{ hoaDon.maHoaDon }}</td>
+                                                        <td class="text-center text-light">{{ hoaDon.orderCode }}</td>
+                                                        <td class="text-center text-light">{{ hoaDon.maNguoiDung }}</td>
+
+
+                                                        <td class="text-center text-light">{{ hoaDon.tongTien | number:0
+                                                            }} VND</td>
+                                                        <td class="text-center text-light">
+                                                            <span
+                                                                ng-class="{'text-success': hoaDon.trangThai === 'thành công', 'text-danger': hoaDon.trangThai !== 'thành công'}">
+                                                                {{ hoaDon.trangThai }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="text-center text-light">{{ hoaDon.ngayInHoaDon |
+                                                            date:'dd/MM/yyyy HH:mm' }}</td>
+                                                        <td class="text-center">
+                                                            <button class="btn btn-info"
+                                                                ng-click="showBillDetails(hoaDon)" style=" 
+                                                                font-size: 13px;
+                                                                
+                                                                letter-spacing: 2.5px;
+                                                                font-weight: 400;
+                                                                color: black;
+                                                                background-color:white;
+                                                                border: none;
+                                                                border-radius: 45px;
+                                                                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+                                                                transition: all 0.3s ease 0s;
+                                                                cursor: pointer;
+                                                                outline: none;">Chi Tiết</button>
+                                                        </td>
+
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            <!-- Trang trước -->
+                                            <li class="page-item" ng-class="{'disabled': currentPageHoaDon === 1}">
+                                                <a class="page-link" href=""
+                                                    ng-click="goToPageHoaDon(currentPageHoaDon - 1)"
+                                                    aria-label="Previous">
+                                                    <span aria-hidden="true"> <i class="fa-solid fa-chevron-left"></i>
+                                                        Trước</span>
+                                                </a>
+                                            </li>
+
+                                            <!-- Các trang -->
+                                            <li class="page-item"
+                                                ng-repeat="page in [].constructor(totalPagesHoaDon) track by $index"
+                                                ng-class="{'active': currentPageHoaDon === $index + 1}">
+                                                <a class="page-link" href=""
+                                                    ng-click="goToPageHoaDon($index + 1)">{{$index
+                                                    +
+                                                    1}}</a>
+                                            </li>
+
+                                            <!-- Trang sau -->
+                                            <li class="page-item"
+                                                ng-class="{'disabled': currentPageHoaDon === totalPagesHoaDon}">
+                                                <a class="page-link" href=""
+                                                    ng-click="goToPageHoaDon(currentPageHoaDon + 1)" aria-label="Next">
+                                                    <span aria-hidden="true">Sau <i
+                                                            class="fa-solid fa-chevron-right"></i></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!-- ===================================================MODAL=============================================== -->
+                    <!-- Modal for Order Details -->
+                    <div class="modal fade order-details-modal" id="orderDetailsModal" tabindex="-1"
+                        aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content order-details-content">
+                                <div class="modal-header order-details-header">
+                                    <h5 class="modal-title text-center" id="orderDetailsModalLabel" style="
+                                            font-family: 'Montserrat', sans-serif;
+                                            color: #d4d400;
+                                            text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3);
+                                            letter-spacing: 2px;
+                                            background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
+                                            color: transparent;">Chi Tiết Đơn Hàng
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body order-details-body">
+                                    <div class="row">
+                                        <!-- Phần thông tin nằm bên trái -->
+                                        <div class="col-md-7 order-details-info">
+                                            <div class="order-detail">
+                                                <strong>Mã Đơn Hàng:</strong> <span>{{selectedOrder.maDonHang}}</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Tên Sản Phẩm:</strong>
+                                                <span>{{selectedOrder.sanPham.tenSanPham}}</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Mã Người Dùng:</strong>
+                                                <span>{{selectedOrder.nguoiDung.maNguoiDung}}</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Tổng Tiền:</strong> <span>{{selectedOrder.tongTien | number:0}}
+                                                    VND</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Trạng Thái:</strong> <span class="badge rounded-pill" ng-class="{
+                                                    'bg-success': selectedOrder.trangThai === 'Hoàn thành',
+                                                    'bg-warning text-dark': selectedOrder.trangThai === 'Đang xử lý',
+                                                    
+                                                }">{{selectedOrder.trangThai}}</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Thời Gian:</strong> <span>{{selectedOrder.thoiGian |
+                                                    date:'dd/MM/yyyy HH:mm'}}</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Số Lượng:</strong> <span>{{selectedOrder.soLuong}}</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Đơn Giá:</strong> <span>{{selectedOrder.donGia | number:0}}
+                                                    VND</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Kích Thước:</strong> <span>{{selectedOrder.kichThuoc}}</span>
+                                            </div>
+                                            <div class="order-detail">
+                                                <strong>Mã Hóa Đơn:</strong> <span>{{selectedOrder.hoaDon ?
+                                                    selectedOrder.hoaDon.maHoaDon : 'N/A'}}</span>
+                                            </div>
+                                        </div>
+                                        <!-- Hình ảnh nằm bên phải -->
+                                        <div class="col-md-5 text-center">
+                                            <div class="image-container">
+                                                <img ng-if="selectedOrder.sanPham.hinhAnh"
+                                                    ng-src="{{selectedOrder.sanPham.hinhAnh}}" alt="Hình ảnh sản phẩm"
+                                                    class="img-fluid order-image">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer order-details-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal for Order Details -->
+                    <div class="modal fade ticket-modal" id="ticketModal" tabindex="-1"
+                        aria-labelledby="ticketModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content ticket-content">
+                                <div class="modal-header ticket-header">
+                                    <h5 class="modal-title" id="ticketModalLabel">Ticket QR</h5> <button type="button"
+                                        class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body ticket-body">
+                                    <div class="ticket-left">
+                                        <div class="ticket-header-info">
+                                            <h6 class="ticket-info"><strong>Mã Đơn Hàng:</strong>
+                                                {{ticketQROrder.maDonHang}}</h6>
+                                            <h6 class="ticket-info"><strong>Ngày Mua:</strong> {{ticketQROrder.thoiGian
+                                                | date:'dd/MM/yyyy'}}</h6>
+                                            <h6 class="ticket-info"><strong>Tên Sản Phẩm:</strong>
+                                                {{ticketQROrder.sanPham.tenSanPham}}</h6>
+                                            <h6 class="ticket-info"><strong>Size:</strong> {{ticketQROrder.kichThuoc}}
+                                            </h6>
+                                            <h6 class="ticket-info"><strong>Số Lượng:</strong> {{ticketQROrder.soLuong}}
+                                            </h6>
+                                            <h6 class="ticket-info"><strong>Tổng Tiền:</strong> {{ticketQROrder.tongTien
+                                                | number:0}} VND</h6>
+                                            <h6 class="ticket-info"><strong>Nơi Quy Đổi Hiện Vật:</strong>
+                                                {{ticketQROrder.tenCuaHang
+                                                }} | {{ticketQROrder.diaChiNhaPhanPhoi
+                                                }}
+                                            </h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="ticket-right">
+                                        <h1 class="gold-logo" style="
+                                        font-family: 'Montserrat', sans-serif;
+                                        color: #d4d400;
+                                        text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3);
+                                        letter-spacing: 2px;
+                                        background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
+                                        color: transparent;">GOLD 4.0</h1>
+                                        <h6 class="qr-title"><strong>SCAN ME</strong></h6>
+                                        <div id="qrcodeTicketContainer" class="qr-code-container"></div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal for Bill Details -->
+                    <div class="modal fade bill-details-modal" id="billDetailsModal" tabindex="-1"
+                        aria-labelledby="billDetailsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content bill-details-content">
+                                <div class="modal-header bill-details-header">
+                                    <h5 class="modal-title" id="billDetailsModalLabel" style="
+                                        font-family: 'Montserrat', sans-serif;
+                                        color: #d4d400;
+                                        text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3);
+                                        letter-spacing: 2px;
+                                        background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
+                                        color: transparent;">Chi Tiết Hóa Đơn</h5> <button type="button"
+                                        class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body bill-details-body">
+                                    <div class="d-flex"> <!-- Thông Tin Bill (Bên Trái) -->
+                                        <div class="flex-fill bill-left me-4">
+                                            <h1 class="gold-logo text-center" style="
+                                            font-family: 'Montserrat', sans-serif;
+                                            color: #d4d400;
+                                            text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3);
+                                            letter-spacing: 2px;
+                                            background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
+                                            color: transparent;">GOLD 4.0</h1>
+                                            <p><strong>Mã Hóa Đơn:</strong> {{ selectedBill.maHoaDon }}</p>
+                                            <p><strong>OrderCode:</strong> {{ selectedBill.orderCode }}</p>
+                                            <p><strong>Mã Người Dùng:</strong> {{ selectedBill.maNguoiDung }}</p>
+                                            <p><strong>Tổng Tiền:</strong> {{ selectedBill.tongTien | number:0 }} VND
+                                            </p>
+                                            <p><strong>Trạng Thái:</strong> <span
+                                                    ng-class="{'text-success': selectedBill.trangThai === 'thành công', 'text-danger': selectedBill.trangThai !== 'thành công'}">
+                                                    {{ selectedBill.trangThai }} </span> </p>
+                                            <p><strong>Thời Gian:</strong> {{ selectedBill.ngayInHoaDon |
+                                                date:'dd/MM/yyyy
+                                                HH:mm' }}</p>
+                                        </div> <!-- Thông Tin Sản Phẩm (Bên Phải) -->
+                                        <div class="flex-fill bill-right">
+                                            <div class="row"
+                                                ng-repeat="(index, tenSanPham) in selectedBill.tenSanPham.split(',') track by $index">
+
+                                                <div class="col-7">
+                                                    <p><strong>Sản phẩm {{ $index + 1 }}:</strong></p>
+                                                    <p><strong>Tên:</strong>
+                                                        {{ removeBrackets(tenSanPham) }}</p>
+                                                    <p><strong>Giá:</strong>
+                                                        {{ removeBrackets(selectedBill.gia.split(',')[$index])
+                                                        | number:0
+                                                        }} VND
+                                                    </p>
+                                                    <p><Strong>Số Lượng:</Strong> {{
+                                                        removeBrackets(selectedBill.soLuong.split(',')[$index])
+                                                        }}</p>
+
+                                                    <p> <strong>Kích Thước:</strong> {{
+                                                        removeBrackets(selectedBill.kichThuoc.split(',')[$index]) }}
+                                                    </p>
+                                                    <p><strong>Tổng Tiền</strong>
+                                                        {{
+                                                        calculateTotalPrice(removeBrackets(selectedBill.gia.split(',')[$index]),
+                                                        removeBrackets(selectedBill.soLuong.split(',')[$index]))
+                                                        | number:0 }} VND
+                                                    </p>
+
+                                                </div>
+                                                <div class="col-5">
+                                                    <!-- Lấy URL hình ảnh từ danh sách hình ảnh -->
+                                                    <img class="product-image"
+                                                        ng-src="{{ removeBrackets(selectedBill.hinhAnh.split(',')[$index]) }}"
+                                                        alt="Product Image" width="80px">
+
+                                                </div>
+                                                <hr>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer bill-details-footer"> <button type="button"
+                                        class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        activateTabFromHash();
+                    });
+
+                    window.addEventListener("hashchange", function () {
+                        activateTabFromHash();
+                    });
+
+                    function activateTabFromHash() {
+                        var currentUrl = window.location.href;
+                        if (currentUrl.includes("#pills-order")) {
+                            console.log("Hash #pills-order detected");
+
+                            var orderTab = document.getElementById("pills-order-tab");
+                            if (orderTab) {
+                                console.log("Activating tab...");
+                                var tab = new bootstrap.Tab(orderTab);
+                                tab.show();
+                            }
+                        }
+                    }
+
+                </script>
+
+
+
+
+
+
+</body>
+
+</html>

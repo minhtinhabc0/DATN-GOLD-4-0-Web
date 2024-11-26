@@ -358,6 +358,13 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
     $scope.firstProduct = null;
     $scope.totalGcoinValue = 0; // Giá trị Gcoin
 
+
+
+
+
+
+
+
     // Lấy thông tin người dùng từ localStorage
     const userInfo = localStorage.getItem('userInfo');
     $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
@@ -380,6 +387,223 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         $scope.logout1();
         // Chuyển hướng nếu có lỗi
     });
+
+    // ============================ĐƠN HÀNG NGƯỜI DÙNG==================================================
+    // Khởi tạo danh sách đơn hàng
+    $scope.donHangs = []; // Lưu trữ dữ liệu đơn hàng
+
+
+    $scope.pageSize = 2; // Số lượng sản phẩm mỗi trang
+    $scope.currentPage = 1; // Trang hiện tại
+    $scope.totalPages = 1; // Tổng số trang
+    $scope.oderfillter = []; // Dữ liệu đã lọc
+    $scope.selectedOrder = {}; // Lưu trữ đơn hàng được chọn
+    $scope.ticketQROrder = {};
+    $scope.searchKeyword = ''; // Từ khóa tìm kiếm mã đơn hàng
+    $scope.selectedStatus = ''; // Trạng thái đã chọn để lọc
+    $scope.sortCriteria = ''; // Tiêu chí sắp xếp
+    // Tải danh sách đơn hàng
+    $scope.loadOrders = function () {
+        const apiUrl = 'http://localhost:9999/api/donhangnd';
+        $http.get(apiUrl, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.donHangs = response.data; // Lưu dữ liệu đơn hàng vào scope
+            $scope.oderfillter = angular.copy($scope.donHangs);
+            console.log($scope.donHangs);
+            $scope.calculateTotalPages();
+            $scope.paginateData();
+        }).catch(function (error) {
+            console.error('Lỗi khi tải đơn hàng:', error);
+        });
+    };
+
+    // Hàm phân trang dữ liệu
+    $scope.paginateData = function () {
+        const start = ($scope.currentPage - 1) * $scope.pageSize;
+        const end = start + $scope.pageSize;
+        $scope.oderfillterPage = $scope.oderfillter.slice(start, end); // Hiển thị dữ liệu đã lọc cho trang hiện tại
+    };
+
+    // Tính tổng số trang
+    $scope.calculateTotalPages = function () {
+        $scope.totalPages = Math.ceil($scope.oderfillter.length / $scope.pageSize);
+    };
+
+    // Chuyển trang
+    $scope.goToPage = function (pageNumber) {
+        if (pageNumber < 1 || pageNumber > $scope.totalPages) return; // Kiểm tra xem trang có hợp lệ không
+        $scope.currentPage = pageNumber;
+        $scope.paginateData(); // Cập nhật dữ liệu cho trang mới
+    };
+    $scope.showOrderDetails = function (order) {
+        console.log(order); // Kiểm tra dữ liệu của đơn hàng
+        $scope.selectedOrder = order; // Lưu dữ liệu của đơn hàng được chọn
+    };
+    $scope.showQRCode = function (order) {
+        $scope.ticketQROrder = order;
+        // Tìm phần tử chứa mã QR trong ticket modal
+        var qrcodeContainer = document.getElementById('qrcodeTicketContainer');
+
+        // Đảm bảo phần tử chứa mã QR không rỗng
+        qrcodeContainer.innerHTML = '';  // Xóa mã QR cũ nếu có
+
+        // Tạo mã QR mới
+        new QRCode(qrcodeContainer, {
+            text: order.maDonHang,  // Dữ liệu là mã đơn hàng
+            width: 150,       // Kích thước mã QR
+            height: 150,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: 2   // Sử dụng cấp độ sửa lỗi là 2 (L)
+        });
+
+        // Mở modal với ticket
+        $('#ticketModal').modal('show');
+    };
+    // Hàm tìm kiếm và lọc đơn hàng
+    $scope.filterOrders = function () {
+        // Nếu trạng thái và từ khóa tìm kiếm là trống, đặt lại mặc định
+        if (!$scope.searchKeyword && !$scope.selectedStatus) {
+            $scope.oderfillter = angular.copy($scope.donHangs); // Nếu không lọc, trả lại tất cả đơn hàng
+        } else {
+            let filtered = $scope.donHangs.filter(function (order) {
+                return order.maDonHang.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+            });
+
+            // Lọc theo trạng thái
+            if ($scope.selectedStatus) {
+                filtered = filtered.filter(function (order) {
+                    return order.trangThai === $scope.selectedStatus;
+                });
+            }
+
+            $scope.oderfillter = filtered; // Cập nhật dữ liệu đã lọc
+        }
+        $scope.totalPages = Math.ceil($scope.oderfillter.length / $scope.pageSize);
+        $scope.calculateTotalPages(); // Cập nhật tổng số trang
+        $scope.paginateData(); // Phân trang lại dữ liệu
+    };
+
+    // Hàm sắp xếp đơn hàng
+    $scope.sortOrders = function () {
+        // Nếu không có lựa chọn sắp xếp, đặt lại mặc định
+        if (!$scope.sortCriteria) {
+            $scope.oderfillter = angular.copy($scope.donHangs); // Trả lại dữ liệu mặc định
+        } else {
+            switch ($scope.sortCriteria) {
+                case '1':
+                    // Sắp xếp theo "Mới nhất"
+                    $scope.oderfillter.sort((a, b) => new Date(b.thoiGian) - new Date(a.thoiGian));
+                    break;
+                case '2':
+                    // Sắp xếp theo "Cũ nhất"
+                    $scope.oderfillter.sort((a, b) => new Date(a.thoiGian) - new Date(b.thoiGian));
+                    break;
+                case '3':
+                    // Sắp xếp theo "Giá trị cao nhất"
+                    $scope.oderfillter.sort((a, b) => b.tongTien - a.tongTien);
+                    break;
+                case '4':
+                    // Sắp xếp theo "Giá trị thấp nhất"
+                    $scope.oderfillter.sort((a, b) => a.tongTien - b.tongTien);
+                    break;
+                default:
+                    break;
+            }
+        }
+        $scope.totalPages = Math.ceil($scope.oderfillter.length / $scope.pageSize);
+        $scope.calculateTotalPages(); // Cập nhật tổng số trang sau khi sắp xếp
+        $scope.paginateData(); // Phân trang lại dữ liệu
+    };
+
+
+
+
+
+    // Khởi động tải đơn hàng khi trang được tải
+    $scope.loadOrders();
+
+    // ===========================================================================================================
+
+    // ============================ Hóa Đơn NGƯỜI DÙNG==================================================
+    // Khởi tạo danh sách hóa đơn
+    $scope.hoaDons = []; // Lưu trữ dữ liệu hóa đơn
+
+
+    $scope.pageSizeHoaDon = 1; // Số lượng sản phẩm mỗi trang
+    $scope.currentPageHoaDon = 1; // Trang hiện tại
+    $scope.totalPagesHoaDon = 1; // Tổng số trang
+    $scope.billfillter = []; // Dữ liệu đã lọc
+    $scope.selectedBill = {}
+    // Tải danh sách hóa đơn
+    $scope.loadbills = function () {
+        const apiUrl = 'http://localhost:9999/api/hoadonnd';
+        $http.get(apiUrl, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.hoaDons = response.data; // Lưu dữ liệu hóa đơn vào scope
+            $scope.billfillter = angular.copy($scope.hoaDons);
+
+            $scope.calculateTotalPagesHoaDon();
+            $scope.paginateDataHoaDon();
+        }).catch(function (error) {
+            console.error('Lỗi khi tải hóa đơn:', error);
+            alert('Không thể tải hóa đơn. Vui lòng kiểm tra kết nối hoặc thử lại sau.');
+        });
+
+    };
+    $scope.showBillDetails = function (hoaDon) {
+        console.log(hoaDon); // Kiểm tra dữ liệu của Bill
+        $scope.selectedBill = hoaDon; // Lưu dữ liệu của Bill được chọn
+        $('#billDetailsModal').modal('show'); // Mở modal chi tiết Bill
+    };
+    $scope.calculateTotalPrice = function (gia, soLuong) {
+        var price = parseFloat(gia.replace(/,/g, ''));
+        var quantity = parseInt(soLuong, 10);
+        return price * quantity;
+    };
+
+
+
+    // Hàm phân trang dữ liệu
+    $scope.paginateDataHoaDon = function () {
+        const start = ($scope.currentPageHoaDon - 1) * $scope.pageSizeHoaDon;
+        const end = start + $scope.pageSizeHoaDon;
+        $scope.billfillterPage = $scope.billfillter.slice(start, end); // Hiển thị dữ liệu đã lọc cho trang hiện tại
+    };
+
+    // Tính tổng số trang
+    $scope.calculateTotalPagesHoaDon = function () {
+        $scope.totalPagesHoaDon = Math.ceil($scope.billfillter.length / $scope.pageSizeHoaDon);
+    };
+
+    // Chuyển trang
+    $scope.goToPageHoaDon = function (pageNumber) {
+        if (pageNumber < 1 || pageNumber > $scope.totalPagesHoaDon) return; // Kiểm tra xem trang có hợp lệ không
+        $scope.currentPageHoaDon = pageNumber;
+        $scope.paginateDataHoaDon(); // Cập nhật dữ liệu cho trang mới
+    };
+
+    $scope.removeBrackets = function (input) {
+        if (input) {
+            return input.replace(/[\[\]"]/g, '');  // Loại bỏ dấu ngoặc vuông và dấu "
+        }
+        return input;
+    };
+
+
+    // Khởi động tải hóa đơn khi trang được tải
+    $scope.loadbills();
+
+    // ===========================================================================================================
+
+
+
 
     // Tải giá vàng
     $scope.loadPrices = function () {
@@ -532,6 +756,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             alert('Cập nhật mã PIN không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
         });
     };
+
 
 
     // Hàm kích hoạt chế độ chỉnh sửa
@@ -1033,6 +1258,54 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             $scope.getCart();
         });
     };
+
+
+
+
+    // THANH TOÁN TRANG SỨC
+    $scope.isProcessing = false;
+
+    $scope.checkout = function () {
+        $scope.isProcessing = true; // Bắt đầu xử lý
+        const token = getAuthToken();
+        if (!token) {
+            alert("Bạn cần đăng nhập để thực hiện thanh toán!");
+            $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
+            return;
+        }
+
+        const paymentTSRequest = {
+            totalAmount: $scope.totalAmount,
+            items: $scope.gioHang.map(item => ({
+                maSanPham: item.sanPham.maSanPham,
+                tenSanPham: item.sanPham.tenSanPham,
+                gia: item.sanPham.gia + item.sanPham.tienCong,
+                soLuong: item.soLuong
+            }))
+        };
+
+        $http.post('http://localhost:9999/api/checkoutTS/create', paymentTSRequest, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(function (response) {
+            $scope.isProcessing = false; // Kết thúc xử lý
+            if (response.data && response.data.checkoutUrl) {
+                $window.location.href = response.data.checkoutUrl;
+            } else {
+                alert("Thanh toán thất bại! Vui lòng thử lại.");
+            }
+        }).catch(function (error) {
+            $scope.isProcessing = false; // Kết thúc xử lý
+            console.error("Lỗi khi xử lý thanh toán:", error);
+            alert("Có lỗi xảy ra khi thanh toán. Vui lòng thử lại sau.");
+        });
+    };
+
+
+
+
+
 
     // Khởi động: Lấy thông tin giỏ hàng khi trang được tải
     $scope.getCart();

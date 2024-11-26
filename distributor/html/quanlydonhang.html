@@ -151,6 +151,27 @@
         button:active {
             transform: translateY(-1px);
         }
+
+        tr th {
+            font-size: 15px;
+        }
+
+        /* Căn đều các cột trong bảng */
+        table th,
+        table td {
+            text-align: center;
+            word-wrap: break-word;
+
+            vertical-align: middle;
+        }
+
+        th,
+        td {
+            white-space: nowrap;
+            /* Ngăn không cho chữ bị ngắt dòng */
+            text-align: center;
+            /* Căn giữa chữ trong các cột */
+        }
     </style>
 </head>
 
@@ -187,6 +208,8 @@
                 <option value="1">Mới nhất</option>
                 <option value="2">Cũ nhất</option>
                 <option value="3">Giá trị cao nhất</option>
+                <option value="4">Giá trị thấp nhất</option>
+
             </select>
         </div>
 
@@ -196,6 +219,7 @@
             <thead>
                 <tr>
                     <th>Mã đơn hàng</th>
+                    <th>Mã hóa đơn</th>
                     <th>Số lượng</th>
                     <th>Đơn giá</th>
                     <th>Thời gian</th>
@@ -207,7 +231,10 @@
             </thead>
             <tbody>
                 <tr ng-repeat="donHang in donHangsPage">
+
+
                     <td style="padding: 15px !important;">{{donHang.maDonHang}}</td>
+                    <td style="padding: 15px !important;">{{donHang.hoaDon.maHoaDon}}</td>
                     <td style="padding: 15px !important;">{{donHang.soLuong}}</td>
                     <td style="padding: 15px !important;">{{donHang.donGia | number:0}} VND</td>
                     <td style="padding: 15px !important;">{{donHang.thoiGian | date:'HH:mm, dd/MM/yyyy'}}</td>
@@ -219,7 +246,8 @@
                                 data-bs-target="#orderDetailModal">Xem chi tiết</a></button>
                     </td>
                     <td>
-                        <button ng-if="donHang.trangThai === 'Đang xử lý'">Xác Nhận</button>
+                        <button ng-if="donHang.trangThai === 'Đang xử lý'" ng-click="xacNhanDonHang(donHang)">Xác
+                            Nhận</button>
                     </td>
 
                 </tr>
@@ -310,10 +338,7 @@
                             <div class="col-6"><strong class="text-dark">Mã Người Dùng:</strong></div>
                             <div class="col-6" id="modalMaNguoiDung">{{hoaDonChiTiet.maNguoiDung}}</div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-6"><strong class="text-dark">Mã Nhà Phân Phối:</strong></div>
-                            <div class="col-6" id="modalMaNhaPhanPhoi">{{hoaDonChiTiet.maNhaPhanPhoi}}</div>
-                        </div>
+
                         <div class="row mb-3">
                             <div class="col-6"><strong class="text-dark">Tổng Tiền:</strong></div>
                             <div class="col-6" id="modalTongTien">{{hoaDonChiTiet.tongTien | number:0}} VND</div>
