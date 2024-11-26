@@ -765,6 +765,34 @@
                                             letter-spacing: 2px;
                                             background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
                                             color: transparent;">Hóa Đơn Của Bạn</h2>
+                                    <div class="d-flex justify-content-between mb-3">
+
+                                        <!-- Tìm kiếm mã hóa đơn -->
+                                        <div class="input-group w-50 me-2">
+                                            <input type="text" class="form-control" placeholder="Tìm kiếm mã hóa đơn"
+                                                aria-label="Search Orders" ng-model="searchKeywordHoaDon"
+                                                ng-change="filterOrdersHoaDon()">
+                                        </div>
+
+                                        <!-- Lọc theo trạng thái -->
+                                        <select class="form-select w-25 me-2" ng-model="selectedStatusHoaDon"
+                                            ng-change="filterOrdersHoaDon()">
+                                            <option value="">Trạng thái</option>
+                                            <option value="Đang xử lý">Đang xử lý</option>
+                                            <option value="Hoàn thành">Hoàn thành</option>
+                                            <option value="hủy">Hủy</option>
+                                        </select>
+
+                                        <!-- Sắp xếp -->
+                                        <select class="form-select w-25" ng-model="sortCriteriaHoaDon"
+                                            ng-change="sortOrdersHoaDon()">
+                                            <option value="">Sắp xếp theo...</option>
+                                            <option value="1">Mới nhất</option>
+                                            <option value="2">Cũ nhất</option>
+                                            <option value="3">Giá trị cao nhất</option>
+                                            <option value="4">Giá trị thấp nhất</option>
+                                        </select>
+                                    </div>
 
                                     <div class="table-responsive">
                                         <div class="table-responsive">

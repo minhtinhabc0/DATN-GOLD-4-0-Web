@@ -533,7 +533,7 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
     $scope.hoaDons = []; // Lưu trữ dữ liệu hóa đơn
 
 
-    $scope.pageSizeHoaDon = 1; // Số lượng sản phẩm mỗi trang
+    $scope.pageSizeHoaDon = 4; // Số lượng sản phẩm mỗi trang
     $scope.currentPageHoaDon = 1; // Trang hiện tại
     $scope.totalPagesHoaDon = 1; // Tổng số trang
     $scope.billfillter = []; // Dữ liệu đã lọc
@@ -596,6 +596,61 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
         return input;
     };
 
+    $scope.filterOrdersHoaDon = function () {
+        // Lấy từ khóa tìm kiếm và trạng thái đã chọn
+        const searchKeyword = $scope.searchKeywordHoaDon || ''; // Nếu không có từ khóa thì mặc định là rỗng
+        const selectedStatus = $scope.selectedStatusHoaDon || ''; // Nếu không có trạng thái thì mặc định là rỗng
+
+        // Lọc danh sách hóa đơn dựa trên từ khóa và trạng thái
+        $scope.billfillter = $scope.hoaDons.filter(function (hoaDon) {
+            // Chuyển đổi searchKeyword thành kiểu số nếu có thể, hoặc để nó là rỗng
+            const searchKeywordNumeric = searchKeyword ? parseInt(searchKeyword, 10) : '';
+
+            // Kiểm tra nếu mahoadon và trạng thái khớp với điều kiện
+            const matchesKeyword = searchKeyword === '' || hoaDon.maHoaDon === searchKeywordNumeric; // So sánh mahoadon
+            const matchesStatus = selectedStatus === '' || hoaDon.trangThai === selectedStatus; // So sánh trạng thái
+
+            // Trả về các hóa đơn thỏa mãn cả 2 điều kiện
+            return matchesKeyword && matchesStatus;
+        });
+
+        // Cập nhật lại tổng số trang và phân trang dữ liệu
+        $scope.calculateTotalPagesHoaDon();
+        $scope.paginateDataHoaDon();
+    };
+
+
+
+
+
+
+    $scope.sortOrdersHoaDon = function () {
+        if (!$scope.sortCriteriaHoaDon) {
+            // Reset về danh sách gốc
+            $scope.billfillter = angular.copy($scope.hoaDons);
+            $scope.calculateTotalPagesHoaDon();
+            $scope.paginateDataHoaDon();
+            return;
+        }
+
+        $scope.billfillter.sort(function (a, b) {
+            switch ($scope.sortCriteriaHoaDon) {
+                case '1': // Mới nhất
+                    return new Date(b.ngayInHoaDon) - new Date(a.ngayInHoaDon);
+                case '2': // Cũ nhất
+                    return new Date(a.ngayInHoaDon) - new Date(b.ngayInHoaDon);
+                case '3': // Giá trị cao nhất
+                    return b.tongTien - a.tongTien;
+                case '4': // Giá trị thấp nhất
+                    return a.tongTien - b.tongTien;
+                default:
+                    return 0;
+            }
+        });
+        $scope.totalPagesHoaDon = Math.ceil($scope.billfillter.length / $scope.pageSizeHoaDon);
+        $scope.calculateTotalPagesHoaDon();
+        $scope.paginateDataHoaDon(); // Cập nhật phân trang
+    };
 
     // Khởi động tải hóa đơn khi trang được tải
     $scope.loadbills();
@@ -1646,7 +1701,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
     //chi tiet 
     // Định nghĩa controller detailsCtrl
     // Assume product ID is available in the route params or scope
-    .controller('productDetailCtrl', function ($scope, $routeParams, $http,$window) {
+    .controller('productDetailCtrl', function ($scope, $routeParams, $http, $window) {
         $scope.calculatePrice = function (gia) {
             if (gia > 70000000) {
                 return gia + 20000000;
@@ -1719,7 +1774,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                         window.location.href = '../user/html/login.html'; // Thay bằng đường dẫn tới trang đăng nhập của bạn
                     }
                 });
-                
+
                 return;
             }
 
@@ -1768,7 +1823,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                             window.location.href = '/user/html/login'; // Thay bằng đường dẫn tới trang đăng nhập của bạn
                         }
                     });
-                    
+
                 });
         };
 
@@ -1795,7 +1850,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                         window.location.href = '/login'; // Thay bằng đường dẫn tới trang đăng nhập của bạn
                     }
                 });
-                
+
                 return;
             }
 
@@ -1840,16 +1895,16 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 });
         };
 
-        app.filter('momentFormat', function() {
-            return function(input) {
+        app.filter('momentFormat', function () {
+            return function (input) {
                 return moment(input).fromNow();  // Tính thời gian đã trôi qua (ví dụ: "5 phút trước")
             };
         });
-        
-    
+
+
         $scope.reviews = []; // Danh sách đánh giá
         $scope.review = { rating: 5, comment: '' }; // Mặc định số sao và nhận xét
-    
+
         // Lấy thông tin sản phẩm
         $http.get(`http://localhost:9999/api/products/${productId}`)
             .then(function (response) {
@@ -1859,7 +1914,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 console.error("Error loading product details:", error);
                 alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
             });
-    
+
         // Lấy danh sách đánh giá
         $scope.loadReviews = function () {
             $http.get(`http://localhost:9999/api/danhgia/sanpham/${productId}`)
@@ -1869,40 +1924,40 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 })
                 .catch(function (error) {
                     console.error("Error loading reviews:", error);
-                    alert("Không thể tải danh sách đánh giá.");
+
                 });
         };
         $scope.loadReviews(); // Gọi khi khởi tạo
-    
+
         // Gửi đánh giá mới
         $scope.submitReview = function () {
             if (!$scope.review.comment || !$scope.review.rating) {
                 alert("Vui lòng nhập đầy đủ thông tin đánh giá.");
                 return;
             }
-        
+
             // Prepare the review data to match the expected structure
             const reviewData = {
                 maSanPham: productId,     // ID of the product
                 DiemDanhGia: $scope.review.rating, // Rating (soSao)
                 NoiDungDanhGia: $scope.review.comment  // Comment (nhanXet)
             };
-        
+
             console.log("Review Data:", reviewData);
-        
+
             // Get the Authorization token (for example, from local storage or the user's session)
             const token = localStorage.getItem('token');  // Adjust based on your actual token storage
-        
+
             // Set the Authorization header in the config
             const config = {
                 headers: {
                     'Authorization': `Bearer ` + localStorage.getItem('token')  // Pass the token in the Authorization header
                 }
             };
-        
+
             // Make the POST request to submit the review
             $http.post(`http://localhost:9999/api/danhgia/add/${productId}`, reviewData, config
-              
+
             )
                 .then(function (response) {
                     Swal.fire({
@@ -1916,7 +1971,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                         timer: 3000, // Thời gian tự động đóng thông báo (3 giây)
                         timerProgressBar: true // Hiển thị thanh tiến trình
                     });
-                    
+
                     $scope.review = { rating: 5, comment: '' }; // Reset form
                     $scope.loadReviews(); // Reload reviews (or call your reviews fetching function)
                 })
@@ -1939,13 +1994,13 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                             window.location.href = '/login'; // Thay bằng đường dẫn tới trang đăng nhập của bạn
                         }
                     });
-                    
+
                 });
         };
-        
 
-        app.filter('range', function() {
-            return function(input, total) {
+
+        app.filter('range', function () {
+            return function (input, total) {
                 total = parseInt(total); // Convert total to an integer
                 for (var i = 0; i < total; i++) {
                     input.push(i); // Push values into the array up to the 'total' value
@@ -1953,10 +2008,10 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 return input;
             };
         });
-        
-        
 
-        
+
+
+
     })
 
 
