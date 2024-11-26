@@ -1646,7 +1646,7 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
     //chi tiet 
     // Định nghĩa controller detailsCtrl
     // Assume product ID is available in the route params or scope
-    .controller('productDetailCtrl', function ($scope, $routeParams, $http) {
+    .controller('productDetailCtrl', function ($scope, $routeParams, $http,$window) {
         $scope.calculatePrice = function (gia) {
             if (gia > 70000000) {
                 return gia + 20000000;
@@ -1702,7 +1702,24 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             const token = localStorage.getItem('token');
 
             if (!token) {
-                alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+                Swal.fire({
+                    title: 'Yêu cầu đăng nhập!',
+                    text: 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.',
+                    icon: 'warning', // Biểu tượng cảnh báo
+                    confirmButtonText: 'Đăng nhập',
+                    confirmButtonColor: '#3085d6', // Màu của nút
+                    background: '#f8f9fa', // Màu nền của thông báo
+                    backdrop: true, // Hiển thị nền mờ
+                    showCancelButton: true, // Hiển thị nút hủy
+                    cancelButtonText: 'Đóng', // Văn bản nút hủy
+                    cancelButtonColor: '#d33' // Màu của nút hủy
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Điều hướng người dùng đến trang đăng nhập
+                        window.location.href = '../user/html/login.html'; // Thay bằng đường dẫn tới trang đăng nhập của bạn
+                    }
+                });
+                
                 return;
             }
 
@@ -1734,7 +1751,24 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 })
                 .catch(function (error) {
                     console.error("Lỗi khi thêm vào giỏ hàng:", error);
-                    alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+                    Swal.fire({
+                        title: 'Yêu cầu đăng nhập!',
+                        text: 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.',
+                        icon: 'warning', // Biểu tượng cảnh báo
+                        confirmButtonText: 'Đăng nhập',
+                        confirmButtonColor: '#3085d6', // Màu của nút
+                        background: '#f8f9fa', // Màu nền của thông báo
+                        backdrop: true, // Hiển thị nền mờ
+                        showCancelButton: true, // Hiển thị nút hủy
+                        cancelButtonText: 'Đóng', // Văn bản nút hủy
+                        cancelButtonColor: '#d33' // Màu của nút hủy
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Điều hướng người dùng đến trang đăng nhập
+                            window.location.href = '/user/html/login'; // Thay bằng đường dẫn tới trang đăng nhập của bạn
+                        }
+                    });
+                    
                 });
         };
 
@@ -1744,7 +1778,24 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
             // Thay đổi theo cách bạn lưu trữ token
             const token = localStorage.getItem('token');
             if (!token) {
-                alert("Token không hợp lệ. Vui lòng đăng nhập lại.");
+                Swal.fire({
+                    title: 'Yêu cầu đăng nhập!',
+                    text: 'Vui lòng đăng nhập để thêm sản phẩm vào Yêu thích',
+                    icon: 'warning', // Biểu tượng cảnh báo
+                    confirmButtonText: 'Đăng nhập',
+                    confirmButtonColor: '#3085d6', // Màu của nút
+                    background: '#f8f9fa', // Màu nền của thông báo
+                    backdrop: true, // Hiển thị nền mờ
+                    showCancelButton: true, // Hiển thị nút hủy
+                    cancelButtonText: 'Đóng', // Văn bản nút hủy
+                    cancelButtonColor: '#d33' // Màu của nút hủy
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Điều hướng người dùng đến trang đăng nhập
+                        window.location.href = '/login'; // Thay bằng đường dẫn tới trang đăng nhập của bạn
+                    }
+                });
+                
                 return;
             }
 
@@ -1788,6 +1839,124 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                     }
                 });
         };
+
+        app.filter('momentFormat', function() {
+            return function(input) {
+                return moment(input).fromNow();  // Tính thời gian đã trôi qua (ví dụ: "5 phút trước")
+            };
+        });
+        
+    
+        $scope.reviews = []; // Danh sách đánh giá
+        $scope.review = { rating: 5, comment: '' }; // Mặc định số sao và nhận xét
+    
+        // Lấy thông tin sản phẩm
+        $http.get(`http://localhost:9999/api/products/${productId}`)
+            .then(function (response) {
+                $scope.product = response.data;
+            })
+            .catch(function (error) {
+                console.error("Error loading product details:", error);
+                alert("Không thể tải thông tin sản phẩm. Vui lòng thử lại.");
+            });
+    
+        // Lấy danh sách đánh giá
+        $scope.loadReviews = function () {
+            $http.get(`http://localhost:9999/api/danhgia/sanpham/${productId}`)
+                .then(function (response) {
+                    $scope.reviews = response.data;
+                    console.log("Danh sách đánh giá:", $scope.reviews);
+                })
+                .catch(function (error) {
+                    console.error("Error loading reviews:", error);
+                    alert("Không thể tải danh sách đánh giá.");
+                });
+        };
+        $scope.loadReviews(); // Gọi khi khởi tạo
+    
+        // Gửi đánh giá mới
+        $scope.submitReview = function () {
+            if (!$scope.review.comment || !$scope.review.rating) {
+                alert("Vui lòng nhập đầy đủ thông tin đánh giá.");
+                return;
+            }
+        
+            // Prepare the review data to match the expected structure
+            const reviewData = {
+                maSanPham: productId,     // ID of the product
+                DiemDanhGia: $scope.review.rating, // Rating (soSao)
+                NoiDungDanhGia: $scope.review.comment  // Comment (nhanXet)
+            };
+        
+            console.log("Review Data:", reviewData);
+        
+            // Get the Authorization token (for example, from local storage or the user's session)
+            const token = localStorage.getItem('token');  // Adjust based on your actual token storage
+        
+            // Set the Authorization header in the config
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ` + localStorage.getItem('token')  // Pass the token in the Authorization header
+                }
+            };
+        
+            // Make the POST request to submit the review
+            $http.post(`http://localhost:9999/api/danhgia/add/${productId}`, reviewData, config
+              
+            )
+                .then(function (response) {
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: 'Đánh giá của bạn đã được gửi. Cảm ơn bạn đã phản hồi!',
+                        icon: 'success', // Biểu tượng thành công
+                        confirmButtonText: 'Đóng', // Nút xác nhận
+                        confirmButtonColor: '#3085d6', // Màu của nút xác nhận
+                        background: '#f8f9fa', // Màu nền của thông báo
+                        backdrop: true, // Hiển thị nền mờ
+                        timer: 3000, // Thời gian tự động đóng thông báo (3 giây)
+                        timerProgressBar: true // Hiển thị thanh tiến trình
+                    });
+                    
+                    $scope.review = { rating: 5, comment: '' }; // Reset form
+                    $scope.loadReviews(); // Reload reviews (or call your reviews fetching function)
+                })
+                .catch(function (error) {
+                    console.error("Error submitting review:", error);
+                    Swal.fire({
+                        title: 'Yêu cầu đăng nhập!',
+                        text: 'Vui lòng đăng nhập để có thể đánh giá sản phẩm',
+                        icon: 'warning', // Biểu tượng cảnh báo
+                        confirmButtonText: 'Đăng nhập',
+                        confirmButtonColor: '#3085d6', // Màu của nút
+                        background: '#f8f9fa', // Màu nền của thông báo
+                        backdrop: true, // Hiển thị nền mờ
+                        showCancelButton: true, // Hiển thị nút hủy
+                        cancelButtonText: 'Đóng', // Văn bản nút hủy
+                        cancelButtonColor: '#d33' // Màu của nút hủy
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Điều hướng người dùng đến trang đăng nhập
+                            window.location.href = '/login'; // Thay bằng đường dẫn tới trang đăng nhập của bạn
+                        }
+                    });
+                    
+                });
+        };
+        
+
+        app.filter('range', function() {
+            return function(input, total) {
+                total = parseInt(total); // Convert total to an integer
+                for (var i = 0; i < total; i++) {
+                    input.push(i); // Push values into the array up to the 'total' value
+                }
+                return input;
+            };
+        });
+        
+        
+
+        
     })
 
 
