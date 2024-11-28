@@ -1,35 +1,46 @@
 <style>
     body {
-        background-color: #f8f9fa;
-        font-family: Arial, sans-serif;
+
+        background-color: #f6f6f6;
+        font-family: 'Roboto', sans-serif;
         margin: 0;
         padding: 0;
+        color: #333;
+        margin-top: 200px !important;
+        background-color: rgba(198, 199, 201, 0.5) !important;
     }
 
     .cart-container {
-        max-width: 900px;
+        max-width: 1000px;
         margin: 50px auto;
-        padding: 30px;
+        padding: 20px;
         background-color: #fff;
         border-radius: 12px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .cart-header h2 {
+    .cart-header {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+    }
+
+    .cart-header h5 {
         font-weight: bold;
         text-align: center;
-        color: #333;
-        margin-bottom: 40px;
-        font-size: 1.8rem;
+        color: black;
+        margin: 0;
+        font-size: 1.3rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .product-item {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        padding: 15px 0;
         border-bottom: 1px solid #ddd;
-        padding: 20px 0;
-        margin-bottom: 20px;
     }
 
     .product-item:last-child {
@@ -39,70 +50,92 @@
     .product-info {
         display: flex;
         align-items: center;
+        gap: 20px;
     }
 
     .product-image {
-        width: 80px;
-        height: 80px;
-        background-color: #e9ecef;
-        border-radius: 8px;
-        margin-right: 20px;
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
         object-fit: cover;
     }
 
+    .product-details {
+        font-size: 1rem;
+        color: #555;
+    }
+
     .product-title {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .product-quantity {
-        display: flex;
-        align-items: center;
-    }
-
-    .product-quantity button {
-        background-color: #ff6f61;
-        color: white;
         font-size: 1.1rem;
-        padding: 5px 12px;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .product-quantity button:disabled {
-        background-color: #ccc;
-    }
-
-    .product-quantity button:hover:not(:disabled) {
-        background-color: #ff3d2e;
+        font-weight: light;
+        color: #0a5194;
+        margin: 0 0 10px;
     }
 
     .product-price {
-        font-size: 1.2rem;
+        font-size: 1.rem;
         font-weight: bold;
-        color: #ff6f61;
+        color: #d19803;
+        margin-top: 10px;
+    }
+
+    .product-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 260px; /* Độ rộng vừa đủ */
+    border: 0px solid #ccc;
+    overflow: hidden;
+    background-color: #fdfdfd; /* Nền trắng nhẹ */
+}
+
+.product-quantity button {
+    background-color: #fff;
+    border: none;
+    font-size: 1rem; /* Kích thước phù hợp */
+    font-weight: bold;
+    color: #333;
+    width: 40px; /* Độ rộng vừa với nút */
+    height: 40px; /* Chiều cao vừa với nút */
+    line-height: 28px; /* Căn chỉnh chữ trong nút */
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #ccc; /* Viền riêng từng nút */
+}
+    .product-quantity button:hover {
+        background-color: #d6d6d6;
+    }
+
+    .product-quantity button:disabled {
+        background-color: #e0e0e0;
+
+        cursor: not-allowed;
+    }
+
+    .product-quantity span {
+        flex: 1;
+        text-align: center;
+        font-weight: bold;
+        background-color: #fff;
+        padding: 5px 0;
+        margin: 0;
+        line-height: 30px;
     }
 
     .delete-btn {
-        color: #ff6f61;
-        background: none;
+        color: rgb(24, 40, 85);
+        font-size: 1.3rem;
+        padding: 8px 12px;
+        border-radius: 5px;
         border: none;
-        font-size: 1.2rem;
         cursor: pointer;
-        transition: color 0.3s;
-    }
-
-    .delete-btn:hover {
-        color: #ff0000;
+        transition: all 0.3s;
     }
 
     .summary {
         font-weight: bold;
         margin-top: 30px;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         color: #333;
         display: flex;
         justify-content: space-between;
@@ -110,11 +143,11 @@
     }
 
     .summary p {
-        margin: 0;
+       font-size: large;
     }
 
     .btn-checkout {
-        background-color: #ff6f61;
+        background-color: #d19803;
         color: #fff;
         font-size: 1.2rem;
         padding: 12px 24px;
@@ -122,28 +155,18 @@
         border: none;
         transition: all 0.3s ease;
         cursor: pointer;
+        text-transform: uppercase;
     }
 
     .btn-checkout:hover {
-        background-color: #ff3d2e;
-        transform: scale(1.05);
-    }
-
-    .select-all {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .form-check-label {
-        font-weight: bold;
+        background-color: #ba8502;
+        transform: translateY(-2px);
     }
 
     /* Responsive Styles */
     @media (max-width: 768px) {
         .cart-container {
-            padding: 15px;
+            padding: 20px;
         }
 
         .product-item {
@@ -151,127 +174,59 @@
             align-items: flex-start;
         }
 
-        .product-image {
-            width: 60px;
-            height: 60px;
-            margin-right: 0;
-            margin-bottom: 10px;
-        }
-
-        .summary {
+        .product-info {
             flex-direction: column;
             align-items: flex-start;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
         }
 
         .btn-checkout {
             width: 100%;
         }
-    }
-</style>
-<style>
-    .processing-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-    }
 
-    .processing-message {
-        background-color: #fff;
-        padding: 20px 40px;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-        text-align: center;
-        font-size: 18px;
-        color: #212529;
-    }
-
-    .dots {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 10px;
-    }
-
-    .dot {
-        width: 10px;
-        height: 10px;
-        margin: 0 5px;
-        background-color: #007bff;
-        border-radius: 50%;
-        animation: bounce 1.5s infinite;
-    }
-
-    .dot:nth-child(2) {
-        animation-delay: 0.3s;
-    }
-
-    .dot:nth-child(3) {
-        animation-delay: 0.6s;
-    }
-
-    @keyframes bounce {
-
-        0%,
-        80%,
-        100% {
-            transform: translateY(0);
-        }
-
-        40% {
-            transform: translateY(-10px);
-        }
-
-        60% {
-            transform: translateY(-5px);
+        .summary {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
         }
     }
 </style>
+
 <div class="cart-container">
     <div class="cart-header">
-        <h2>Giỏ hàng</h2>
+        <h5>Giỏ Hàng</h5>
     </div>
 
-    <div ng-repeat="item in gioHang">
-        <div class="product-item">
-            <div class="product-info">
-                <img ng-src="{{item.sanPham.hinhAnh}}" alt="{{item.sanPham.tenSanPham}}" class="product-image">
-                <div>
-                    <h3 class="product-title">{{item.sanPham.tenSanPham}}</h3>
-                    <p class="product-price">Giá: {{(item.sanPham.gia +item.sanPham.tienCong ) * item.soLuong |
-                        number:0}} VND</p>
-                    <p style="color: #333;">Kích thước: {{item.kichThuoc}}</p>
-                    <p style="color: #333;">Số lượng:
-                        <button ng-click="updateQuantity(item, -1)" ng-disabled="item.soLuong <= 1">-</button>
-                        {{item.soLuong}}
-                        <button ng-click="updateQuantity(item, 1)">+</button>
-                    </p>
+    <div ng-repeat="item in gioHang" class="product-item">
+        <div class="product-info">
+            <img ng-src="{{item.sanPham.hinhAnh}}" alt="{{item.sanPham.tenSanPham}}" class="product-image">
+            <div class="product-details">
+                <p class="product-title">{{item.sanPham.tenSanPham}}</p>
+                
+                <span>Kích thước:</span>
+                <div class="product-quantity">
+                    <button style="margin-right: 50px; font-weight: lighter; pointer-events: none; cursor: default;">
+                        {{item.kichThuoc}}
+                    </button>
+                    <button ng-click="updateQuantity(item, -1)" ng-disabled="item.soLuong <= 1">-</button>
+                    <button style=" border: 1px solid #ccc; width: 100px; text-align: center;">{{item.soLuong}}</button>
+                    <button ng-click="updateQuantity(item, 1)">+</button>
                 </div>
+                <p class="product-price">{{(item.sanPham.gia + item.sanPham.tienCong) * item.soLuong | number:0}} đ</p>
             </div>
-            <button class="delete-btn" ng-click="removeFromCart(item)">Xóa</button>
         </div>
-
-
-
+        <button class="delete-btn" ng-click="removeFromCart(item)">
+            <i class="fa fa-trash"></i>
+        </button>
     </div>
 
     <div class="summary">
-        <p style="color: #ff0000;">Tổng tiền: {{ totalAmount | number:0 }} VND</p>
-        <button class="btn-checkout" ng-click="checkout()">Thanh toán</button>
-    </div>
-</div>
-
-<div ng-show="isProcessing" class="processing-overlay">
-    <div class="processing-message"> Đang xử lý thanh toán, vui lòng chờ... <div class="dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
+        <p>Giảm giá: -0 đ</p>
+        <p>Tổng tiền: {{totalAmount | number:0}} đ</p>
+        <button class="btn-checkout" ng-click="checkout()">Thanh Toán</button>
     </div>
 </div>
