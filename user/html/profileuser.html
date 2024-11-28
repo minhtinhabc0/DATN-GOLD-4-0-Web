@@ -500,28 +500,69 @@
 
                         </div>
                     </div>
-                    <!-- TAB LICH SU GIAO DICH -->
+                    <!-- TAB LỊCH SỬ GIAO DỊCH -->
                     <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
                         <h2>Lịch sử giao dịch</h2>
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tên Sản Phẩm</th>
-                                    <th scope="col">Giá</th>
-                                    <th scope="col">Trạng thái</th>
-                                    <th scope="col">Chi tiết</th>
+                                    <th>Mã Giao Dịch</th>
+                                    <th>Thời Gian</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Số Lượng</th>
+                                    <th>Hành Động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>$ItemName</td>
-                                    <td>$TotalPrice</td>
-                                    <td>$Status</td>
-                                    <td><a href="#">Xem chi tiết</a></td>
+                                <tr ng-repeat="transaction in transactions">
+                                    <td>{{ transaction.maLichSuGiaoDich }}</td>
+                                    <td>{{ transaction.thoiGian | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                                    <td>{{ transaction.trangThai }}</td>
+                                    <td>{{ transaction.soluong }}</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm" ng-click="viewTransactionDetail(transaction.maLichSuGiaoDich)">
+                                            Xem chi tiết
+                                        </button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div id="transactionDetailModal" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Chi Tiết Giao Dịch</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>Mã Giao Dịch:</strong> {{ selectedTransaction.maLichSuGiaoDich }}</p>
+                                        <p><strong>Thời Gian:</strong> {{ selectedTransaction.thoiGian | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+                                        <p><strong>Trạng Thái:</strong> {{ selectedTransaction.trangThai }}</p>
+                                        <p><strong>Số Lượng:</strong> {{ selectedTransaction.soLuong }}</p>
+                                        <p><strong>Mã Vàng:</strong> {{ selectedTransaction.maVang || 'Chưa có mã vàng' }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          <!-- Tab Quy đổi Gcoin sang vàng -->
+                    <div id="exchange-modal" style="display: none; position: fixed; top: 30%; left: 30%; z-index: 999; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                        <h3>Quy đổi Gcoin sang Vàng</h3>
+                        <label for="goldAmount">Nhập số chỉ vàng:</label>
+                        <input type="number" id="goldAmount" ng-model="goldAmount" placeholder="Số chỉ vàng" class="form-control mb-3" />
+                        <button class="btn btn-primary" ng-click="exchangeGold()">Xác nhận</button>
+                        <button class="btn btn-secondary" ng-click="closeExchangeModal()">Hủy</button>
                     </div>
+
+                    <!-- Nút mở modal Quy đổi -->
+                    <button class="btn btn-primary mt-3" ng-click="openExchangeModal()">Quy đổi Gcoin sang vàng</button>
+                        
+                    </div>
+
+                  
+    
 
                     <!-- Tab mật khẩu & bảo mật -->
                     <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
