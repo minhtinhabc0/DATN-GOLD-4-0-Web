@@ -4,42 +4,8 @@
     }
 
     /* Ẩn sidebar mặc định */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: -2500px;
-        height: 300px;
-        width: 250px;
-        background-color: #f8f9fa;
-        overflow-y: auto;
-        transition: left 0.3s ease-in-out;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        margin-top: 200px !important;
-    }
 
-    /* Khi sidebar được mở */
-    .sidebar.active {
-        left: 0;
-    }
 
-    /* Nút toggle */
-    .menu-toggle {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        color: #fff;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 1100;
-    }
-
-    .menu-toggle i {
-        font-size: 30px;
-        margin-top: 70px;
-
-    }
 
     /* Container tổng thể */
     .user-info-container {
@@ -186,9 +152,6 @@
     <div class="container-fluid mt-5" style="height: 700px;">
         <div class="row" style="margin-top: 150px;">
             <!-- Sidebar -->
-            <div class="menu-toggle" onclick="toggleSidebar()">
-                <i class="fa-solid fa-bars"></i>
-            </div>
 
             <nav class="col-md-3 col-lg-2 sidebar" id="sidebar">
                 <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
@@ -757,7 +720,7 @@
                     <!-- Modal for Order Details -->
                     <div class="modal fade order-details-modal" id="orderDetailsModal" tabindex="-1"
                         aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
+                        <div class="modal-dialog modal-lg" style="color: #000 !important;">
                             <div class="modal-content order-details-content">
                                 <div class="modal-header order-details-header">
                                     <h5 class="modal-title text-center" id="orderDetailsModalLabel" style="
@@ -842,7 +805,7 @@
                                     <h5 class="modal-title" id="ticketModalLabel">Ticket QR</h5> <button type="button"
                                         class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body ticket-body">
+                                <div class="modal-body ticket-body" style="color: #000 !important;">
                                     <div class="ticket-left">
                                         <div class="ticket-header-info">
                                             <h6 class="ticket-info"><strong>Mã Đơn Hàng:</strong>
@@ -898,7 +861,7 @@
                                         color: transparent;">Chi Tiết Hóa Đơn</h5> <button type="button"
                                         class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body bill-details-body">
+                                <div class="modal-body bill-details-body" style="color: #000 !important;">
                                     <div class="d-flex"> <!-- Thông Tin Bill (Bên Trái) -->
                                         <div class="flex-fill bill-left me-4">
                                             <h1 class="gold-logo text-center" style="
