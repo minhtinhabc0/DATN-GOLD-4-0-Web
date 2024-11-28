@@ -1,75 +1,118 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="myApp">
+<style>
+    body {
+        background-color: #f8f9fa;
+        margin-top: 160px !important;
+        
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sản Phẩm Yêu Thích</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
+    h5.text-center {
+        font-weight: bold;
+        text-align: center;
+        color: #815c1b;
+        margin: 0;
+        font-size: 1.3rem !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-        .card {
-            transition: transform 0.2s;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
 
-        .card:hover {
-            transform: scale(1.05);
-        }
+    .breadcrumb a {
+        color: #815c1b;
+    }
 
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #212529;
+    }
 
-        h2 {
-            margin-bottom: 30px;
-            font-weight: bold;
-            color: #333;
-        }
+    .table td {
+    vertical-align: middle;
 
-        .pagination {
-            margin-top: 30px;
-        }
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
 
-        .btn-custom {
-            background-color: white;
-            color: black;
-            border: 2px solid black;
-            transition: background-color 0.3s, color 0.3s;
-        }
 
-        .btn-custom:hover {
-            background-color: black;
-            color: white;
-        }
-    </style>
+.table td img {
+    max-width: 100px;
+    height: auto;
+    object-fit: cover;
+}
+
+.table th, .table td {
+    text-align: left; /* Canh trái toàn bộ dữ liệu */
+}
+
+
+.table th:first-child {
+    padding-left: 125px !important; /* Điều chỉnh khoảng cách thụt vào cho "Tên sản phẩm" */
+    text-align: left;    /* Đảm bảo văn bản được canh trái */
+}
+
+    .btn-primary {
+        background-color: #815c1b;
+        border-color: #815c1b;
+        padding: 0.5rem 1rem;
+        font-weight: bold;
+    }
+
+    .btn-primary:hover {
+        background-color: #593c0a;
+        border-color: #593c0a;
+    }
+
+    .form-control {
+        max-width: 80px;
+        margin: auto;
+    }
+
+    .update-button {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .social-icons {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .social-icons a {
+        margin: 0 10px;
+        color: #815c1b;
+        font-size: 1.5rem;
+    }
+    .btn i {
+    font-size: 1.4rem; /* Tăng kích thước icon */
+    color: black; /* Màu đen cho icon */
+    background-color: rgb(207, 193, 63); /* Nền trắng */
+    border-radius: 50%; /* Làm tròn góc */
+    padding: 10px; /* Khoảng cách bên trong icon */
+}
+
+.btn-danger i {
+    color: black; /* Màu đen cho icon xóa */
+}
+
+.btn-primary i {
+    color: black; /* Màu đen cho icon giỏ hàng */
+}
+
+</style>
 </head>
 
 <body ng-controller="spyeuthichCtrl">
 
-    <div class="container" style="margin-top: 140px;">
-        <h2 class="text-center" style="
-        font-family: 'Montserrat', sans-serif;
-        color: #d4d400;
-        text-shadow: 2px 2px 4px rgba(0, 1, 0, 0.3);
-        letter-spacing: 2px;
-        background: linear-gradient(30deg, #fdfd02, #f7a100);-webkit-background-clip: text;
-        color: transparent;">SẢN PHẨM YÊU THÍCH <i class="fa-solid fa-heart"> </i></h2>
+    <!-- <div class="container" style="margin-top: 140px;">
+        <h5 class="text-center"> YÊU THÍCH</i></h5>
 
         <div class="row">
-            <!-- Duyệt qua danh sách sản phẩm yêu thích -->
+    
             <div class="col-md-4 mb-4" ng-repeat="product in favoriteProductsPage">
                 <div class="card">
                     <img ng-src="{{ product.sanPham.hinhAnh }}" class="card-img-top"
@@ -78,18 +121,52 @@
                         <h5 class="card-title">{{ product.sanPham.tenSanPham }}</h5>
                         <p class="card-text">Giá: {{ product.sanPham.gia +product.sanPham.tienCong | currency:"₫" }}</p>
                         <a ng-click="goToDetail(product.sanPham)" class="btn btn-custom">Xem Chi Tiết</a>
-                        <button ng-click="removeProductFromFavorites(product.sanPham.maSanPham)"
-                            class="btn btn-danger mt-2">Xóa
-                            khỏi yêu thích</button>
+                        
                     </div>
                 </div>
             </div>
+        </div> -->
+        <div class="container" style="height: 700px;">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Danh sách yêu thích</li>
+                </ol>
+            </nav>
+        
+            <h5 class="text-center">Sản phẩm yêu thích</h5>
+        
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="product in favoriteProductsPage">
+                        <td style="display: flex; align-items: center; gap: 15px;">
+                            <div style="flex-shrink: 0;">
+                                <img ng-src="{{ product.sanPham.hinhAnh }}" alt="{{ product.sanPham.tenSanPham }}" style="width: 100px; height: auto; border-radius: 10px;">
+                            </div>
+                            <span class="product-name">{{ product.sanPham.tenSanPham }}</span>
+                        </td>
+                                               
+                        <td>{{ product.sanPham.gia + product.sanPham.tienCong | currency:"₫" }}</td>
+                        <td><button ng-click="removeProductFromFavorites(product.sanPham.maSanPham)"
+                            class="btn mt-2"><i class="fas fa-trash-alt"></i></button></td>
+                        <td><button class="btn " ng-click="addToCart(product)"><i class="fas fa-cart-plus"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
+        
 
 
         <!-- Pagination -->
-        <nav aria-label="Page navigation">
+        <!-- <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item" ng-class="{'disabled': currentPage === 1}">
                     <a class="page-link" href="#" ng-click="goToPage(currentPage - 1)">Trang Trước</a>
@@ -102,9 +179,8 @@
                     <a class="page-link" href="#" ng-click="goToPage(currentPage + 1)">Trang Sau</a>
                 </li>
             </ul>
-        </nav>
-    </div>
+        </nav> -->
+ 
 </body>
-<script src="https://code.angularjs.org/1.8.2/angular.min.js"></script>
 
-</html>
+

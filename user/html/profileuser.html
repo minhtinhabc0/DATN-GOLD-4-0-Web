@@ -1,415 +1,224 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/prof.css">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/master/qrcode.min.js"></script>
-
-</head>
-<!-- /* PHÂN TRANG */ -->
 <style>
-    .pagination .page-item.disabled .page-link {
+    body {
+        color: black !important;
+    }
+
+    /* Ẩn sidebar mặc định */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -2500px;
+        height: 300px;
+        width: 250px;
         background-color: #f8f9fa;
-        color: #6c757d;
-        border-color: #dee2e6;
+        overflow-y: auto;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        margin-top: 200px !important;
     }
 
-    .pagination .page-item.active .page-link {
-        background-color: #f7a100 !important;
-        color: white;
-        border: none;
+    /* Khi sidebar được mở */
+    .sidebar.active {
+        left: 0;
     }
 
-    .pagination .page-link {
-        border-radius: 50px;
-        padding: 8px 15px;
-    }
-
-    .pagination .page-item {
-        margin: 0 5px;
-    }
-
-    .pagination .page-item .page-link {
-        border-radius: 50px;
-        /* Bo tròn toàn bộ nút */
-        padding: 8px 15px;
-        /* Tăng độ rộng cho nút để dễ nhìn */
-    }
-
-    .pagination .page-item.disabled .page-link {
-        background-color: #f8f9fa;
-        color: #6c757d;
-        border-color: #dee2e6;
-    }
-
-    .pagination .page-item.active .page-link {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-</style>
-<!-- /* bảng */ -->
-<style>
-    .table {
-        border-radius: 15px;
-        /* Bo tròn 4 góc của bảng */
-        overflow: hidden;
-        /* Đảm bảo các ô không vượt ra ngoài góc bo tròn */
-    }
-
-    th,
-    td {
-        white-space: nowrap;
-        /* Ngăn chữ bị ngắt dòng */
-        text-align: center;
-        /* Căn giữa theo chiều ngang */
-        vertical-align: middle;
-        font-size: smaller;
-        /* Căn giữa theo chiều dọc */
-    }
-
-    .table th,
-    .table td {
-        border-right: 1px solid #dee2e6;
-        /* Đường viền giữa các ô */
-    }
-
-    .table th:last-child,
-    .table td:last-child {
-        border-right: none;
-        /* Xóa đường viền ở ô cuối cùng của mỗi hàng */
-    }
-
-    .table thead th {
-        border-bottom: 2px solid #dee2e6;
-        /* Đường viền dưới các tiêu đề */
-    }
-
-    .table-striped tbody tr:nth-child(odd) {
-        background-color: #2f2f2f;
-        /* Tạo hiệu ứng sọc cho các hàng chẵn */
-    }
-
-    .table-striped tbody tr:nth-child(even) {
-        background-color: #2f2f2f;
-        /* Tạo hiệu ứng sọc cho các hàng chẵn */
-    }
-
-
-    .text-center {
-        text-align: center;
-    }
-</style>
-<!-- MODAL ĐON HÀNG-->
-<style>
-    .order-details-modal .modal-content {
-        background: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-
-    .order-details-header {
-        background-color: #343a40;
-        color: #ffffff;
-        padding: 20px;
-        border-bottom: 2px solid #dee2e6;
-    }
-
-    .order-details-header h5 {
-        font-size: 20px;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    .order-details-body {
-        padding: 20px;
-        font-family: 'Roboto', sans-serif;
-        color: #495057;
-    }
-
-    .order-details-info {
-        padding-right: 15px;
-        border-right: 1px solid #dee2e6;
-    }
-
-    .order-detail {
-        margin-bottom: 12px;
-        font-size: 16px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .order-detail strong {
-        font-weight: 600;
-        color: #212529;
-    }
-
-    .order-detail span {
-        color: #495057;
-    }
-
-    .image-container {
-        margin-top: 20px;
-    }
-
-    .image-container img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        border: 1px solid #dee2e6;
-        padding: 5px;
-        background-color: #ffffff;
-    }
-
-    .order-details-footer {
-        background-color: #f1f3f5;
-        padding: 15px 20px;
-        text-align: right;
-        border-top: 2px solid #dee2e6;
-    }
-
-    .btn-secondary {
-        background-color: #6c757d;
-        border: none;
-        color: #ffffff;
-        padding: 8px 16px;
-        border-radius: 4px;
-        font-size: 14px;
+    /* Nút toggle */
+    .menu-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        z-index: 1100;
     }
 
-    .btn-secondary:hover {
-        background-color: #5a6268;
+    .menu-toggle i {
+        font-size: 30px;
+        margin-top: 70px;
+
     }
 
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        /* Giữ nút đóng ở bên phải */
-        align-items: center;
-        /* Căn giữa theo chiều dọc */
-        padding: 20px;
-        background-color: #343a40;
-        color: #ffffff;
-        border-bottom: 2px solid #dee2e6;
-    }
-
-    .modal-title {
-        font-size: 20px;
-        font-weight: bold;
-        margin: 0;
-        flex-grow: 1;
-        /* Cho phép tiêu đề chiếm hết không gian còn lại */
-        text-align: center;
-        /* Căn giữa tiêu đề */
-    }
-</style>
-<!-- TICKET QR -->
-<style>
-    .ticket-modal .modal-dialog {
-        max-width: 900px;
-    }
-
-    .ticket-content {
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        background-color: #fdfdfd;
-    }
-
-    .ticket-header {
-        background-color: #343a40;
-        border-bottom: 2px solid #ffc107;
-        text-align: center;
-        padding: 20px;
-    }
-
-    .ticket-header .modal-title {
-        font-family: 'Arial', sans-serif;
-        font-size: 24px;
-        color: #ffc107;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .ticket-body {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-    }
-
-    .ticket-left,
-    .ticket-right {
-        width: 48%;
-    }
-
-    .ticket-header-info .ticket-info {
-        font-family: 'Arial', sans-serif;
-        font-size: 16px;
-        color: #212529;
-        margin-bottom: 10px;
-    }
-
-    .ticket-right {
-        text-align: center;
+    /* Container tổng thể */
+    .user-info-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        border-left: 2px solid #dee2e6;
-        padding-left: 20px;
-        animation: bounce 2s infinite;
-    }
-
-    .qr-title {
-        font-family: 'Arial', sans-serif;
-        font-size: 18px;
-        color: #007bff;
-        margin-bottom: 15px;
-    }
-
-    .qr-code-container {
-        width: 150px;
-        height: 150px;
-        border: 1px solid #dee2e6;
+        padding: 20px;
+        background: #f8f9fa;
         border-radius: 10px;
-        padding: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 1540px;
+        margin: 20px auto;
     }
 
-    @keyframes bounce {
-
-        0%,
-        20%,
-        50%,
-        80%,
-        100% {
-            transform: translateY(0);
-        }
-
-        40% {
-            transform: translateY(-6px);
-        }
-
-        60% {
-            transform: translateY(-3px);
-        }
-    }
-</style>
-<!-- MODAL HÓA ĐƠN -->
-<style>
-    .bill-details-modal .modal-dialog {
-        max-width: 900px;
-    }
-
-    .bill-details-content {
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        background-color: #ffffff;
-    }
-
-    .bill-details-header {
-        background-color: #343a40;
-
+    /* Avatar */
+    .avatar-container {
+        position: relative;
         text-align: center;
-        padding: 15px 20px;
+        margin-bottom: 20px;
     }
 
-
-
-    .bill-details-body {
-
-        padding: 20px;
-        background-color: #f8f9fa;
+    .avatar-container img {
+        border: 5px solid #007bff;
+        /* Đường viền xanh dương */
+        transition: transform 0.3s ease-in-out;
     }
 
-    .bill-left,
-    .bill-right {
-        width: 45%;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    .avatar-container img:hover {
+        transform: scale(1.05);
+        /* Hiệu ứng phóng to nhẹ khi hover */
     }
 
-    .bill-left p,
-    .bill-right p {
-        font-family: 'Arial', sans-serif;
-        font-size: 16px;
-        color: #495057;
-        margin-bottom: 10px;
+    /* Nút chỉnh sửa avatar */
+    .avatar-container .btn-edit {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        background: #007bff;
+        color: white;
+        border-radius: 50%;
+        padding: 10px;
+        font-size: 14px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease-in-out;
     }
 
-    .bill-left p strong,
-    .bill-right p strong {
-        color: #212529;
+    .avatar-container .btn-edit:hover {
+        background: #0056b3;
+        /* Màu xanh đậm hơn khi hover */
     }
 
-    .bill-details-footer {
-        background-color: #f8f9fa;
-        border-top: 2px solid #dee2e6;
-        text-align: right;
-        padding: 15px 20px;
+    /* Form chỉnh sửa */
+    .user-info-form {
+        width: 100%;
     }
 
-    .modal-footer .btn-secondary {
-        background-color: rgb(184, 134, 11);
-        color: #ffffff;
+    .user-info-form .form-label {
+        font-weight: bold;
+        color: #333;
     }
 
-    .modal-footer .btn-secondary:hover {
-        background-color: rgb(95, 70, 5);
-        ;
+    .user-info-form .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px;
+        transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
 
-    /* Điều chỉnh để thêm hình ảnh hoặc thông tin bổ sung nếu có */
-    .bill-right .product-image {
-        width: 120%;
-        height: auto;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    .user-info-form .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
+
+    /* Buttons */
+    .user-info-form .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+    .user-info-form .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+    .user-info-form .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    .user-info-form .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+    .user-info-form .btn-secondary:hover {
+        background-color: #5a6268;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive cho màn hình nhỏ */
+    @media (max-width: 768px) {
+        .user-info-container {
+            padding: 15px;
+        }
+
+        .avatar-container img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .user-info-form .btn {
+            font-size: 12px;
+            padding: 8px 15px;
+        }
+    }
+    /* Cơ bản cho menu */
+.nav-pills .nav-link {
+    color: #333; /* Màu chữ mặc định */
+    background-color: transparent; /* Nền trong suốt mặc định */
+    border-radius: 5px; /* Bo góc menu */
+    padding: 10px 15px;
+    transition: all 0.1s ease-in-out; /* Hiệu ứng mượt */
+}
+
+/* Khi hover */
+.nav-pills .nav-link:hover {
+    background-color: #f8d97e; /* Nền vàng */
+    color: #000; /* Chữ đen */
+}
+
+/* Mục đang được chọn */
+.nav-pills .nav-link.active {
+    background-color: #ffc107 !important; /* Nền đen */
+    color: black !important; /* Chữ trắng */
+}
+
 </style>
 
 <body>
     <div class="container-fluid mt-5" style="height: 700px;">
         <div class="row" style="margin-top: 150px;">
             <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar"
-                style="background-color: black !important;height: 750px; overflow-y: auto; margin-top: -15px;">
+            <div class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+
+            <nav class="col-md-3 col-lg-2 sidebar" id="sidebar">
                 <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="pills-info-tab" data-bs-toggle="pill" href="#pills-info"
-                            role="tab" aria-controls="pills-info" aria-selected="true" style="margin-top: 50px;">Thông
-                            Tin Tài Khoản <i class="fa-regular fa-address-card"></i></a>
+                            role="tab" aria-controls="pills-info" aria-selected="true">Thông Tin Tài Khoản
+                            <i class="fa-regular fa-address-card"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="pills-history-tab" data-bs-toggle="pill" href="#pills-history"
-                            role="tab" aria-controls="pills-history" aria-selected="false">Lịch Sử Giao Dịch <i
-                                class="fa-solid fa-clock-rotate-left"></i></a>
+                            role="tab" aria-controls="pills-history" aria-selected="false">Lịch Sử Giao Dịch
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="pills-password-tab" data-bs-toggle="pill" href="#pills-password"
-                            role="tab" aria-controls="pills-password" aria-selected="false">Mật Khẩu & Bảo Mật <i
-                                class="fa-solid fa-shield-halved"></i> </a>
+                            role="tab" aria-controls="pills-password" aria-selected="false">Mật Khẩu & Bảo Mật
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="pills-order-tab" data-bs-toggle="pill" href="#pills-order" role="tab"
-                            aria-controls="pills-order" aria-selected="false">Đơn Hàng Của Bạn <i
-                                class="fa-solid fa-cart-shopping"></i></a>
+                            aria-controls="pills-order" aria-selected="false">Đơn Hàng Của Bạn
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
                     </li>
                 </ul>
             </nav>
+
 
             <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -420,11 +229,11 @@
                         <ul class="nav nav-tabs" id="infoTabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="user-info-tab" data-bs-toggle="tab" href="#user-info"
-                                    role="tab" style="color: white;">Thông Tin Người Dùng</a>
+                                    role="tab">Thông Tin Người Dùng</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="asset-info-tab" data-bs-toggle="tab" href="#asset-info"
-                                    role="tab" style="color: white;">Tài Sản</a>
+                                    role="tab">Tài Sản</a>
                             </li>
                         </ul>
                         <div class="tab-content mt-3" id="infoTabContent">
@@ -476,18 +285,18 @@
                             </div>
 
                             <!-- Tài Sản -->
-                            <div class="tab-pane fade" id="asset-info" role="tabpanel">
+                            <div class="tab-pane fade" id="asset-info" role="tabpanel" style="color: black !important;">
                                 <div class="form-section">
                                     <h3>Tài sản của bạn</h3>
                                     <div class="mb-3" ng-if="gcoinBalance != null">
-                                        <label for="gcoinBalance" class="form-label" style="color: white;">Số dư
+                                        <label for="gcoinBalance" class="form-label">Số dư
                                             Gcoin:</label>
-                                        <h2 style="color: yellow; font-weight: bold;">{{gcoinBalance}}</h2>
+                                        <h2>{{gcoinBalance}}</h2>
                                     </div>
                                     <div class="mb-3" ng-if="gcoinBalance != null">
-                                        <label for="goldPrice" class="form-label" style="color: white;">Giá trị quy đổi
+                                        <label for="goldPrice" class="form-label">Giá trị quy đổi
                                             ra vàng:</label>
-                                        <h2 style="color: yellow; font-weight: bold;"> {{ totalGcoinValue | number:0 }}
+                                        <h2> {{ totalGcoinValue | number:0 }}
                                             VNĐ</h2>
                                     </div>
                                     <div class="mb-3" ng-if="gcoinBalance == null">
@@ -524,15 +333,15 @@
                     </div>
 
                     <!-- Tab mật khẩu & bảo mật -->
-                    <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
+                    <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab"
+                        style="color: black !important;">
                         <ul class="nav nav-tabs" id="securityTabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="password-tab" data-bs-toggle="tab"
-                                    href="#password-content" role="tab" style="color: white;">Mật Khẩu</a>
+                                    href="#password-content" role="tab">Mật Khẩu</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab"
-                                    style="color: white;">Mã
+                                <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab">Mã
                                     PIN</a>
                             </li>
                         </ul>
@@ -589,12 +398,12 @@
                     <div class="tab-pane fade" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
                         <ul class="nav nav-tabs" id="infoTabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="order-tab" data-bs-toggle="tab" href="#order" role="tab"
-                                    style="color: white;">Đơn Hàng</a>
+                                <a class="nav-link active" id="order-tab" data-bs-toggle="tab" href="#order"
+                                    role="tab">Đơn Hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="bill-tab" data-bs-toggle="tab" href="#bill" role="tab"
-                                    style="color: white;">Hóa Đơn</a>
+                                <a class="nav-link" id="bill-tab" data-bs-toggle="tab" href="#bill" role="tab">Hóa
+                                    Đơn</a>
                             </li>
                         </ul>
                         <div class="tab-content mt-3" id="infoTabContent">
@@ -637,7 +446,7 @@
                                     </div>
 
                                     <!-- Orders Table Section -->
-                                    <div class="table-responsive">
+                                    <div class="table-responsive ">
                                         <table class="table table-striped ">
                                             <thead class="thead-dark">
                                                 <tr>
@@ -659,7 +468,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="order in oderfillterPage">
+                                                <tr ng-repeat="order in oderfillterPage"
+                                                    style="background-color: black;">
                                                     <td class="text-light text-center">{{order.maDonHang}}</td>
                                                     <td class="text-light text-center">{{order.hoaDon ?
                                                         order.hoaDon.maHoaDon :
@@ -796,7 +606,7 @@
 
                                     <div class="table-responsive">
                                         <div class="table-responsive">
-                                            <table class="table table-striped">
+                                            <table class="table table-striped" style="background-color: black;">
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th class="text-warning bg-dark text-center">Mã Hóa Đơn</th>
@@ -1144,14 +954,11 @@
                             }
                         }
                     }
+                    function toggleSidebar() {
+                        const sidebar = document.getElementById('sidebar');
+                        sidebar.classList.toggle('active');
+                    }
 
                 </script>
 
-
-
-
-
-
 </body>
-
-</html>
