@@ -133,21 +133,34 @@
     }
 
     .summary {
-        font-weight: bold;
-        margin-top: 30px;
-        font-size: 1.3rem;
-        color: #333;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+    font-weight: light;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    color: #09324e;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Canh phải */
+    gap: 1px !important; /* Khoảng cách giữa các dòng */
+}
 
-    .summary p {
-       font-size: large;
-    }
+.summary p {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: large;
+}
+
+.summary p span:first-child {
+    flex-grow: 1;
+    text-align: left; /* Canh trái */
+}
+
+.summary p span:last-child {
+    text-align: right; /* Canh phải */
+}
 
     .btn-checkout {
-        background-color: #d19803;
+        background-color: #092c5f;
         color: #fff;
         font-size: 1.2rem;
         padding: 12px 24px;
@@ -159,8 +172,7 @@
     }
 
     .btn-checkout:hover {
-        background-color: #ba8502;
-        transform: translateY(-2px);
+        background-color: #d1ccc3;
     }
 
     /* Responsive Styles */
@@ -225,8 +237,15 @@
     </div>
 
     <div class="summary">
-        <p>Giảm giá: -0 đ</p>
-        <p>Tổng tiền: {{totalAmount | number:0}} đ</p>
+        <p>
+            <span>Giảm giá:</span>
+            <span>-0 đ</span>
+        </p>
+        <p>
+            <span>Tổng tiền:</span>
+            <span>{{totalAmount | number:0}} đ</span>
+        </p>
         <button class="btn-checkout" ng-click="checkout()">Thanh Toán</button>
     </div>
+    
 </div>
