@@ -828,7 +828,7 @@ app.controller('baocaoCtrl', function ($scope, $http) {
         worksheet.getCell('A3').value = 'BÁO CÁO WEBSITE GOLD 4.0';
         worksheet.getCell('A3').font = { size: 24, bold: true, color: { argb: 'FFD700' } }; // Màu vàng GOLD
         worksheet.getCell('A3').alignment = { horizontal: 'center', vertical: 'middle' }; // Căn giữa
-        worksheet.getCell('A3').fill = { type: 'pattern', pattern: 'solid' }; // Nền đen
+        worksheet.getCell('A3').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'E5E5E5' } };
 
         // Tạo phần tiêu đề
         let headerText = 'Doanh Thu và Lợi Nhuận Năm ';

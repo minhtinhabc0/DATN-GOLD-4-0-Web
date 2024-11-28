@@ -80,28 +80,36 @@
     }
 
     .product-quantity {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 260px; /* Độ rộng vừa đủ */
-    border: 0px solid #ccc;
-    overflow: hidden;
-    background-color: #fdfdfd; /* Nền trắng nhẹ */
-}
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 260px;
+        /* Độ rộng vừa đủ */
+        border: 0px solid #ccc;
+        overflow: hidden;
+        background-color: #fdfdfd;
+        /* Nền trắng nhẹ */
+    }
 
-.product-quantity button {
-    background-color: #fff;
-    border: none;
-    font-size: 1rem; /* Kích thước phù hợp */
-    font-weight: bold;
-    color: #333;
-    width: 40px; /* Độ rộng vừa với nút */
-    height: 40px; /* Chiều cao vừa với nút */
-    line-height: 28px; /* Căn chỉnh chữ trong nút */
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #ccc; /* Viền riêng từng nút */
-}
+    .product-quantity button {
+        background-color: #fff;
+        border: none;
+        font-size: 1rem;
+        /* Kích thước phù hợp */
+        font-weight: bold;
+        color: #333;
+        width: 40px;
+        /* Độ rộng vừa với nút */
+        height: 40px;
+        /* Chiều cao vừa với nút */
+        line-height: 28px;
+        /* Căn chỉnh chữ trong nút */
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #ccc;
+        /* Viền riêng từng nút */
+    }
+
     .product-quantity button:hover {
         background-color: #d6d6d6;
     }
@@ -133,31 +141,35 @@
     }
 
     .summary {
-    font-weight: light;
-    margin-top: 10px;
-    font-size: 1.1rem;
-    color: #09324e;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Canh phải */
-    gap: 1px !important; /* Khoảng cách giữa các dòng */
-}
+        font-weight: light;
+        margin-top: 10px;
+        font-size: 1.1rem;
+        color: #09324e;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        /* Canh phải */
+        gap: 1px !important;
+        /* Khoảng cách giữa các dòng */
+    }
 
-.summary p {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: large;
-}
+    .summary p {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: large;
+    }
 
-.summary p span:first-child {
-    flex-grow: 1;
-    text-align: left; /* Canh trái */
-}
+    .summary p span:first-child {
+        flex-grow: 1;
+        text-align: left;
+        /* Canh trái */
+    }
 
-.summary p span:last-child {
-    text-align: right; /* Canh phải */
-}
+    .summary p span:last-child {
+        text-align: right;
+        /* Canh phải */
+    }
 
     .btn-checkout {
         background-color: #092c5f;
@@ -218,7 +230,7 @@
             <img ng-src="{{item.sanPham.hinhAnh}}" alt="{{item.sanPham.tenSanPham}}" class="product-image">
             <div class="product-details">
                 <p class="product-title">{{item.sanPham.tenSanPham}}</p>
-                
+
                 <span>Kích thước:</span>
                 <div class="product-quantity">
                     <button style="margin-right: 50px; font-weight: lighter; pointer-events: none; cursor: default;">
@@ -237,15 +249,15 @@
     </div>
 
     <div class="summary">
-        <p>
+        <!-- <p>
             <span>Giảm giá:</span>
             <span>-0 đ</span>
-        </p>
+        </p> -->
         <p>
             <span>Tổng tiền:</span>
             <span>{{totalAmount | number:0}} đ</span>
         </p>
         <button class="btn-checkout" ng-click="checkout()">Thanh Toán</button>
     </div>
-    
+
 </div>
