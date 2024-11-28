@@ -1785,6 +1785,19 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                 }
             };
 
+            if (!$scope.selectedSize) {
+                Swal.fire({
+                    title: 'Thông Báo !',
+                    text: 'Vui lòng chọn kích thước sản phẩm ',
+                    icon: 'warning',  // Biểu tượng thành công
+                    confirmButtonText: 'Đóng',  // Nút xác nhận
+                    confirmButtonColor: '#3085d6',  // Màu của nút
+                    background: '#f8f9fa',  // Màu nền của thông báo
+                    backdrop: true,  // Hiển thị nền mờ
+                    timerProgressBar: true  // Hiển thị thanh tiến trình
+                });
+                return;
+            }
 
 
             // Gửi yêu cầu POST để thêm sản phẩm vào giỏ hàng
