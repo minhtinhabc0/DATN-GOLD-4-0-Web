@@ -120,7 +120,86 @@ app.controller('MainController', function ($scope, $location, $window) {
     };
 });
 
-app.controller('bangdieukhienCtrl', function ($scope) { });
+app.controller('bangdieukhienCtrl', function ($scope, $http) {
+    // Hàm lấy danh sách người dùng
+    $scope.UserAccount = function () {
+        $http.get('http://localhost:9999/api/adctrl/ngdung', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.users = response.data; // Lưu dữ liệu người dùng vào scope
+            console.log("Số lượng người dùng:", $scope.users.length);
+        }, function (error) {
+            console.error("Lỗi khi lấy danh sách người dùng:", error);
+        });
+    };
+    $scope.UserAccountband = function () {
+        $http.get('http://localhost:9999/api/adctrl/ngdungband', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.users1 = response.data;
+            console.log($scope.users1.length);
+
+        }, function (error) {
+            console.log("Error fetching approved distributors:", error);
+        });
+    }
+    $scope.DonhangAccount = function () {
+        $http.get('http://localhost:9999/api/adctrl/donhangall', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.orders = response.data; // Lưu dữ liệu người dùng vào scope
+        }, function (error) {
+        });
+    };
+    $scope.SpBanchay = function () {
+        $http.get('http://localhost:9999/api/adctrl/spbanchay', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.SpBanchay = response.data;
+            console.log($scope.SpBanchay);
+
+        }, function (error) {
+            console.log("Error fetching approved distributors:", error);
+        });
+    }
+
+    $scope.SpDoiDuyet = function () {
+        $http.get('http://localhost:9999/api/adctrl/doiduyet', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.SpDoiDuyet = response.data;
+            console.log($scope.SpDoiDuyet);
+
+        }, function (error) {
+            console.log("Error fetching approved distributors:", error);
+        });
+    }
+
+
+
+    
+    // Gọi hàm để tải dữ liệu ngay khi khởi động controller
+    $scope.UserAccount();
+    $scope.UserAccountband();
+    $scope.DonhangAccount();
+    $scope.SpBanchay();
+    $scope.SpDoiDuyet();
+
+    
+
+});
+
+
 app.controller('quanlysanphamCtrl', function ($scope, $http, $location) {
     
 

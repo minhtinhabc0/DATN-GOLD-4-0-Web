@@ -1,40 +1,65 @@
+
 <div class="dashboard-content">
     <div class="row">
+        <!-- Doanh thu card -->
         <div class="col-md-4">
-            <div class="card card-info p-3 mb-4">
-                <h5>Doanh thu</h5>
-                <p>5 triệu tỷ VND</p>
-                <small>🔼 Tăng 10% so với tháng trước</small>
+            <div class="card card-info p-4 mb-4 shadow-sm">
+                <h5 class="card-title">Doanh thu</h5>
+                <p class="card-text">5 triệu tỷ VND</p>
+                <small class="text-success">🔼 Tăng 10% so với tháng trước</small>
             </div>
         </div>
+
+        <!-- Tổng số người dùng card -->
         <div class="col-md-4">
-            <div class="card card-info p-3 mb-4">
-                <h5>Người dùng</h5>
-                <p>8 tỷ người</p>
-                <small>🔼 Tăng 10% so với tháng trước</small>
+            <div class="card card-info p-4 mb-4 shadow-sm">
+                <h5 class="card-title">Tổng số người dùng đã đăng ký</h5>
+                <p class="card-text">{{ users.length }} người dùng | {{ users1.length }} người bị khóa </p>
             </div>
         </div>
+
+        <!-- Đơn hàng card -->
         <div class="col-md-4">
-            <div class="card card-info p-3 mb-4">
-                <h5>Đơn hàng</h5>
-                <p>20 tỷ đơn</p>
-                <small>🔼 Tăng 10% so với tháng trước</small>
+            <div class="card card-info p-4 mb-4 shadow-sm">
+                <h5 class="card-title">Tổng số đơn hàng</h5>
+                <p class="card-text">{{ orders.length}} đơn hàng</p>
             </div>
         </div>
     </div>
 
     <div class="row">
+        <!-- Biểu đồ Doanh thu -->
         <div class="col-md-8">
-            <h5 class="chart-title">Doanh thu</h5>
-            <div class="chart p-3"></div>
+            <h5 class="chart-title">Biểu đồ Doanh thu</h5>
+            <div class="chart p-4 border rounded bg-light"></div>
         </div>
+
+        <!-- Sản phẩm bán chạy và sản phẩm đợi duyệt -->
         <div class="col-md-4">
-            <h5 class="product-title">Sản phẩm bán chạy</h5>
-            <div class="card p-3">
-                <p>1. Vàng miếng</p>
-                <p>2. Nhẫn vàng</p>
+            <div class="row">
+                <!-- Sản phẩm bán chạy -->
+                <div class="col-12 mb-4">
+                    <h5 class="product-title">Sản phẩm bán chạy</h5>
+                    <div class="card p-3 mb-2" ng-repeat="p in SpBanchay">
+                        <div class="card-body">
+                            <h6 class="card-title">{{p[0]}}</h6> <!-- Tên sản phẩm -->
+                            <p class="card-text">Số lượt bán: {{p[1]}}</p> <!-- Số lượt bán -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sản phẩm đợi duyệt -->
+                <div class="col-12">
+                    <h5 class="product-title">Sản phẩm đợi duyệt</h5>
+                    <div class="card p-3 mb-3" ng-repeat="d in SpDoiDuyet">
+                        <div class="card-body">
+                            <p><strong>Tên sản phẩm:</strong> {{d.tenSanPham}}</p>
+                            <p><strong>Mã sản phẩm:</strong> {{d.maSanPham}}</p>
+                            <p><strong>Trạng thái:</strong> {{d.trangThai ? 'Đã duyệt' : 'Chưa duyệt'}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
