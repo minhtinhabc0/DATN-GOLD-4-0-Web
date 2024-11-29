@@ -1,44 +1,99 @@
 <style>
     body {
-        background-color: #3b3b3b;
-        color: #fff;
         margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .layout {
+        display: flex;
+        height: 100vh; /* Chiều cao toàn màn hình */
+        background-color: #f9f9f9;
+    }
+
+    .content {
+        flex: 1; /* Cho phép content chiếm phần còn lại */
+        padding: 20px;
+        overflow: auto;
     }
 
     .content-wrapper {
         background-color: #fff;
         border-radius: 15px;
-        max-width: 1200px;
-        margin: auto;
+        max-width: 100%;
         padding: 20px;
         color: #000;
-        margin-right: 30px;
-        margin-top: 60px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
         color: #333;
         text-align: center;
-    }
-
-    .product-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: #e0e0e0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 14px;
-        color: #fff;
+        margin-bottom: 20px;
+        font-weight: bold;
     }
 
     .table-responsive {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        text-align: center;
+        padding: 10px;
+        vertical-align: middle;
+    }
+
+    .table th {
+        background-color: #f1f1f1;
+        color: #333;
+        font-weight: bold;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        border-bottom: 1px solid #dee2e6;
+        color: #555;
+    }
+
+    .table tr:hover {
+        background-color: #f9f9f9;
+    }
+    .pagination {
+        justify-content: center;
+        display: flex;
+        align-items: center;
         margin-top: 20px;
     }
 
-    .pagination {
-        justify-content: center;
+    .pagination button {
+        margin: 0 5px;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        background-color: #007bff;
+        cursor: pointer;
+    }
+
+    .pagination button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    .pagination span {
+        margin: 0 10px;
+        font-weight: bold;
     }
 
     .add-product-btn {
@@ -46,21 +101,39 @@
         background-color: #28a745;
         color: white;
         border-radius: 10px;
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .add-product-btn:hover {
+        background-color: #218838;
     }
 
     .search-bar {
         margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
     }
 
-    table {
-        text-align: center;
+    .search-bar input, .search-bar select {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    table img {
+        border-radius: 10px;
+        border: 1px solid #ddd;
     }
 </style>
+
+
+
 </head>
 
 <body>
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="margin-left: 70px;">
         <h2>Quản lý sản phẩm</h2>
         <div class="row search-bar">
             <div class="d-flex">
