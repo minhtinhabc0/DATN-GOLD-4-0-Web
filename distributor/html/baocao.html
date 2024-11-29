@@ -1,7 +1,7 @@
 <style>
     /* Thiết kế chung */
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
         background-color: #f8f9fa;
     }
 
@@ -223,6 +223,62 @@
         box-shadow: none;
     }
 </style>
+<style>
+    .toast {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #f44336;
+        color: white;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        top: 30px;
+        /* Chỉnh vị trí để toast xuất hiện ở phía trên */
+        font-size: 17px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+    .toast.show {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .toastdone {
+        visibility: hidden;
+        /* Ẩn thông báo mặc định */
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #4CAF50;
+        /* Màu xanh lá cây để thông báo thành công */
+        color: white;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        /* Căn giữa */
+        top: 30px;
+        /* Vị trí cách phía trên màn hình */
+        font-size: 17px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        /* Ẩn khi chưa hiển thị */
+        transition: opacity 0.5s;
+        /* Hiệu ứng mờ dần */
+    }
+
+    .toastdone.show {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
 
 <head>
     <!-- Tải jsPDF từ CDN -->
@@ -239,14 +295,33 @@
     <div class="container-fluid py-4">
         <!-- Flexbox để căn chỉnh tiêu đề và chọn năm ngang hàng -->
         <div class="d-flex align-items-center mb-4">
-            <h3 class="mb-0 me-4">Báo Cáo Doanh Thu</h3>
+            <h3 class="mb-0 me-4" style="font-family: 'Times New Roman', Times, serif;">Báo Cáo Doanh Thu</h3>
             <div class="d-flex align-items-center">
-
-                <select id="year" ng-model="selectedYear" ng-change="onYearChange()" class="form-select">
+                <label for="" style="font-family: 'Times New Roman', Times, serif;">Năm</label>
+                <select id="year" ng-model="selectedYear" ng-change="onYearChange()" class="form-select"
+                    style="margin-left:10px ;">
                     <option value="">Tất cả</option>
                     <option value="2022">2022</option>
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
+                </select>
+                <label for="month" id="monthLabel" style="display: none; margin-left: 10px;"
+                    style="font-family: 'Times New Roman', Times, serif;">Tháng</label>
+                <select id="month" ng-model="selectedMonth" class="form-select" ng-change="onMonthChange()"
+                    style="display: none; margin-left: 10px;">
+                    <option value="">Tất cả</option>
+                    <option value="1">Tháng 1</option>
+                    <option value="2">Tháng 2</option>
+                    <option value="3">Tháng 3</option>
+                    <option value="4">Tháng 4</option>
+                    <option value="5">Tháng 5</option>
+                    <option value="6">Tháng 6</option>
+                    <option value="7">Tháng 7</option>
+                    <option value="8">Tháng 8</option>
+                    <option value="9">Tháng 9</option>
+                    <option value="10">Tháng 10</option>
+                    <option value="11">Tháng 11</option>
+                    <option value="12">Tháng 12</option>
                 </select>
             </div>
 
@@ -266,19 +341,22 @@
                 <div class="row mb-4">
                     <!-- Tổng doanh thu -->
                     <div class="col-md-6 bg-white p-4 rounded-3 shadow-sm">
-                        <h6 class="fw-bold text-uppercase text-muted">Tổng doanh thu</h6>
+                        <h6 class="fw-bold text-uppercase text-muted"
+                            style="font-family: 'Times New Roman', Times, serif;">Tổng doanh thu</h6>
                         <h4 class="fw-bold text-primary">{{reportData.totalRevenue | number:0}} VND</h4>
                     </div>
 
                     <!-- Tổng lợi nhuận -->
                     <div class="col-5 bg-white p-4 rounded-3 shadow-sm" style="margin-left: 54px;">
-                        <h6 class="fw-bold text-uppercase text-muted">Tổng lợi nhuận</h6>
+                        <h6 class="fw-bold text-uppercase text-muted"
+                            style="font-family: 'Times New Roman', Times, serif;">Tổng lợi nhuận</h6>
                         <h4 class="fw-bold text-success">{{reportData.totalProfit | number:0}} VND</h4>
                     </div>
 
                     <!-- Tổng sản phẩm được bán -->
                     <div class="col-12 mt-4 bg-white p-4 rounded-3 shadow-sm mb-4">
-                        <h6 class="fw-bold text-uppercase text-muted">Tổng sản phẩm được bán</h6>
+                        <h6 class="fw-bold text-uppercase text-muted"
+                            style="font-family: 'Times New Roman', Times, serif;">Tổng sản phẩm được bán</h6>
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -295,7 +373,7 @@
                                     <td>{{product.soLuong}}</td>
                                     <td>{{product.doanhThu | number:0}} VND</td>
                                     <td>{{product.loiNhuan | number:0}} VND</td>
-                                    <td>{{ getYear(product.thoiGian) }}</td>
+                                    <td>{{ product.thoiGian | date:'MM/yyyy' }}</td>
 
 
                                 </tr>
@@ -316,8 +394,26 @@
         </div>
     </div>
 </div>
+<div id="toast" class="toast">Không có dữ liệu để xuất!</div>
+<div id="toastdone" class="toastdone">Xuất File Thành Công</div>
+<script>
+    // Lắng nghe sự kiện khi người dùng chọn năm
+    document.getElementById('year').addEventListener('change', function () {
+        var year = this.value;
+        var monthSelect = document.getElementById('month');
+        var monthLabel = document.getElementById('monthLabel');
 
-
+        if (year) {
+            // Hiển thị select tháng khi năm đã được chọn
+            monthSelect.style.display = 'inline';
+            monthLabel.style.display = 'inline';
+        } else {
+            // Ẩn select tháng nếu chưa chọn năm
+            monthSelect.style.display = 'none';
+            monthLabel.style.display = 'none';
+        }
+    });
+</script>
 <!-- Thêm mã JavaScript cho biểu đồ -->
 <!-- Thêm thư viện html2pdf.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
