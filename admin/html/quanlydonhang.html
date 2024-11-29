@@ -8,10 +8,12 @@
     .content-wrapper {
         background-color: #fff;
         border-radius: 15px;
-        width: 97%; /* Chiếm toàn bộ chiều rộng */
+        width: 97%;
+        /* Chiếm toàn bộ chiều rộng */
         padding: 20px;
         color: #000;
-        margin: 0; /* Loại bỏ margin */
+        margin: 0;
+        /* Loại bỏ margin */
     }
 
     h2 {
@@ -119,6 +121,94 @@
         text-decoration: underline;
     }
 </style>
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        padding: 10px;
+    }
+
+    .pagination button {
+        padding: 10px 20px;
+        margin: 0 5px;
+        background-color: #f1c40f;
+        /* Màu vàng sang trọng */
+        color: #fff;
+        border: 2px solid #f39c12;
+        /* Viền màu vàng đậm hơn */
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .pagination button:disabled {
+        background-color: #e1b12c;
+        /* Màu vàng nhạt khi disabled */
+        border: 2px solid #e67e22;
+        cursor: not-allowed;
+    }
+
+    .pagination button:hover:not(:disabled) {
+        background-color: #d4ac0d;
+        /* Màu vàng đậm khi hover */
+        border: 2px solid #d4ac0d;
+    }
+
+    .pagination span {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 15px;
+        color: #f39c12;
+        /* Màu vàng sang trọng cho phần thông tin trang */
+    }
+</style>
+<style>
+    .summary {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .summary-box {
+        flex: 1;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        color: #fff;
+        margin: 0 10px;
+        background-color: #f39c12;
+        /* Màu vàng sang trọng */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .summary-box:hover {
+        background-color: #e67e22;
+        /* Màu vàng đậm khi hover */
+        transform: translateY(-5px);
+        /* Hiệu ứng nổi lên khi hover */
+    }
+
+    .summary-box h3 {
+        font-size: 36px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .summary-box p {
+        font-size: 16px;
+        margin-top: 10px;
+        font-weight: 500;
+    }
+</style>
+
+<!-- style 1: của bài -->
+<!-- style 2: của phân trang -->
+<!-- style 3: của summary -->
 
 <body>
 
@@ -128,32 +218,32 @@
         <!-- Summary boxes -->
         <div class="summary">
             <div class="summary-box">
-                <h3>15</h3>
-                <p>Đơn hàng mới</p>
+                <h3>{{hoanThanhCount}}</h3>
+                <p>Đơn hoàn thành</p>
             </div>
             <div class="summary-box">
-                <h3>28</h3>
+                <h3>{{dangXuLyCount}}</h3>
                 <p>Đang xử lý</p>
             </div>
-            <div class="summary-box">
-                <h3>125.5M đ</h3>
-                <p>Tổng doanh thu</p>
-            </div>
+
         </div>
+
 
         <!-- Search section -->
         <div class="search-section">
-            <input type="text" placeholder="Tìm kiếm mã đơn hàng">
-            <select>
-                <option selected>Trạng thái</option>
-                <option value="1">Mới</option>
-                <option value="2">Đang xử lý</option>
-                <option value="3">Hoàn thành</option>
+            <input type="text" ng-model="searchText" placeholder="Tìm kiếm mã đơn hàng" ng-change="filterOrders()">
+
+            <select ng-model="selectedStatus" ng-change="filterOrders()">
+                <option value="">Trạng thái</option>
+                <option value="Mới">Mới</option>
+                <option value="Đang xử lý">Đang xử lý</option>
+                <option value="Hoàn thành">Hoàn thành</option>
             </select>
-            <select>
-                <option selected>Sắp xếp theo...</option>
-                <option value="1">Thời gian</option>
-                <option value="2">Giá trị đơn hàng</option>
+
+            <select ng-model="selectedSort" ng-change="sortOrders()">
+                <option value="">Sắp xếp theo...</option>
+                <option value="time">Thời gian</option>
+                <option value="value">Giá trị đơn hàng</option>
             </select>
         </div>
 
@@ -161,40 +251,30 @@
         <div class="table-responsive">
             <table>
                 <thead>
-                    <tr>
-                        <th>Mã đơn hàng</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Đơn giá</th>
-                        <th>Thời gian</th>
-                        <th>Trạng thái</th>
-                        <th>Tổng tiền</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>DH001</td>
-                        <td>Sản phẩm 1</td>
-                        <td>2</td>
-                        <td>500.000 đ</td>
-                        <td>12/10/2024</td>
-                        <td>Mới</td>
-                        <td>1.000.000 đ</td>
+                    <tr ng-repeat="order in getPaginatedOrders()">
+                        <td>{{order.maDonHang}}</td>
+                        <td>{{order.sanPham.tenSanPham}}</td>
+                        <td>{{order.soLuong}}</td>
+                        <td>{{order.donGia | currency:'VND'}}</td>
+                        <td>{{order.thoiGian | date:'dd/MM/yyyy HH:mm'}}</td>
+                        <td>{{order.trangThai}}</td>
+                        <td>{{order.tongTien | currency:'VND'}}</td>
                         <td><a href="#">Xem chi tiết</a></td>
                     </tr>
-                  
-                </tbody>
+                </thead>
             </table>
         </div>
 
-        <!-- Pagination -->
+        <!-- Pagination section -->
         <div class="pagination">
-            <a href="">&laquo;</a>
-            <a href="" class="active">1</a>
-            <a href="">2</a>
-            <a href="">3</a>
-            <a href="">&raquo;</a>
+            <button class="btn btn-light" ng-click="goToPage(1)" ng-disabled="currentPage === 1">First</button>
+            <button class="btn btn-light" ng-click="goToPage(currentPage - 1)"
+                ng-disabled="currentPage === 1">Previous</button>
+            <span>Page {{currentPage}} of {{totalPages()}}</span>
+            <button class="btn btn-light" ng-click="goToPage(currentPage + 1)"
+                ng-disabled="currentPage === totalPages()">Next</button>
+            <button class="btn btn-light" ng-click="goToPage(totalPages())"
+                ng-disabled="currentPage === totalPages()">Last</button>
         </div>
     </div>
 
