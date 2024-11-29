@@ -272,6 +272,21 @@
                                         <button class="btn btn-primary" ng-click="createGcoinWallet()">Tạo ví
                                             Gcoin</button>
                                     </div>
+                                    <!-- Tab Quy đổi Gcoin sang vàng -->
+                        <div id="exchange-modal"
+                        style="display: none; position: fixed; top: 30%; left: 30%; z-index: 999; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                        <h3>Quy đổi Gcoin sang Vàng</h3>
+                        <label for="goldAmount">Nhập số chỉ vàng:</label>
+                        <input type="number" id="goldAmount" ng-model="goldAmount" placeholder="Số chỉ vàng"
+                            class="form-control mb-3" />
+                        <button class="btn btn-primary" ng-click="exchangeGold()">Xác nhận</button>
+                        <button class="btn btn-secondary" ng-click="closeExchangeModal()">Hủy</button>
+                    </div>
+
+                    <!-- Nút mở modal Quy đổi -->
+                    <button class="btn btn-primary mt-3" ng-click="openExchangeModal()">Quy đổi Gcoin sang
+                        vàng</button>
+
                                 </div>
                             </div>
 
@@ -329,21 +344,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Tab Quy đổi Gcoin sang vàng -->
-                        <div id="exchange-modal"
-                            style="display: none; position: fixed; top: 30%; left: 30%; z-index: 999; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
-                            <h3>Quy đổi Gcoin sang Vàng</h3>
-                            <label for="goldAmount">Nhập số chỉ vàng:</label>
-                            <input type="number" id="goldAmount" ng-model="goldAmount" placeholder="Số chỉ vàng"
-                                class="form-control mb-3" />
-                            <button class="btn btn-primary" ng-click="exchangeGold()">Xác nhận</button>
-                            <button class="btn btn-secondary" ng-click="closeExchangeModal()">Hủy</button>
-                        </div>
-
-                        <!-- Nút mở modal Quy đổi -->
-                        <button class="btn btn-primary mt-3" ng-click="openExchangeModal()">Quy đổi Gcoin sang
-                            vàng</button>
-
+                        
                     </div>
 
 
