@@ -82,7 +82,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 
-app.controller('bangdieukhienCtrl', function ($scope) {
+app.controller('bangdieukhienCtrl', function ($scope, $http) {
     // Vẽ biểu đồ doanh thu trên bảng điều khiển
     const ctx = document.getElementById('revenueChart').getContext('2d');
     const revenueChart = new Chart(ctx, {
@@ -105,7 +105,28 @@ app.controller('bangdieukhienCtrl', function ($scope) {
             }
         }
     });
+
+    // Khởi tạo biến lưu sản phẩm
+    $scope.products = [];
+
+    // Hàm lấy danh sách sản phẩm từ API
+    $scope.loadProducts = function () {
+        $http.get('http://localhost:9999/api/nppctrl/getsp', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.products = response.data;
+            console.log("Tổng số sản phẩm:", $scope.products.length);
+        }, function (error) {
+            console.log('Lỗi khi lấy danh sách sản phẩm:', error);
+        });
+    };
+
+    // Gọi hàm loadProducts khi khởi động controller
+    $scope.loadProducts();
 });
+
 
 app.directive('ngFileSelect', function () {
     return {
