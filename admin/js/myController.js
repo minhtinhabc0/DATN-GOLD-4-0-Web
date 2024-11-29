@@ -417,7 +417,102 @@ $scope.loadProducts = function () {
             
 
  });
-app.controller('quanlydonhangCtrl', function ($scope) { });
+ app.controller('quanlydonhangCtrl', function ($scope, $http) {
+    $scope.orders = [];  // Mảng lưu danh sách đơn hàng
+    $scope.filteredOrders = [];  // Mảng lưu danh sách đơn hàng đã lọc
+    $scope.currentPage = 1;  // Trang hiện tại
+    $scope.itemsPerPage = 5;  // Số lượng đơn hàng mỗi trang
+    $scope.searchText = '';  // Tìm kiếm theo mã đơn hàng
+    $scope.selectedStatus = '';  // Lọc theo trạng thái
+    $scope.selectedSort = '';  // Sắp xếp theo thời gian hoặc giá trị
+    $scope.hoanThanhCount = 0;  // Số lượng đơn hoàn thành
+    $scope.dangXuLyCount = 0;   // Số lượng đơn đang xử lý
+
+
+    // Hàm gọi API để lấy số lượng đơn hàng theo trạng thái
+    $scope.getDonHangCounts = function () {
+        $http.get('http://localhost:9999/api/adctrl/donhangcounts', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.hoanThanhCount = response.data.hoanThanh;
+            $scope.dangXuLyCount = response.data.dangXuLy;
+        }, function (error) {
+            console.error('Lỗi khi lấy số lượng đơn hàng:', error);
+        });
+    };
+
+    // Hàm gọi API để lấy danh sách đơn hàng
+    $scope.DonhangAccount = function () {
+        $http.get('http://localhost:9999/api/adctrl/donhangall', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.orders = response.data;  // Lưu dữ liệu đơn hàng vào scope
+            $scope.filteredOrders = angular.copy($scope.orders);  // Sao chép dữ liệu cho lọc
+        }, function (error) {
+            console.error('Lỗi khi lấy danh sách đơn hàng:', error);
+        });
+    };
+
+    // Hàm để lấy dữ liệu của trang hiện tại
+    $scope.getPaginatedOrders = function () {
+        const start = ($scope.currentPage - 1) * $scope.itemsPerPage;
+        const end = start + $scope.itemsPerPage;
+        return $scope.filteredOrders.slice(start, end);  // Lấy dữ liệu cho trang hiện tại
+    };
+
+    // Hàm tìm kiếm và lọc đơn hàng
+    $scope.filterOrders = function () {
+        let filtered = $scope.orders;
+
+        // Tìm kiếm theo mã đơn hàng
+        if ($scope.searchText) {
+            filtered = filtered.filter(order =>
+                order.maDonHang.toLowerCase().includes($scope.searchText.toLowerCase())
+            );
+        }
+
+        // Lọc theo trạng thái
+        if ($scope.selectedStatus) {
+            filtered = filtered.filter(order => order.trangThai === $scope.selectedStatus);
+        }
+
+        $scope.filteredOrders = filtered;  // Lưu lại danh sách đã lọc
+        $scope.currentPage = 1;  // Đặt lại trang về trang đầu
+        $scope.sortOrders();  // Sắp xếp sau khi lọc
+    };
+
+    // Hàm sắp xếp đơn hàng
+    $scope.sortOrders = function () {
+        if ($scope.selectedSort === 'time') {
+            // Sắp xếp theo thời gian (mới nhất lên trước)
+            $scope.filteredOrders.sort((a, b) => new Date(b.thoiGian) - new Date(a.thoiGian));
+        } else if ($scope.selectedSort === 'value') {
+            // Sắp xếp theo giá trị đơn hàng (giảm dần)
+            $scope.filteredOrders.sort((a, b) => b.tongTien - a.tongTien);
+        }
+    };
+
+    // Hàm chuyển đến một trang cụ thể
+    $scope.goToPage = function (page) {
+        if (page >= 1 && page <= $scope.totalPages()) {
+            $scope.currentPage = page;
+        }
+    };
+
+    // Tính tổng số trang
+    $scope.totalPages = function () {
+        return Math.ceil($scope.filteredOrders.length / $scope.itemsPerPage);
+    };
+
+    // Gọi API để tải dữ liệu khi trang được load
+    $scope.DonhangAccount();
+    // Gọi API khi tải trang
+    $scope.getDonHangCounts();
+});
 app.controller('baocaoCtrl', function ($scope) { });
 app.controller('quanlytaikhoanCtrl', function ($scope) { });
 app.controller('khachhangCtrl', function ($scope, $http, $window) {
