@@ -125,27 +125,35 @@
             padding: 8px 15px;
         }
     }
+
     /* Cơ bản cho menu */
-.nav-pills .nav-link {
-    color: #333; /* Màu chữ mặc định */
-    background-color: transparent; /* Nền trong suốt mặc định */
-    border-radius: 5px; /* Bo góc menu */
-    padding: 10px 15px;
-    transition: all 0.1s ease-in-out; /* Hiệu ứng mượt */
-}
+    .nav-pills .nav-link {
+        color: #333;
+        /* Màu chữ mặc định */
+        background-color: transparent;
+        /* Nền trong suốt mặc định */
+        border-radius: 5px;
+        /* Bo góc menu */
+        padding: 10px 15px;
+        transition: all 0.1s ease-in-out;
+        /* Hiệu ứng mượt */
+    }
 
-/* Khi hover */
-.nav-pills .nav-link:hover {
-    background-color: #f8d97e; /* Nền vàng */
-    color: #000; /* Chữ đen */
-}
+    /* Khi hover */
+    .nav-pills .nav-link:hover {
+        background-color: #f8d97e;
+        /* Nền vàng */
+        color: #000;
+        /* Chữ đen */
+    }
 
-/* Mục đang được chọn */
-.nav-pills .nav-link.active {
-    background-color: #ffc107 !important; /* Nền đen */
-    color: black !important; /* Chữ trắng */
-}
-
+    /* Mục đang được chọn */
+    .nav-pills .nav-link.active {
+        background-color: #ffc107 !important;
+        /* Nền đen */
+        color: black !important;
+        /* Chữ trắng */
+    }
 </style>
 
 <body>
@@ -157,9 +165,8 @@
                 <ul class="nav flex-column nav-pills" id="pills-tab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="pills-info-tab" data-bs-toggle="pill" href="#pills-info"
-                            role="tab" aria-controls="pills-info" aria-selected="true">Thông Tin Tài Khoản
-                            <i class="fa-regular fa-address-card"></i>
-                        </a>
+                            role="tab" aria-controls="pills-info" aria-selected="true" style="margin-top: 50px;">Thông
+                            Tin Tài Khoản <i class="fa-regular fa-address-card"></i></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="pills-history-tab" data-bs-toggle="pill" href="#pills-history"
@@ -175,9 +182,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="pills-order-tab" data-bs-toggle="pill" href="#pills-order" role="tab"
-                            aria-controls="pills-order" aria-selected="false">Đơn Hàng Của Bạn
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
+                            aria-controls="pills-order" aria-selected="false">Đơn Hàng Của Bạn <i
+                                class="fa-solid fa-cart-shopping"></i></a>
                     </li>
                 </ul>
             </nav>
@@ -187,8 +193,7 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="tab-content" id="pills-tabContent">
                     <!-- Tab thông tin tài khoản -->
-                    <div class="tab-pane fade show active" id="pills-info" role="tabpanel"
-                        aria-labelledby="pills-info-tab">
+                    <div class="tab-pane fade " id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
                         <ul class="nav nav-tabs" id="infoTabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="user-info-tab" data-bs-toggle="tab" href="#user-info"
@@ -227,9 +232,8 @@
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
                                             <input type="email" class="form-control" id="email"
-                                                ng-model="userInfo.email" required disabled>
-                                            <button type="button" class="btn" ng-click="enableEditemail()"
-                                                ng-if="isEditing">sửa email</button>
+                                                ng-model="userInfo.email" required ng-disabled="!isEditing">
+
                                         </div>
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">Số điện thoại</label>
@@ -292,7 +296,8 @@
                                     <td>{{ transaction.trangThai }}</td>
                                     <td>{{ transaction.soluong }}</td>
                                     <td>
-                                        <button class="btn btn-info btn-sm" ng-click="viewTransactionDetail(transaction.maLichSuGiaoDich)">
+                                        <button class="btn btn-info btn-sm"
+                                            ng-click="viewTransactionDetail(transaction.maLichSuGiaoDich)">
                                             Xem chi tiết
                                         </button>
                                     </td>
@@ -304,37 +309,44 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">Chi Tiết Giao Dịch</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <p><strong>Mã Giao Dịch:</strong> {{ selectedTransaction.maLichSuGiaoDich }}</p>
-                                        <p><strong>Thời Gian:</strong> {{ selectedTransaction.thoiGian | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+                                        <p><strong>Thời Gian:</strong> {{ selectedTransaction.thoiGian | date:
+                                            'dd/MM/yyyy HH:mm:ss' }}</p>
                                         <p><strong>Trạng Thái:</strong> {{ selectedTransaction.trangThai }}</p>
                                         <p><strong>Số Lượng:</strong> {{ selectedTransaction.soLuong }}</p>
-                                        <p><strong>Mã Vàng:</strong> {{ selectedTransaction.maVang || 'Chưa có mã vàng' }}</p>
+                                        <p><strong>Mã Vàng:</strong> {{ selectedTransaction.maVang || 'Chưa có mã vàng'
+                                            }}</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Đóng</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                          <!-- Tab Quy đổi Gcoin sang vàng -->
-                    <div id="exchange-modal" style="display: none; position: fixed; top: 30%; left: 30%; z-index: 999; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
-                        <h3>Quy đổi Gcoin sang Vàng</h3>
-                        <label for="goldAmount">Nhập số chỉ vàng:</label>
-                        <input type="number" id="goldAmount" ng-model="goldAmount" placeholder="Số chỉ vàng" class="form-control mb-3" />
-                        <button class="btn btn-primary" ng-click="exchangeGold()">Xác nhận</button>
-                        <button class="btn btn-secondary" ng-click="closeExchangeModal()">Hủy</button>
+                        <!-- Tab Quy đổi Gcoin sang vàng -->
+                        <div id="exchange-modal"
+                            style="display: none; position: fixed; top: 30%; left: 30%; z-index: 999; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                            <h3>Quy đổi Gcoin sang Vàng</h3>
+                            <label for="goldAmount">Nhập số chỉ vàng:</label>
+                            <input type="number" id="goldAmount" ng-model="goldAmount" placeholder="Số chỉ vàng"
+                                class="form-control mb-3" />
+                            <button class="btn btn-primary" ng-click="exchangeGold()">Xác nhận</button>
+                            <button class="btn btn-secondary" ng-click="closeExchangeModal()">Hủy</button>
+                        </div>
+
+                        <!-- Nút mở modal Quy đổi -->
+                        <button class="btn btn-primary mt-3" ng-click="openExchangeModal()">Quy đổi Gcoin sang
+                            vàng</button>
+
                     </div>
 
-                    <!-- Nút mở modal Quy đổi -->
-                    <button class="btn btn-primary mt-3" ng-click="openExchangeModal()">Quy đổi Gcoin sang vàng</button>
-                        
-                    </div>
 
-                  
-    
+
 
                     <!-- Tab mật khẩu & bảo mật -->
                     <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab"
@@ -399,7 +411,8 @@
                         </div>
                     </div>
                     <!-- Tab Đơn Hàng HÓA ĐƠN-->
-                    <div class="tab-pane fade" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
+                    <div class="tab-pane fade show active" id="pills-order" role="tabpanel"
+                        aria-labelledby="pills-order-tab">
                         <ul class="nav nav-tabs" id="infoTabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="order-tab" data-bs-toggle="tab" href="#order"
@@ -491,7 +504,7 @@
                                                         VND
                                                     </td>
                                                     <td class="text-light text-center text- ">{{order.thoiGian |
-                                                        date:'dd/MM/yyyy'}}
+                                                        date:'dd/MM/yyyy HH:mm'}}
                                                     </td>
                                                     <td style="color: black !important;">
                                                         <span class="badge rounded-pill" ng-class="{
@@ -939,6 +952,7 @@
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         activateTabFromHash();
+                        activateTabFromHash();
                     });
 
                     window.addEventListener("hashchange", function () {
@@ -947,8 +961,10 @@
 
                     function activateTabFromHash() {
                         var currentUrl = window.location.href;
-                        if (currentUrl.includes("#pills-order")) {
-                            console.log("Hash #pills-order detected");
+
+                        // Kiểm tra phần hash trong URL
+                        if (currentUrl == "http://127.0.0.1:5501/user/index.html#!/user/profileuser%23pills-order") {
+
 
                             var orderTab = document.getElementById("pills-order-tab");
                             if (orderTab) {
@@ -962,6 +978,7 @@
                         const sidebar = document.getElementById('sidebar');
                         sidebar.classList.toggle('active');
                     }
+
 
                 </script>
 

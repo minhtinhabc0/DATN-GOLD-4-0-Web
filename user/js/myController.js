@@ -263,6 +263,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         };
 
 
+
         // Initial load
         $scope.load_all();
         $scope.loadPrices();
