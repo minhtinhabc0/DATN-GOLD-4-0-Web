@@ -155,6 +155,472 @@
         /* Chữ trắng */
     }
 </style>
+<!-- /* PHÂN TRANG */ -->
+<style>
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        border-color: #dee2e6;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #f7a100 !important;
+        color: white;
+        border: none;
+    }
+
+    .pagination .page-link {
+        border-radius: 50px;
+        padding: 8px 15px;
+    }
+
+    .pagination .page-item {
+        margin: 0 5px;
+    }
+
+    .pagination .page-item .page-link {
+        border-radius: 50px;
+        /* Bo tròn toàn bộ nút */
+        padding: 8px 15px;
+        /* Tăng độ rộng cho nút để dễ nhìn */
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        border-color: #dee2e6;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+</style>
+<!-- /* bảng */ -->
+<style>
+    .table-responsive {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        overflow: hidden;
+        /* Đảm bảo các ô không vượt ra ngoài góc bo tròn */
+        padding: 1rem;
+        background-color: #fff;
+        /* Thêm màu nền để hiển thị bóng đổ tốt hơn */
+    }
+
+    .table {
+
+        border-radius: 20px;
+        /* Bo tròn 4 góc của bảng */
+        overflow: hidden;
+        /* Đảm bảo các ô không vượt ra ngoài góc bo tròn */
+    }
+
+    th,
+    td {
+        white-space: nowrap;
+        /* Ngăn chữ bị ngắt dòng */
+        text-align: center;
+        /* Căn giữa theo chiều ngang */
+        vertical-align: middle;
+        font-size: smaller;
+        /* Căn giữa theo chiều dọc */
+    }
+
+
+
+    .table td {
+        border-right: 1px solid black;
+        /* Đường viền giữa các ô */
+    }
+
+    .table th:last-child,
+    .table td:last-child {
+        border-right: none;
+        /* Xóa đường viền ở ô cuối cùng của mỗi hàng */
+    }
+
+    .table thead th {
+        border-bottom: 2px solid #dee2e6;
+        /* Đường viền dưới các tiêu đề */
+    }
+
+    .table-striped tbody tr:nth-child(odd) {
+        background-color: white !important;
+        /* Tạo hiệu ứng sọc cho các hàng chẵn */
+    }
+
+    .table-striped tbody tr:nth-child(even) {
+        background-color: white !important;
+        /* Tạo hiệu ứng sọc cho các hàng chẵn */
+    }
+
+    .text-center {
+        text-align: center;
+    }
+</style>
+<!-- MODAL ĐON HÀNG-->
+<style>
+    .order-details-modal .modal-content {
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .order-details-header {
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 20px;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .order-details-header h5 {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .order-details-body {
+        padding: 20px;
+        font-family: 'Roboto', sans-serif;
+        color: #495057;
+    }
+
+    .order-details-info {
+        padding-right: 15px;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .order-detail {
+        margin-bottom: 12px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .order-detail strong {
+        font-weight: 600;
+        color: #212529;
+    }
+
+    .order-detail span {
+        color: #495057;
+    }
+
+    .image-container {
+        margin-top: 20px;
+    }
+
+    .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        padding: 5px;
+        background-color: #ffffff;
+    }
+
+    .order-details-footer {
+        background-color: #f1f3f5;
+        padding: 15px 20px;
+        text-align: right;
+        border-top: 2px solid #dee2e6;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        color: #ffffff;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        /* Giữ nút đóng ở bên phải */
+        align-items: center;
+        /* Căn giữa theo chiều dọc */
+        padding: 20px;
+        background-color: #343a40;
+        color: #ffffff;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .modal-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+        flex-grow: 1;
+        /* Cho phép tiêu đề chiếm hết không gian còn lại */
+        text-align: center;
+        /* Căn giữa tiêu đề */
+    }
+</style>
+<!-- TICKET QR -->
+<style>
+    .ticket-modal .modal-dialog {
+        max-width: 900px;
+    }
+
+    .ticket-content {
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        background-color: #fdfdfd;
+    }
+
+    .ticket-header {
+        background-color: #343a40;
+        border-bottom: 2px solid #ffc107;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .ticket-header .modal-title {
+        font-family: 'Arial', sans-serif;
+        font-size: 24px;
+        color: #ffc107;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .ticket-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .ticket-left,
+    .ticket-right {
+        width: 48%;
+    }
+
+    .ticket-header-info .ticket-info {
+        font-family: 'Arial', sans-serif;
+        font-size: 16px;
+        color: #212529;
+        margin-bottom: 10px;
+    }
+
+    .ticket-right {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-left: 2px solid #dee2e6;
+        padding-left: 20px;
+        animation: bounce 2s infinite;
+    }
+
+    .qr-title {
+        font-family: 'Arial', sans-serif;
+        font-size: 18px;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    .qr-code-container {
+        width: 150px;
+        height: 150px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-6px);
+        }
+
+        60% {
+            transform: translateY(-3px);
+        }
+    }
+</style>
+<!-- MODAL HÓA ĐƠN -->
+<style>
+    .bill-details-modal .modal-dialog {
+        max-width: 900px;
+    }
+
+    .bill-details-content {
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        background-color: #ffffff;
+    }
+
+    .bill-details-header {
+        background-color: #343a40;
+        text-align: center;
+        padding: 15px 20px;
+    }
+
+    .bill-details-body {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .bill-left,
+    .bill-right {
+        width: 45%;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .bill-left p,
+    .bill-right p {
+        font-family: 'Arial', sans-serif;
+        font-size: 16px;
+        color: #495057;
+        margin-bottom: 10px;
+    }
+
+    .bill-left p strong,
+    .bill-right p strong {
+        color: #212529;
+    }
+
+    .bill-details-footer {
+        background-color: #f8f9fa;
+        border-top: 2px solid #dee2e6;
+        text-align: right;
+        padding: 15px 20px;
+    }
+
+    .modal-footer .btn-secondary {
+        background-color: rgb(184, 134, 11);
+        color: #ffffff;
+    }
+
+    .modal-footer .btn-secondary:hover {
+        background-color: rgb(95, 70, 5);
+        ;
+    }
+
+    /* Điều chỉnh để thêm hình ảnh hoặc thông tin bổ sung nếu có */
+    .bill-right .product-image {
+        width: 120%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+</style>
+<!-- Tabs Navigation -->
+<ul class="nav nav-tabs custom-nav-tabs" id="infoTabs" role="tablist">
+    <li class="nav-item custom-nav-item"> <a class="nav-link custom-nav-link active" id="order-tab" data-bs-toggle="tab"
+            href="#order" role="tab">Đơn Hàng</a> </li>
+    <li class="nav-item custom-nav-item"> <a class="nav-link custom-nav-link" id="bill-tab" data-bs-toggle="tab"
+            href="#bill" role="tab">Hóa Đơn</a> </li>
+</ul>
+<style>
+    .custom-nav-tabs {
+        border-bottom: 2px solid #007bff;
+        margin-bottom: 20px;
+    }
+
+    .custom-nav-item {
+        margin-bottom: -1px;
+    }
+
+    .custom-nav-link {
+        border: 1px solid transparent;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+        color: #6c757d !important;
+        /* Màu xám cho các tab chưa chọn */
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px 15px;
+    }
+
+    .custom-nav-link:hover {
+        border-color: #e9ecef #e9ecef #dee2e6;
+        color: #000 !important;
+        /* Màu xám đậm hơn khi hover */
+    }
+
+    .custom-nav-link.active {
+        color: #000000 !important;
+        /* Màu đen */
+        background-color: #e9ecef;
+        /* Màu nền nhạt hơn cho tab đang chọn */
+        border-color: #dee2e6 #dee2e6 #f8f9fa;
+        font-weight: bold;
+        /* Chữ in đậm */
+    }
+</style>
+<style>
+    .custom-info-tabs {
+        border-bottom: 2px solid #007bff;
+        margin-bottom: 20px;
+    }
+
+    .custom-info-item {
+        margin-bottom: -1px;
+    }
+
+    .custom-info-link {
+        border: 1px solid transparent;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+        color: #6c757d !important;
+        /* Màu xám cho các tab chưa chọn */
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px 15px;
+    }
+
+    .custom-info-link:hover {
+        border-color: #e9ecef #e9ecef #dee2e6;
+        color: #000000 !important;
+        /* Màu xám đậm hơn khi hover */
+    }
+
+    .custom-info-link.active {
+        color: #000000 !important;
+        /* Màu đen */
+        background-color: #e9ecef;
+        /* Màu nền nhạt hơn cho tab đang chọn */
+        border-color: #dee2e6 #dee2e6 #f8f9fa;
+        font-weight: bold;
+        /* Chữ in đậm */
+    }
+</style>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+</head>
 
 <body>
     <div class="container-fluid mt-5" style="height: 700px;">
@@ -195,14 +661,12 @@
                 <div class="tab-content" id="pills-tabContent">
                     <!-- Tab thông tin tài khoản -->
                     <div class="tab-pane fade " id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
-                        <ul class="nav nav-tabs" id="infoTabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="user-info-tab" data-bs-toggle="tab" href="#user-info"
-                                    role="tab">Thông Tin Người Dùng</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="asset-info-tab" data-bs-toggle="tab" href="#asset-info"
-                                    role="tab">Tài Sản</a>
+                        <ul class="nav nav-tabs custom-info-tabs" id="infoTabs" role="tablist">
+                            <li class="nav-item custom-info-item"> <a class="nav-link custom-info-link active"
+                                    id="user-info-tab" data-bs-toggle="tab" href="#user-info" role="tab">Thông Tin Người
+                                    Dùng</a> </li>
+                            <li class="nav-item custom-info-item"> <a class="nav-link custom-info-link"
+                                    id="asset-info-tab" data-bs-toggle="tab" href="#asset-info" role="tab">Tài Sản</a>
                             </li>
                         </ul>
                         <div class="tab-content mt-3" id="infoTabContent">
@@ -353,13 +817,14 @@
                     <!-- Tab mật khẩu & bảo mật -->
                     <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab"
                         style="color: black !important;">
-                        <ul class="nav nav-tabs" id="securityTabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="password-tab" data-bs-toggle="tab"
+                        <ul class="nav nav-tabs custom-info-tabs" id="securityTabs" role="tablist">
+                            <li class="nav-item custom-info-item">
+                                <a class="nav-link active custom-info-link" id="password-tab" data-bs-toggle="tab"
                                     href="#password-content" role="tab">Mật Khẩu</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pin-tab" data-bs-toggle="tab" href="#pin-content" role="tab">Mã
+                            <li class="nav-item custom-info-item">
+                                <a class="nav-link custom-info-link" id="pin-tab" data-bs-toggle="tab"
+                                    href="#pin-content" role="tab">Mã
                                     PIN</a>
                             </li>
                         </ul>
@@ -415,15 +880,11 @@
                     <!-- Tab Đơn Hàng HÓA ĐƠN-->
                     <div class="tab-pane fade show active" id="pills-order" role="tabpanel"
                         aria-labelledby="pills-order-tab">
-                        <ul class="nav nav-tabs" id="infoTabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="order-tab" data-bs-toggle="tab" href="#order"
-                                    role="tab">Đơn Hàng</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="bill-tab" data-bs-toggle="tab" href="#bill" role="tab">Hóa
-                                    Đơn</a>
-                            </li>
+                        <ul class="nav nav-tabs custom-nav-tabs" id="infoTabs" role="tablist">
+                            <li class="nav-item custom-nav-item"> <a class="nav-link custom-nav-link active"
+                                    id="order-tab" data-bs-toggle="tab" href="#order" role="tab">Đơn Hàng</a> </li>
+                            <li class="nav-item custom-nav-item"> <a class="nav-link custom-nav-link" id="bill-tab"
+                                    data-bs-toggle="tab" href="#bill" role="tab">Hóa Đơn</a> </li>
                         </ul>
                         <div class="tab-content mt-3" id="infoTabContent">
                             <div class="tab-pane fade show active" id="order" role="tabpanel">
@@ -469,17 +930,17 @@
                                         <table class="table table-striped ">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th class="text-warning bg-dark text-center">Mã Đơn Hàng</th>
-                                                    <th class="text-warning bg-dark text-center">Mã Hóa Đơn</th>
-                                                    <th class="text-warning bg-dark text-center">Tên Sản
+                                                    <th class="text-dark text-center">Mã Đơn Hàng</th>
+                                                    <th class="text-dark text-center">Mã Hóa Đơn</th>
+                                                    <th class="text-dark text-center">Tên Sản
                                                         Phẩm</th>
-                                                    <th class="text-warning bg-dark text-center">Hình Ảnh</th>
-                                                    <th class="text-warning bg-dark text-center">Số Lượng</th>
-                                                    <th class="text-warning bg-dark text-center">Size</th>
-                                                    <th class="text-warning bg-dark text-center">Tổng Tiền</th>
-                                                    <th class="text-warning bg-dark text-center">Ngày Đặt</th>
-                                                    <th class="text-warning bg-dark text-center">Trạng Thái</th>
-                                                    <th rowspan="2" class="text-warning bg-dark text-center">Thao Tác
+                                                    <th class="text-dark text-center">Hình Ảnh</th>
+                                                    <th class="text-dark text-center">Số Lượng</th>
+                                                    <th class="text-dark text-center">Size</th>
+                                                    <th class="text-dark text-center">Tổng Tiền</th>
+                                                    <th class="text-dark text-center">Ngày Đặt</th>
+                                                    <th class="text-dark text-center">Trạng Thái</th>
+                                                    <th rowspan="2" class="text-dark text-center">Thao Tác
                                                     </th>
                                                     <!-- <th class="text-warning bg-dark text-center">Ticket QR</th> -->
 
@@ -487,25 +948,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="order in oderfillterPage"
-                                                    style="background-color: black;">
-                                                    <td class="text-light text-center">{{order.maDonHang}}</td>
-                                                    <td class="text-light text-center">{{order.hoaDon ?
+                                                <tr ng-repeat="order in oderfillterPage">
+                                                    <td class="text-dark text-center">{{order.maDonHang}}</td>
+                                                    <td class="text-dark text-center">{{order.hoaDon ?
                                                         order.hoaDon.maHoaDon :
                                                         'N/A'}}</td>
-                                                    <td class="text-light">
+                                                    <td class="text-dark">
                                                         {{order.sanPham.tenSanPham}}
 
                                                     </td>
-                                                    <td class="text-light text-center"> <img
+                                                    <td class="text-dark text-center"> <img
                                                             src="{{order.sanPham.hinhAnh}}" width="90px" alt=""></td>
-                                                    <td class="text-light text-center">{{order.soLuong}}</td>
-                                                    <td class="text-light text-center">{{order.kichThuoc}}</td>
-                                                    <td class="text-light text-center text- ">{{order.tongTien |
+                                                    <td class="text-dark text-center">{{order.soLuong}}</td>
+                                                    <td class="text-dark text-center">{{order.kichThuoc}}</td>
+                                                    <td class="text-dark text-center text- ">{{order.tongTien |
                                                         number:0}}
                                                         VND
                                                     </td>
-                                                    <td class="text-light text-center text- ">{{order.thoiGian |
+                                                    <td class="text-dark text-center text- ">{{order.thoiGian |
                                                         date:'dd/MM/yyyy HH:mm'}}
                                                     </td>
                                                     <td style="color: black !important;">
@@ -525,13 +985,13 @@
                                                             font-weight: 400;
                                                             color: black;
                                                             background-color:white;
-                                                            border: none;
+                                                            border: 1px solid black;
                                                             border-radius: 45px;
                                                             box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
                                                             transition: all 0.3s ease 0s;
                                                             cursor: pointer;
                                                             outline: none;">Chi Tiết</button>
-                                                        <svg ng-if="order.trangThai === 'Đang xử lý'" fill="white"
+                                                        <svg ng-if="order.trangThai === 'Đang xử lý'" fill="black"
                                                             width="80px" height="80px" viewBox="0 0 24 24"
                                                             xmlns="http://www.w3.org/2000/svg" data-bs-toggle="modal"
                                                             data-bs-target="#ticketModal" ng-click="showQRCode(order)"
@@ -553,7 +1013,7 @@
                                     </div>
 
                                     <!-- Pagination -->
-                                    <nav aria-label="Page navigation">
+                                    <nav aria-label="Page navigation" class="mt-3">
                                         <ul class="pagination justify-content-center">
                                             <!-- Trang trước -->
                                             <li class="page-item" ng-class="{'disabled': currentPage === 1}">
@@ -623,43 +1083,43 @@
                                         </select>
                                     </div>
 
+
                                     <div class="table-responsive">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped" style="background-color: black;">
-                                                <thead class="thead-dark">
-                                                    <tr>
-                                                        <th class="text-warning bg-dark text-center">Mã Hóa Đơn</th>
-                                                        <th class="text-warning bg-dark text-center">OrderCode</th>
-                                                        <th class="text-warning bg-dark text-center">Mã Người Dùng</th>
+                                        <table class="table table-striped">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th class="text-dark text-center">Mã Hóa Đơn</th>
+                                                    <th class="text-dark text-center">OrderCode</th>
+                                                    <th class="text-dark text-center">Mã Người Dùng</th>
 
 
-                                                        <th class="text-warning bg-dark text-center">Tổng Tiền</th>
-                                                        <th class="text-warning bg-dark text-center">Trạng Thái</th>
-                                                        <th class="text-warning bg-dark text-center">Thời Gian</th>
-                                                        <th class="text-warning bg-dark text-center">Thao Tác</th>
+                                                    <th class="text-dark text-center">Tổng Tiền</th>
+                                                    <th class="text-dark text-center">Trạng Thái</th>
+                                                    <th class="text-dark text-center">Thời Gian</th>
+                                                    <th class="text-dark text-center">Thao Tác</th>
 
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="hoaDon in billfillterPage">
-                                                        <td class="text-center text-light">{{ hoaDon.maHoaDon }}</td>
-                                                        <td class="text-center text-light">{{ hoaDon.orderCode }}</td>
-                                                        <td class="text-center text-light">{{ hoaDon.maNguoiDung }}</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="hoaDon in billfillterPage">
+                                                    <td class="text-center ">{{ hoaDon.maHoaDon }}</td>
+                                                    <td class="text-center ">{{ hoaDon.orderCode }}</td>
+                                                    <td class="text-center ">{{ hoaDon.maNguoiDung }}</td>
 
 
-                                                        <td class="text-center text-light">{{ hoaDon.tongTien | number:0
-                                                            }} VND</td>
-                                                        <td class="text-center text-light">
-                                                            <span
-                                                                ng-class="{'text-success': hoaDon.trangThai === 'thành công', 'text-danger': hoaDon.trangThai !== 'thành công'}">
-                                                                {{ hoaDon.trangThai }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="text-center text-light">{{ hoaDon.ngayInHoaDon |
-                                                            date:'dd/MM/yyyy HH:mm' }}</td>
-                                                        <td class="text-center">
-                                                            <button class="btn btn-info"
-                                                                ng-click="showBillDetails(hoaDon)" style=" 
+                                                    <td class="text-center ">{{ hoaDon.tongTien | number:0
+                                                        }} VND</td>
+                                                    <td class="text-center ">
+                                                        <span
+                                                            ng-class="{'text-success': hoaDon.trangThai === 'thành công', 'text-danger': hoaDon.trangThai !== 'thành công'}">
+                                                            {{ hoaDon.trangThai }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center ">{{ hoaDon.ngayInHoaDon |
+                                                        date:'dd/MM/yyyy HH:mm' }}</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-info" ng-click="showBillDetails(hoaDon)"
+                                                            style=" 
                                                                 font-size: 13px;
                                                                 
                                                                 letter-spacing: 2.5px;
@@ -672,22 +1132,22 @@
                                                                 transition: all 0.3s ease 0s;
                                                                 cursor: pointer;
                                                                 outline: none;">Chi Tiết</button>
-                                                        </td>
+                                                    </td>
 
 
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-
-                                        </div>
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
 
                                     </div>
 
 
 
-                                    <nav aria-label="Page navigation">
+
+
+
+                                    <nav aria-label="Page navigation" class="mt-3">
                                         <ul class="pagination justify-content-center">
                                             <!-- Trang trước -->
                                             <li class="page-item" ng-class="{'disabled': currentPageHoaDon === 1}">

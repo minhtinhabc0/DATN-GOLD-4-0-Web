@@ -1,5 +1,6 @@
 body {
     overflow-x: hidden;
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
 /* Màu nền và màu chữ của dropdown khi rê chuột vào */

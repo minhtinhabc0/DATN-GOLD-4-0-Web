@@ -174,6 +174,12 @@ app.config(['$routeProvider', function ($routeProvider) {
     //controller home
 
     .controller('homeCtrl', function ($scope, $http, GoldPriceService) {
+      
+     const d8sApi = initDimensions({      
+       account: "d8s-euumfx",       
+       viewers: ["3D"],  		
+	 })    
+	
         const userInfo = localStorage.getItem('userInfo');
         $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
         let host = "http://localhost:9999/api";
