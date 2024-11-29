@@ -251,6 +251,18 @@
         <div class="table-responsive">
             <table>
                 <thead>
+
+                    <tr>
+                        <th>Mã đơn hàng</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thời gian</th>
+                        <th>Trạng thái</th>
+                        <th>Tổng tiền</th>
+                        <th></th>
+                    </tr>
+                <tbody>
                     <tr ng-repeat="order in getPaginatedOrders()">
                         <td>{{order.maDonHang}}</td>
                         <td>{{order.sanPham.tenSanPham}}</td>
@@ -259,8 +271,45 @@
                         <td>{{order.thoiGian | date:'dd/MM/yyyy HH:mm'}}</td>
                         <td>{{order.trangThai}}</td>
                         <td>{{order.tongTien | currency:'VND'}}</td>
-                        <td><a href="#">Xem chi tiết</a></td>
+                        <!-- Nút Xem chi tiết -->
+                        <td>
+                            <button class="btn btn-info btn-sm" ng-click="viewOrderDetail(order.maDonHang)">
+                                Xem chi tiết
+                            </button>
+                        </td>
                     </tr>
+                    <!-- Modal chi tiết đơn hàng -->
+                    <div class="modal fade" id="orderDetailModal" tabindex="-1" role="dialog"
+                        aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="orderDetailModalLabel">Chi tiết đơn hàng</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Mã đơn hàng:</strong> {{ orderDetail.maDonHang }}</p>
+                                    <p><strong>Sản phẩm:</strong> {{ orderDetail.sanPham }}</p>
+                                    <p><strong>Người dùng:</strong> {{ orderDetail.nguoiDung }}</p>
+                                    <p><strong>Số lượng:</strong> {{ orderDetail.soLuong }}</p>
+                                    <p><strong>Đơn giá:</strong> {{ orderDetail.donGia | currency:'VND' }}</p>
+                                    <p><strong>Tổng tiền:</strong> {{ orderDetail.tongTien | currency:'VND' }}</p>
+                                    <p><strong>Thời gian:</strong> {{ orderDetail.thoiGian | date: 'dd/MM/yyyy HH:mm:ss'
+                                        }}</p>
+                                    <p><strong>Trạng thái:</strong> {{ orderDetail.trangThai }}</p>
+                                    <p><strong>Kích thước:</strong> {{ orderDetail.kichThuoc }}</p>
+                                    <p><strong>Tên cửa hàng:</strong> {{ orderDetail.tenCuaHang }}</p>
+                                    <p><strong>Địa chỉ nhà phân phối:</strong> {{ orderDetail.diaChiNhaPhanPhoi }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tbody>
                 </thead>
             </table>
         </div>
@@ -279,3 +328,8 @@
     </div>
 
 </body>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

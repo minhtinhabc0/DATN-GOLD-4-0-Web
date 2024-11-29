@@ -508,6 +508,19 @@ $scope.loadProducts = function () {
         return Math.ceil($scope.filteredOrders.length / $scope.itemsPerPage);
     };
 
+    // Hàm xem chi tiết đơn hàng
+$scope.viewOrderDetail = function (orderId) {
+    $http.get('http://localhost:9999/api/adctrl/order/' + orderId, {
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+    }).then(function (response) {
+        $scope.orderDetail = response.data; // Lưu chi tiết đơn hàng vào scope
+        $('#orderDetailModal').modal('show'); // Hiển thị modal
+    }).catch(function (error) {
+        console.error('Không thể tải chi tiết đơn hàng:', error);
+        alert(error.data?.message || 'Đã xảy ra lỗi khi tải chi tiết đơn hàng.');
+    });
+};
+
     // Gọi API để tải dữ liệu khi trang được load
     $scope.DonhangAccount();
     // Gọi API khi tải trang
