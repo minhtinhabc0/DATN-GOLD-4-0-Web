@@ -173,12 +173,13 @@ app.config(['$routeProvider', function ($routeProvider) {
     //=====================================================================================================
     //controller home
 
-    .controller('homeCtrl', function ($scope, $http, GoldPriceService) {
+    .controller('homeCtrl', function ($scope, $http, GoldPriceService,) {
       
      const d8sApi = initDimensions({      
        account: "d8s-euumfx",       
        viewers: ["3D"],  		
 	 })    
+
 	
         const userInfo = localStorage.getItem('userInfo');
         $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
@@ -1284,10 +1285,28 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
     $scope.getCart = function () {
         const token = getAuthToken();
         if (!token) {
-            alert("Bạn cần đăng nhập để xem giỏ hàng!");
-            $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
+            Swal.fire({
+                title: 'Yêu cầu đăng nhập!',
+                text: 'Vui lòng đăng nhập để xem giỏ hàng.',
+                icon: 'warning', // Biểu tượng cảnh báo
+                confirmButtonText: 'Đăng nhập',
+                confirmButtonColor: '#3085d6', // Màu của nút đăng nhập
+                background: '#f8f9fa', // Màu nền của thông báo
+                backdrop: true, // Hiển thị nền mờ
+                showCancelButton: true, // Hiển thị nút hủy
+                cancelButtonText: 'Đóng', // Văn bản nút hủy
+                cancelButtonColor: '#d33' // Màu của nút hủy
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Điều hướng người dùng đến trang đăng nhập
+                    $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
+                }
+            });
+        
+            // Ngăn người dùng truy cập tiếp
             return;
         }
+        
 
         $http.get('http://localhost:9999/api/user/giohang', {
             headers: { 'Authorization': 'Bearer ' + token }
