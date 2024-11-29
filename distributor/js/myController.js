@@ -77,6 +77,10 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: '/distributor/html/baocao.html',
             controller: 'baocaoCtrl'
         })
+        .when('/distributor/xacnhan', {
+            templateUrl: '/distributor/html/xacnhan.html',
+            controller: 'confirmGoldCtrl'
+        })
         .otherwise({
             redirectTo: '/distributor/bangdieukhien'
         });
@@ -126,7 +130,44 @@ app.controller('bangdieukhienCtrl', function ($scope, $http) {
     // Gọi hàm loadProducts khi khởi động controller
     $scope.loadProducts();
 });
+app.controller('confirmGoldCtrl', function ($scope, $http) {
+    $scope.goldCode = ""; // Lưu mã vàng nhập vào
+    console.log(localStorage.getItem('token'));
 
+    $scope.confirmGold = function () {
+        if (!$scope.goldCode) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Mã vàng không được để trống!',
+                confirmButtonText: 'Đồng ý',
+            });
+            return;
+        }
+        console.log($scope.goldCode); 
+        const token = localStorage.getItem('token'); // Lấy token từ localStorage
+        $http.post(`http://localhost:9999/api/nppctrl/confirm-gold/${$scope.goldCode}`, null, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(function (response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Xác nhận thành công!',
+                text: response.data,
+                confirmButtonText: 'Đóng',
+            });
+            $scope.goldCode = ""; // Reset input
+            $('#confirmGoldModal').modal('hide'); // Đóng modal
+        }).catch(function (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: error.data || 'Có lỗi xảy ra khi xác nhận mã vàng.',
+                confirmButtonText: 'Đóng',
+            });
+        });
+    };
+});
 
 app.directive('ngFileSelect', function () {
     return {

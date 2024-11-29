@@ -1,0 +1,26 @@
+<div class="container">
+    <h2 class="text-center my-4">Xác Nhận Mã Vàng</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmGoldModal">Nhập mã vàng</button>
+</div>
+<div class="modal fade" id="confirmGoldModal" tabindex="-1" aria-labelledby="confirmGoldLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmGoldLabel">Xác Nhận Mã Vàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="goldCodeInput" class="form-label">Nhập mã vàng:</label>
+                        <input type="text" class="form-control" id="goldCodeInput" ng-model="goldCode" placeholder="Nhập mã vàng">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" ng-click="confirmGold()">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
