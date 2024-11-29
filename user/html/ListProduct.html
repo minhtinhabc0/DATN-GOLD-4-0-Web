@@ -18,13 +18,14 @@
     }
 
     .product-card {
-        width: 270px;
-        height: 350px;
-        border: 1px solid #ddd;
+        width: 280px;
+        height: 280px;
+        border: 1px solid white !important;
         padding: 10px;
-        border-radius: 10px;
+        border-radius: 30px !important;
+        margin-left: 10px !important;
         transition: all 0.3s ease;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.1);
         text-align: center;
         display: flex;
         flex-direction: column;
@@ -79,7 +80,7 @@
     }
 
     .product-card:hover {
-        transform: scale(1.05);
+        transform: scale(1.07);
         transition: 0.3s ease-in-out;
     }
 
@@ -227,28 +228,6 @@
 
 
 
-    /* Style for the "Add to Cart" button
-    .product-card button {
-        background-color: white;
-        font-size: 15px;
-        font-weight: bold;
-        border: none;
-        border-radius: 25px;
-        padding: 10px 20px;
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease-in-out;
-
-    }
-
-    .product-card button:hover {
-        border-color: #c48c46;
-        color: #c48c46;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        outline: none;
-
-    } */
-
     .pagination-container {
         margin-top: 30px;
         margin-bottom: 50px;
@@ -355,17 +334,7 @@
 
 
 
-    .product-card {
-        background: none;
-        border: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-    }
 
-    .card_container::before,
-    .card_container::after {
-        display: none;
-    }
 
 
     .sub-card {
@@ -388,15 +357,19 @@
     .sub-card.named {
         justify-content: center;
         border-radius: 0 0 0.5rem 0.5rem;
-        transition: all 0.5s cubic-bezier(1, 0, 0, 1);
+        transition: 0.5s;
     }
 
-    .product-card:hover .sub-card.category {
+    /* .product-card:hover .sub-card.category {
         transform: translateY(100%);
-    }
+        visibility: hidden;
+        opacity: 0;
+    } */
 
     .product-card:hover .sub-card.named {
-        transform: translateY(-100%);
+        transform: translateY(20%);
+        /* visibility: hidden;
+        opacity: 0; */
     }
 
     .sub-card .text_span {
@@ -404,6 +377,11 @@
         font-weight: 600;
         color: var(--black);
         text-transform: capitalize;
+
+
+
+        /* Căn giữa theo chiều ngang */
+
     }
 
     .sub-card .icon_svg {
@@ -421,66 +399,19 @@
         border-radius: 10px !important;
     }
 
-    .card_container::before {
-        content: "";
-        position: absolute;
-        z-index: 10;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 0;
-        aspect-ratio: 1;
-        background-color: hsl(240, 15%, 9%, 0.2);
-        border-radius: 50%;
-        transform-origin: center;
-        transition: all 1s cubic-bezier(1, 0, 0, 1) 0.2s;
-    }
 
-    .card_container::after {
-        content: "Chi Tiết";
-        position: absolute;
-        z-index: 10;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        box-sizing: border-box;
-        width: 0;
-        aspect-ratio: 1;
-        background-color: hsl(240, 15%, 9%, 0.5);
-        font-size: 0;
-        font-weight: bold;
-        color: var(--white);
-        text-align: center;
-        border-radius: 50%;
-        transform-origin: center;
-        transition: all 1s cubic-bezier(1, 0, 0, 1) 0s;
-    }
+    .image {
 
-    .product-card:hover .card_container::before {
-        width: 22.5rem;
-        transition: all 1s cubic-bezier(1, 0, 0, 1) 0s;
-    }
 
-    .product-card:hover .card_container::after {
-        padding: 1rem;
-        width: 5rem;
-        font-size: 0.75rem;
-        transition: all 0.3s ease-in-out 0.4s;
-    }
-
-    .card_container .image {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        transition: 0.5s;
         width: 100%;
         height: 100%;
         object-fit: cover;
         border-radius: 20px;
+    }
+
+    .product-card:hover .image {
+        transform: translateY(-40px);
     }
 
     .sub-card .text_span {
@@ -491,150 +422,101 @@
         width: 100%;
     }
 
-    /* From Uiverse.io by SouravBandyopadhyay */
-    .button {
-        --width: 200px;
-        --height: 35px;
-        --tooltip-height: 35px;
-        --tooltip-width: 120px;
-        --gap-between-tooltip-to-button: 18px;
-        --button-color: white;
-        --tooltip-color: black;
-        width: var(--width);
-        height: var(--height);
-        background: var(--button-color);
-        position: relative;
-        text-align: center;
-        border-radius: 0.5em;
-        font-family: "Arial";
-        transition: background 0.7s;
-        color: black !important;
+    .btnsize {
+        border: none;
+        background-color: white;
+        font-size: medium;
 
-        border-radius: 25px;
-        font-weight: bolder;
-        cursor: pointer;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
 
-    .button::before {
-        position: absolute;
-        content: attr(data-tooltip);
-        width: var(--tooltip-width);
-        height: var(--tooltip-height);
-        background-color: #fff8dd;
-        font-size: 0.9rem;
-        color: black;
-        border-radius: 10px;
-        border: black;
-        line-height: var(--tooltip-height);
-        bottom: calc(var(--height) + var(--gap-between-tooltip-to-button) + 10px);
-        left: calc(50% - var(--tooltip-width) / 2);
+    .sub-card-size,
+    .sub-card-chitiet {
+        height: 30px;
     }
 
-    .button::after {
-        position: absolute;
-        content: "";
-        width: 0;
-        height: 0;
-        border: 10px solid transparent;
-        border-top-color: #555;
-        left: calc(50% - 10px);
-        bottom: calc(100% + var(--gap-between-tooltip-to-button) - 10px);
+    .sub-card-chitiet {
+        font-size: medium;
+        color: #000;
+
     }
 
-    .button::after,
-    .button::before {
-        opacity: 0;
+    .sub-card-size,
+    .sub-card-gram,
+    .sub-card-loaida,
+    p {
+        font-size: medium;
+        color: #000;
+        padding-top: 2px;
+    }
+
+
+    .sub-card-size,
+    .sub-card-chitiet {
+        transition: 0.5s;
         visibility: hidden;
-        transition: all 0.5s;
+        opacity: 0;
     }
 
-    .text {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .button-wrapper,
-    .text,
-    .icon {
-        overflow: hidden;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        color: #a88206;
-    }
-
-    .text {
-        top: 0;
-    }
-
-    .text,
-    .icon {
-        transition: top 0.5s;
-    }
-
-    .icon {
-        color: black;
-        top: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .icon svg {
-        width: 24px;
-        height: 24px;
-    }
-
-    .button:hover {
-        background: #fff8dd;
-    }
-
-    .button:hover .text {
-        top: -100%;
-    }
-
-    .button:hover .icon {
-        top: 0;
-    }
-
-    .button:hover:before,
-    .button:hover:after {
-        opacity: 1;
+    .product-card:hover .sub-card-size,
+    .product-card:hover .sub-card-chitiet {
+        transform: translateY(-300%);
         visibility: visible;
+        opacity: 100;
     }
 
-    .button:hover:after {
-        bottom: calc(var(--height) + var(--gap-between-tooltip-to-button) - 20px);
+    .filter-section {
+        width: 20%;
+        /* Cố định chiều rộng phần bộ lọc */
+        margin-right: 20px;
     }
 
-    .button:hover:before {
-        bottom: calc(var(--height) + var(--gap-between-tooltip-to-button));
+    .filter-wrapper {
+        margin-bottom: 10px;
+        /* Khoảng cách giữa các bộ lọc */
+    }
+
+    .d-flex.flex-column {
+        width: 90% !important;
+        /* Phần bên phải chiếm 70% */
+    }
+
+    /* Tùy chỉnh màu sắc cho radio buttons */
+    .form-check-input {
+        accent-color: black;
+        /* Đặt màu sắc cho radio button */
+    }
+
+    .form-check-label {
+
+        color: black;
+        /* Đặt màu chữ cho label */
+    }
+
+    /* Thêm hiệu ứng khi hover hoặc chọn */
+    .form-check-input:checked {
+        background-color: black;
+        border-color: black;
+    }
+
+    .form-check-input:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
     }
 </style>
 
+
 <div class="container-fluid mt-5" ng-app="myapp" ng-controller="dsspCtrl">
     <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10 p-4">
-            <div class="d-flex justify-content-between mb-4">
-                <div class="search-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" class="form-control" ng-model="searchText" ng-change="searchItems()"
-                        placeholder="Tìm kiếm sản phẩm..." />
-                </div>
 
-
-            </div>
-            <div class="d-flex justify-content-between">
-                <!-- Phần chứa các bộ lọc -->
-                <div class="filter-section d-flex">
+        <div class="col-md-12 p-4">
+            <!-- Sử dụng d-flex để bố cục chia trái - phải -->
+            <div class="d-flex justify-content-between align-items-start">
+                <!-- Phần filter-section bên trái -->
+                <div class="filter-section d-grid">
+                    <h2 style="color: #000 !important;">Bộ Lọc</h2>
                     <div class="filter-wrapper">
                         <select class="form-select" style="border-radius: 30px;" ng-model="selectedBrand"
                             ng-change="filterByBrand()">
-                            <option value="">Thương hiệu</option>
+                            <option value="">Thương Hiệu</option>
                             <option value="Thương hiệu : PNJ">PNJ</option>
                             <option value="Thương hiệu : SANRIO">SANRIO</option>
                         </select>
@@ -642,7 +524,7 @@
                     <div class="filter-wrapper">
                         <select class="form-select" style="border-radius: 30px;" ng-model="selectedMainStone"
                             ng-change="filterByMainStone(selectedMainStone)">
-                            <option value="">Loại đá chính</option>
+                            <option value="">Loại Đá Chính</option>
                             <option value="Không gắn đá">Không gắn đá</option>
                             <option value="xoàn mỹ">xoàn mỹ</option>
                             <option value="Ruby">Ruby</option>
@@ -651,14 +533,9 @@
                             <option value="Diamond">Diamond</option>
                         </select>
                     </div>
-                    <div class="filter-wrapper">
-                        <select class="form-select" style="border-radius: 30px;" ng-model="selectedGender"
-                            ng-change="filterByGender()">
-                            <option value="">Đối Tượng</option>
-                            <option value="nam">Nam</option>
-                            <option value="nữ">Nữ</option>
-                        </select>
-                    </div>
+                    <!-- Đối tượng (Radio Buttons) -->
+
+
                     <div class="filter-wrapper">
                         <select class="form-select" style="border-radius: 30px;" ng-model="selectedGoldType"
                             ng-change="filterByGoldType()">
@@ -670,97 +547,124 @@
                         </select>
                     </div>
                     <div class="filter-wrapper">
-                        <select class="form-select" style="border-radius: 30px;" ng-model="selectedJewelryType"
-                            ng-change="filterByJewelryType()">
-                            <option value="">Loại Trang Sức </option>
-                            <option value="Dây">Dây</option>
-                            <option value="Nhẫn">Nhẫn</option>
-                            <option value="Lắc">Lắc</option>
-                            <option value="Vòng">Vòng</option>
-                        </select>
+                        <label class="form-label" style="color: #000;">Đối Tượng </label>
+                        <label class="form-check-label me-3">
+                            <input class="form-check-input" type="radio" ng-model="selectedGender" value=""
+                                ng-change="filterByGender()" style="color: #000;" /> Tất cả
+                        </label>
+                        <div>
+
+                            <label class="form-check-label me-3">
+                                <input class="form-check-input" type="radio" ng-model="selectedGender" value="nam"
+                                    ng-change="filterByGender()" style="color: #000;" /> Nam
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" ng-model="selectedGender" value="nữ"
+                                    ng-change="filterByGender()" style="color: #000;" /> Nữ
+                            </label>
+                        </div>
                     </div>
+                    <!-- Loại Trang Sức (Radio Buttons) -->
+                    <div class="filter-wrapper">
+                        <label class="form-label" style="color: #000;">Loại Trang Sức</label>
+                        <label class="form-check-label me-3">
+                            <input class="form-check-input" type="radio" ng-model="selectedJewelryType" value=""
+                                ng-change="filterByJewelryType()" style="color: #000 !important;" /> Tất cả
+                        </label>
+                        <div>
 
-                </div>
-
-
-                <!-- Phần sắp xếp nằm tách biệt và sát bên phải -->
-                <div class="filter-wrapper">
-                    <select class="form-select" style="border-radius: 30px;" ng-model="selectedSort"
-                        ng-change="sortByPrice(selectedSort)">
-                        <option value="">Sắp xếp </option>
-                        <option value="asc">Tăng dần theo giá</option>
-                        <option value="desc">Giảm dần theo giá</option>
-                    </select>
-                </div>
-            </div>
-
-
-
-
-
-
-            <div class="row g-4">
-                <div class="col-md-3" ng-repeat="pro in displayedItems | filter:{ tenSanPham: searchText }">
-                    <div class="card product-card" ng-click="goToDetail(pro); $event.stopPropagation()">
-
-                        <!-- Phần hiển thị thông tin tên sản phẩm -->
-                        <div class="sub-card category">
-                            <span class="text_span" style="font-size: smaller;">{{ pro.tenSanPham }}</span>
-                            <svg class="icon_svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                <path d=""></path>
-                            </svg>
+                            <label class="form-check-label me-3">
+                                <input class="form-check-input" type="radio" ng-model="selectedJewelryType" value="Dây"
+                                    ng-change="filterByJewelryType()" style="color: #000;" /> Dây
+                            </label>
+                            <label class="form-check-label me-3">
+                                <input class="form-check-input" type="radio" ng-model="selectedJewelryType" value="Nhẫn"
+                                    ng-change="filterByJewelryType()" style="color: #000;" /> Nhẫn
+                            </label>
+                            <label class="form-check-label me-3">
+                                <input class="form-check-input" type="radio" ng-model="selectedJewelryType" value="Lắc"
+                                    ng-change="filterByJewelryType()" style="color: #000;" /> Lắc
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" ng-model="selectedJewelryType" value="Vòng"
+                                    ng-change="filterByJewelryType()" style="color: #000;" /> Vòng
+                            </label>
                         </div>
-
-                        <!-- Phần hiển thị hình ảnh sản phẩm -->
-                        <div class="card_container">
-                            <img class="image" ng-src="{{ pro.hinhAnh }}" alt="{{ pro.tenSanPham }}" />
-                        </div>
-
-                        <!-- Phần hiển thị giá sản phẩm -->
-                        <div class="sub-card named">
-                            <span class="text_span" style="font-size: smaller; font-weight: bold; color: rgb(255, 0, 0)">{{ pro.gia +pro.tienCong | number:0 }}
-                                VND</span>
-                        </div>
-                
-
-                        <!-- Nút thêm vào giỏ hàng -->
-                        <!-- <button ng-click="$event.stopPropagation(); addToCart(pro)">Thêm Vào Giỏ Hàng</button> -->
                     </div>
                 </div>
+
+                <!-- Các thành phần bên phải -->
+                <div class="d-flex flex-column">
+                    <div class="d-flex mb-4">
+                        <div class="search-wrapper" style="flex-grow: 1; margin-right: 20px;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" style="width: 100%; border-radius: 30px;" class="form-control"
+                                ng-model="searchText" ng-change="searchItems()" placeholder="Tìm kiếm sản phẩm..." />
+                        </div>
+                        <div class="filter-wrapper ms-auto">
+                            <select class="form-select" style="border-radius: 30px;" ng-model="selectedSort"
+                                ng-change="sortByPrice()">
+                                <option value="">Sắp Xếp Giá</option>
+                                <option value="asc">Tăng Dần</option>
+                                <option value="desc">Giảm Dần</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Các sản phẩm -->
+                    <div class="row g-4">
+                        <div class="col-md-3" ng-repeat="pro in displayedItems | filter:{ tenSanPham: searchText }">
+                            <div class="card product-card" ng-click="goToDetail(pro); $event.stopPropagation()">
+                                <div class="sub-card category">
+                                    <span class="text_span" style="font-size: smaller;">{{ pro.tenSanPham }}</span>
+                                </div>
+                                <img class="image" ng-src="{{ pro.hinhAnh }}" alt="{{ pro.tenSanPham }}" />
+                                <div class="sub-card named">
+                                    <span class="text_span"
+                                        style="font-size: medium; font-weight: bold; color: rgb(255, 0, 0)">
+                                        {{ pro.gia + pro.tienCong | number:0 }} VND
+                                    </span>
+                                </div>
+                                <div class="sub-card-size d-flex">
+                                    <p>Kích Cỡ :</p>
+                                    <button class="btnsize" ng-repeat="size in pro.kichCo.split(',')"
+                                        style="margin-right: 2px; cursor: auto; margin-bottom: 50px;">
+                                        {{size}}
+                                    </button>
+                                </div>
+                                <div class="sub-card-chitiet">
+                                    <button class="btnsize" style="margin-right: 5px;">
+                                        {{pro.chiTiet}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thanh phân trang -->
+                    <nav class="pagination-container" aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" ng-class="{disabled: currentPage == 1}">
+                                <a class="page-link" href="" ng-click="previousPage()">
+                                    <i class="fas fa-chevron-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="page-item" ng-repeat="page in [].constructor(totalPages) track by $index"
+                                ng-class="{active: currentPage == $index + 1}">
+                                <a class="page-link" href="" ng-click="goToPage($index + 1)">
+                                    {{ $index + 1 }}
+                                </a>
+                            </li>
+                            <li class="page-item" ng-class="{disabled: currentPage == totalPages}">
+                                <a class="page-link" href="" ng-click="nextPage()">
+                                    Next <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
-
-
-
-
-            <!-- Thanh phân trang -->
-            <nav class="pagination-container" aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <!-- Nút Previous -->
-                    <li class="page-item" ng-class="{disabled: currentPage == 1}">
-                        <a class="page-link" href="" ng-click="previousPage()">
-                            <i class="fas fa-chevron-left"></i> Previous
-                        </a>
-                    </li>
-
-                    <!-- Các trang -->
-                    <li class="page-item" ng-repeat="page in [].constructor(totalPages) track by $index"
-                        ng-class="{active: currentPage == $index + 1}">
-                        <a class="page-link" href="" ng-click="goToPage($index + 1)">
-                            {{ $index + 1 }}
-                        </a>
-                    </li>
-
-                    <!-- Nút Next -->
-                    <li class="page-item" ng-class="{disabled: currentPage == totalPages}">
-                        <a class="page-link" href="" ng-click="nextPage()">
-                            Next <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-
         </div>
-        <div class="col-md-1"></div>
+
     </div>
 </div>
