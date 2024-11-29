@@ -1,66 +1,81 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Nhà Phân Phối</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
- <!-- Link tới CSS Lightbox (nếu chưa có) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Link tới CSS Lightbox (nếu chưa có) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-<!-- Link tới JavaScript Lightbox (nếu chưa có) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Link tới JavaScript Lightbox (nếu chưa có) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom CSS -->
     <!-- Custom CSS -->
     <style>
         body {
-            background-color: #1a1a1a; /* Dark background */
-            color: #fff !important; /* White text for contrast */
+            background-color: #1a1a1a;
+            /* Dark background */
+            color: #fff !important;
+            /* White text for contrast */
         }
 
         h2 {
-            color: #f1c40f; /* Yellow color for header */
+            color: #f1c40f;
+            /* Yellow color for header */
         }
 
         .nav-tabs {
-            background-color: #2c2c2c; /* Dark gray for the tabs */
-            border-color: #f1c40f; /* Yellow border for the tabs */
+            background-color: #2c2c2c;
+            /* Dark gray for the tabs */
+            border-color: #f1c40f;
+            /* Yellow border for the tabs */
         }
 
         .nav-link {
-            color: #f1c40f; /* Yellow text for tabs */
+            color: #f1c40f;
+            /* Yellow text for tabs */
         }
 
         .nav-link.active {
-            background-color: #f1c40f; /* Yellow active tab */
-            color: #1a1a1a; /* Dark text for active tab */
+            background-color: #f1c40f;
+            /* Yellow active tab */
+            color: #1a1a1a;
+            /* Dark text for active tab */
         }
 
         .tab-pane {
-            background-color: #333333; /* Slightly lighter dark background for content */
+            background-color: #333333;
+            /* Slightly lighter dark background for content */
             padding: 20px;
             border-radius: 10px;
         }
 
         .table {
             background-color: #333333;
-            color: #fff ;
+            color: #fff;
         }
 
-        .table th, .table td {
+        .table th,
+        .table td {
             border: 1px solid #f1c40f;
-            color: #ffffff; /* Yellow border for table cells */
+            color: #ffffff;
+            /* Yellow border for table cells */
         }
 
         .table th {
-            background-color: #2c2c2c; /* Dark gray header */
-            color: #f1c40f; /* Yellow header text */
+            background-color: #2c2c2c;
+            /* Dark gray header */
+            color: #f1c40f;
+            /* Yellow header text */
         }
 
         .table td {
-            background-color: #444444; /* Dark background for table rows */
+            background-color: #444444;
+            /* Dark background for table rows */
         }
 
         .btn {
@@ -68,8 +83,10 @@
         }
 
         .btn-danger {
-            background-color: #e74c3c; /* Red for 'Khóa' button */
-            border-color: #c0392b; /* Darker red border */
+            background-color: #e74c3c;
+            /* Red for 'Khóa' button */
+            border-color: #c0392b;
+            /* Darker red border */
         }
 
         .btn-danger:hover {
@@ -78,8 +95,10 @@
         }
 
         .btn-success {
-            background-color: #27ae60; /* Green for 'Duyệt' button */
-            border-color: #2ecc71; /* Lighter green border */
+            background-color: #27ae60;
+            /* Green for 'Duyệt' button */
+            border-color: #2ecc71;
+            /* Lighter green border */
         }
 
         .btn-success:hover {
@@ -88,7 +107,8 @@
         }
 
         .btn-warning {
-            background-color: #f39c12; /* Yellow for 'Từ Chối' button */
+            background-color: #f39c12;
+            /* Yellow for 'Từ Chối' button */
             border-color: #f39c12;
         }
 
@@ -109,48 +129,53 @@
             font-weight: bold;
             color: #f1c40f;
         }
+
         /* Điều chỉnh kích thước ảnh thu nhỏ trong bảng */
-.thumbnail-img {
-    max-width: 150px;
-    max-height: 150px;
-    object-fit: cover;
-    cursor: pointer;
-}
+        .thumbnail-img {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            cursor: pointer;
+        }
 
-/* Tùy chỉnh bảng đẹp hơn */
-.table th, .table td {
-    padding: 10px;
-    vertical-align: middle;
-}
+        /* Tùy chỉnh bảng đẹp hơn */
+        .table th,
+        .table td {
+            padding: 10px;
+            vertical-align: middle;
+        }
 
-/* Thêm hiệu ứng hover cho các hàng */
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #333;
-}
-.table-striped tbody tr:nth-of-type(even) {
-    background-color: #444;
-}
+        /* Thêm hiệu ứng hover cho các hàng */
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #333;
+        }
 
-.table th {
-    background-color: #222;
-}
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #444;
+        }
 
-/* Áp dụng màu chữ trắng cho các tiêu đề */
-.table td, .table th {
-    color: #fff;
-}
+        .table th {
+            background-color: #222;
+        }
 
+        /* Áp dụng màu chữ trắng cho các tiêu đề */
+        .table td,
+        .table th {
+            color: #fff;
+        }
     </style>
 </head>
+
 <body>
 
-    <div class="container mt-5">
+    <div class="container mt-5" style="margin-left: 50px;">
         <h2 class="text-center mb-4">Quản lý Nhà Phân Phối</h2>
-    
+
         <!-- Tabs -->
         <ul class="nav nav-tabs mb-4" id="distributorTabs">
             <li class="nav-item">
-                <a class="nav-link active" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab">Đã Duyệt</a>
+                <a class="nav-link active" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab">Đã
+                    Duyệt</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="pending-tab" data-bs-toggle="tab" href="#pending" role="tab">Chờ Duyệt</a>
@@ -159,7 +184,7 @@
                 <a class="nav-link" id="locked-tab" data-bs-toggle="tab" href="#locked" role="tab">Bị Khóa</a>
             </li>
         </ul>
-    
+
         <!-- Tab Content -->
         <div class="tab-content">
             <!-- Tab 1: Đã Duyệt -->
@@ -182,15 +207,17 @@
                             <td>{{npp.nhaPhanPhoi.email}}</td>
                             <td>{{npp.nhaPhanPhoi.sdt}}</td>
                             <td>
-                              
-                                <button class="btn btn-info" ng-click="viewDistributorDetail(npp)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi tiết</button>
+
+                                <button class="btn btn-info" ng-click="viewDistributorDetail(npp)"
+                                    data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi
+                                    tiết</button>
 
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-    
+
             <!-- Tab 2: Chờ Duyệt -->
             <div class="tab-pane fade" id="pending" role="tabpanel">
                 <h3 class="label">Danh sách Nhà Phân Phối Chờ Duyệt</h3>
@@ -211,14 +238,16 @@
                             <td>{{npp.nhaPhanPhoi.email}}</td>
                             <td>{{npp.nhaPhanPhoi.sdt}}</td>
                             <td>
-                               
-                                <button class="btn btn-info" ng-click="viewDistributorDetail(npp)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi tiết</button>
+
+                                <button class="btn btn-info" ng-click="viewDistributorDetail(npp)"
+                                    data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi
+                                    tiết</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-    
+
             <!-- Tab 3: Bị Khóa -->
             <div class="tab-pane fade" id="locked" role="tabpanel">
                 <h3 class="label">Danh sách Nhà Phân Phối bị Khóa</h3>
@@ -239,8 +268,10 @@
                             <td>{{npp.nhaPhanPhoi.email}}</td>
                             <td>{{npp.nhaPhanPhoi.sdt}}</td>
                             <td>
-                                
-                                <button class="btn btn-info" ng-click="viewDistributorDetail(npp)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi tiết</button>
+
+                                <button class="btn btn-info" ng-click="viewDistributorDetail(npp)"
+                                    data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Xem chi
+                                    tiết</button>
                             </td>
                         </tr>
                     </tbody>
@@ -249,66 +280,81 @@
         </div>
 
         <!-- Distributor Detail Modal -->
-       <!-- Distributor Detail Modal -->
-<!-- Distributor Detail Modal -->
-<div class="modal fade" id="distributorDetailModal" tabindex="-1" aria-labelledby="distributorDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content" style="background-color: #000; color: #fff;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="distributorDetailModalLabel">Chi Tiết Nhà Phân Phối</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Distributor Detail Modal -->
+        <!-- Distributor Detail Modal -->
+        <div class="modal fade" id="distributorDetailModal" tabindex="-1" aria-labelledby="distributorDetailModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content" style="background-color: #000; color: #fff;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="distributorDetailModalLabel">Chi Tiết Nhà Phân Phối</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table ">
+                            <tr>
+                                <td><strong>Tên cửa hàng</strong></td>
+                                <td>{{distributorDetail.nhaPhanPhoi.tenCuaHang}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td>{{distributorDetail.nhaPhanPhoi.email}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Điện thoại</strong></td>
+                                <td>{{distributorDetail.nhaPhanPhoi.sdt}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Địa chỉ</strong></td>
+                                <td>{{distributorDetail.nhaPhanPhoi.diaChi}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Giấy Phép kinh doanh</strong></td>
+                                <td><a href="{{distributorDetail.nhaPhanPhoi.dl1}} " target="_blank"
+                                        data-bs-toggle="lightbox" data-bs-target="#distributorImage1"><img
+                                            src="{{distributorDetail.nhaPhanPhoi.dl1}}" alt="Ảnh 1"
+                                            class="img-fluid thumbnail-img"></a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Giấy phép hoạt động</strong></td>
+                                <td><a href="{{distributorDetail.nhaPhanPhoi.dl2}}" target="_blank"
+                                        data-bs-toggle="lightbox" data-bs-target="#distributorImage2"><img
+                                            src="{{distributorDetail.nhaPhanPhoi.dl2}}" alt="Ảnh 2"
+                                            class="img-fluid thumbnail-img"></a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>giấy tờ liên quan</strong></td>
+                                <td><a href="{{distributorDetail.nhaPhanPhoi.dl3}}" target="_blank"
+                                        data-bs-toggle="lightbox" data-bs-target="#distributorImage3"><img
+                                            src="{{distributorDetail.nhaPhanPhoi.dl3}}" alt="Ảnh 3"
+                                            class="img-fluid thumbnail-img"></a></td>
+                            </tr>
+                            <!-- Thêm các trường khác nếu cần -->
+
+                        </table>
+
+                    </div>
+                    <button class="btn btn-success" ng-click="approveAccount(distributorDetail.id)"
+                        ng-show="distributorDetail.vaitro == 4">Duyệt</button>
+                    <button class="btn btn-danger" ng-click="rejectAccount(distributorDetail.id)"
+                        ng-show="distributorDetail.vaitro == 4">Từ Chối</button>
+                    <button class="btn btn-success" ng-click="unlockDistributorAccount(distributorDetail.id)"
+                        ng-show="distributorDetail.vaitro == 5">Mở Khóa</button>
+                    <button class="btn btn-danger" ng-click="lockAccount(distributorDetail.id)"
+                        ng-show="distributorDetail.vaitro == 2">Khóa</button>
+
+                </div>
+
             </div>
-            <div class="modal-body">
-                <table class="table ">
-                    <tr>
-                        <td><strong>Tên cửa hàng</strong></td>
-                        <td>{{distributorDetail.nhaPhanPhoi.tenCuaHang}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Email</strong></td>
-                        <td>{{distributorDetail.nhaPhanPhoi.email}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Điện thoại</strong></td>
-                        <td>{{distributorDetail.nhaPhanPhoi.sdt}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Địa chỉ</strong></td>
-                        <td>{{distributorDetail.nhaPhanPhoi.diaChi}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Giấy Phép kinh doanh</strong></td>
-                        <td><a href="{{distributorDetail.nhaPhanPhoi.dl1}} " target="_blank" data-bs-toggle="lightbox" data-bs-target="#distributorImage1"><img src="{{distributorDetail.nhaPhanPhoi.dl1}}" alt="Ảnh 1" class="img-fluid thumbnail-img"></a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Giấy phép hoạt động</strong></td>
-                        <td><a href="{{distributorDetail.nhaPhanPhoi.dl2}}" target="_blank" data-bs-toggle="lightbox" data-bs-target="#distributorImage2"><img src="{{distributorDetail.nhaPhanPhoi.dl2}}" alt="Ảnh 2" class="img-fluid thumbnail-img"></a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>giấy tờ liên quan</strong></td>
-                        <td><a href="{{distributorDetail.nhaPhanPhoi.dl3}}"  target="_blank"data-bs-toggle="lightbox" data-bs-target="#distributorImage3"><img src="{{distributorDetail.nhaPhanPhoi.dl3}}" alt="Ảnh 3" class="img-fluid thumbnail-img"></a></td>
-                    </tr>
-                    <!-- Thêm các trường khác nếu cần -->
-              
-                </table>
-    
-            </div>
-            <button class="btn btn-success" ng-click="approveAccount(distributorDetail.id)" ng-show="distributorDetail.vaitro == 4">Duyệt</button>
-            <button class="btn btn-danger" ng-click="rejectAccount(distributorDetail.id)"ng-show="distributorDetail.vaitro == 4">Từ Chối</button>
-            <button class="btn btn-success" ng-click="unlockDistributorAccount(distributorDetail.id)" ng-show="distributorDetail.vaitro == 5">Mở Khóa</button>
-            <button class="btn btn-danger" ng-click="lockAccount(distributorDetail.id)"ng-show="distributorDetail.vaitro == 2">Khóa</button>
-       
         </div>
-  
-    </div>
-</div>
 
 
-    
+
     </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

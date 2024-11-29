@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="accountManagementApp" ng-controller="AccountController">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,31 +16,39 @@
             color: #fff;
             margin: 0;
         }
+
         .content-wrapper {
             background-color: #fff;
             border-radius: 15px;
-            max-width: 1200px;
-            margin: auto;
+            width: 97%;
+            /* Chiếm toàn bộ chiều rộng */
             padding: 20px;
             color: #000;
-            margin-top: 60px;
+            margin: 0;
+            /* Loại bỏ margin */
+            margin-left: 60px;
         }
+
         h2 {
             color: #333;
             text-align: center;
         }
+
         .table-responsive {
             margin-top: 20px;
         }
+
         table {
             text-align: center;
         }
+
         .nav-tabs .nav-link.active {
             background-color: #007bff;
             color: #fff;
         }
     </style>
 </head>
+
 <body>
 
     <div class="content-wrapper">
@@ -48,12 +57,14 @@
         <!-- Tabs chuyển đổi -->
         <ul class="nav nav-tabs justify-content-center" id="accountTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">
+                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users"
+                    type="button" role="tab" aria-controls="users" aria-selected="true">
                     Tài khoản người dùng
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="lockedUsers-tab" data-bs-toggle="tab" data-bs-target="#lockedUsers" type="button" role="tab" aria-controls="lockedUsers" aria-selected="false">
+                <button class="nav-link" id="lockedUsers-tab" data-bs-toggle="tab" data-bs-target="#lockedUsers"
+                    type="button" role="tab" aria-controls="lockedUsers" aria-selected="false">
                     Tài khoản bị khóa
                 </button>
             </li>
@@ -79,14 +90,18 @@
                         <tbody>
                             <tr ng-repeat="user in users">
                                 <td>
-                                    <img ng-src="{{user.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}" alt="Ảnh đại diện" class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
+                                    <img ng-src="{{user.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}"
+                                        alt="Ảnh đại diện" class="img-fluid rounded-circle"
+                                        style="width: 50px; height: 50px;">
                                 </td>
                                 <td>{{user.nguoiDung.hoTen}}</td>
                                 <td>{{user.taikhoan}}</td>
                                 <td>{{user.nguoiDung.email}}</td>
                                 <td>{{user.nguoiDung.sdt}}</td>
                                 <td>
-                                    <button class="btn btn-primary" ng-click="viewUserDetail(user)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Chi tiết</button>
+                                    <button class="btn btn-primary" ng-click="viewUserDetail(user)"
+                                        data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Chi
+                                        tiết</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -112,14 +127,17 @@
                         <tbody>
                             <tr ng-repeat="user in users1">
                                 <td>
-                                    <img ng-src="{{user.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}"  class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
+                                    <img ng-src="{{user.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}"
+                                        class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
                                 </td>
                                 <td>{{user.nguoiDung.hoTen}}</td>
                                 <td>{{user.taikhoan}}</td>
                                 <td>{{user.nguoiDung.email}}</td>
                                 <td>{{user.nguoiDung.sdt}}</td>
                                 <td>
-                                    <button class="btn btn-danger" ng-click="viewUserDetail(user)" data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Chi tiết</button>
+                                    <button class="btn btn-danger" ng-click="viewUserDetail(user)"
+                                        data-bs-toggle="modal" data-bs-target="#distributorDetailModal">Chi
+                                        tiết</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -128,7 +146,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="distributorDetailModal" tabindex="-1" aria-labelledby="distributorDetailModalLabel" aria-hidden="true">
+    <div class="modal fade" id="distributorDetailModal" tabindex="-1" aria-labelledby="distributorDetailModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content" style="background-color: #ffffff; color: #fff;">
                 <div class="modal-header">
@@ -139,7 +158,10 @@
                     <table class="table ">
                         <tr>
                             <td><strong>Hình đại diện</strong></td>
-                            <td><a href="{{useris.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}} " target="_blank" data-bs-toggle="lightbox" data-bs-target="#distributorImage1"><img src="{{useris.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}" style="height: 100px; width: 100px;"  class="img-fluid thumbnail-img"></a></td>
+                            <td><a href="{{useris.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}} "
+                                    target="_blank" data-bs-toggle="lightbox" data-bs-target="#distributorImage1"><img
+                                        src="{{useris.nguoiDung.avt || 'https://th.bing.com/th/id/OIP.qsdLgpZCoSrWyv-Iw36TuAHaHa?rs=1&pid=ImgDetMain'}}"
+                                        style="height: 100px; width: 100px;" class="img-fluid thumbnail-img"></a></td>
                         </tr>
                         <tr>
                             <td><strong>Tên Tài Khoản</strong></td>
@@ -157,13 +179,15 @@
                             <td><strong>Họ Tên Người Dùng</strong></td>
                             <td>{{useris.nguoiDung.hoTen}}</td>
                         </tr>
-                       
-                    
+
+
                         <!-- Thêm các trường khác nếu cần -->
-                       
+
                     </table>
-                    <button class="btn btn-danger" data-bs-dismiss="modal" ng-click="UserbandAccount(useris.id)" ng-show="useris.vaitro==0"> khóa tài khoản</button>
-                    <button class="btn btn-success" data-bs-dismiss="modal" ng-click="Userunbandaccount(useris.id)" ng-show="useris.vaitro==6"> Mở Khóa Tài Khoản</button>
+                    <button class="btn btn-danger" data-bs-dismiss="modal" ng-click="UserbandAccount(useris.id)"
+                        ng-show="useris.vaitro==0"> khóa tài khoản</button>
+                    <button class="btn btn-success" data-bs-dismiss="modal" ng-click="Userunbandaccount(useris.id)"
+                        ng-show="useris.vaitro==6"> Mở Khóa Tài Khoản</button>
                 </div>
             </div>
         </div>
@@ -198,4 +222,5 @@
         }]);
     </script>
 </body>
+
 </html>
