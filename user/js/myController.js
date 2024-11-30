@@ -173,14 +173,13 @@ app.config(['$routeProvider', function ($routeProvider) {
     //=====================================================================================================
     //controller home
 
-    .controller('homeCtrl', function ($scope, $http, GoldPriceService,) {
-      
-     const d8sApi = initDimensions({      
-       account: "d8s-euumfx",       
-       viewers: ["3D"],  		
-	 })    
+    .controller('homeCtrl', function ($scope, $http, GoldPriceService) {
 
-	
+        const d8sApi = initDimensions({
+            account: "d8s-euumfx",
+            viewers: ["3D"],
+        })
+
         const userInfo = localStorage.getItem('userInfo');
         $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
         let host = "http://localhost:9999/api";
@@ -819,55 +818,55 @@ app.controller('profileuserCtrl', function ($scope, $window, $http, GoldPriceSer
             alert('Cập nhật mã PIN không thành công: ' + (error.data && error.data.message ? error.data.message : ''));
         });
     };
-      // Mở modal Quy đổi
-      $scope.openExchangeModal = function () {
+    // Mở modal Quy đổi
+    $scope.openExchangeModal = function () {
         document.getElementById('exchange-modal').style.display = 'block';
     };
-  // Đóng modal Quy đổi
-  $scope.closeExchangeModal = function () {
-    document.getElementById('exchange-modal').style.display = 'none';
-};
+    // Đóng modal Quy đổi
+    $scope.closeExchangeModal = function () {
+        document.getElementById('exchange-modal').style.display = 'none';
+    };
 
-// Gửi yêu cầu Quy đổi Gcoin sang vàng
-$scope.exchangeGold = function () {
-    $http.post('http://localhost:9999/api/user/profile/exchange-gold', null, {
-        params: { goldAmount: $scope.goldAmount },
-        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-    }).then(function (response) {
-        alert(response.data.message);
-        $scope.goldAmount = 0;
-        $scope.closeExchangeModal();
-        $scope.loadTransactionHistory();
-    }).catch(function (error) {
-        alert(error.data.message || 'Đã xảy ra lỗi khi quy đổi.');
-    });
-};
+    // Gửi yêu cầu Quy đổi Gcoin sang vàng
+    $scope.exchangeGold = function () {
+        $http.post('http://localhost:9999/api/user/profile/exchange-gold', null, {
+            params: { goldAmount: $scope.goldAmount },
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        }).then(function (response) {
+            alert(response.data.message);
+            $scope.goldAmount = 0;
+            $scope.closeExchangeModal();
+            $scope.loadTransactionHistory();
+        }).catch(function (error) {
+            alert(error.data.message || 'Đã xảy ra lỗi khi quy đổi.');
+        });
+    };
 
-// // Lấy danh sách lịch sử giao dịch
-$scope.loadTransactionHistory = function () {
-    $http.get('http://localhost:9999/api/user/profile/transaction-history', {
-        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-    }).then(function (response) {
-        $scope.transactions = response.data; // Lưu danh sách giao dịch vào scope
-    }).catch(function (error) {
-        console.error('Không thể tải lịch sử giao dịch:', error);
-        alert(error.data?.message || 'Đã xảy ra lỗi khi tải lịch sử giao dịch.');
-    });
-};
+    // // Lấy danh sách lịch sử giao dịch
+    $scope.loadTransactionHistory = function () {
+        $http.get('http://localhost:9999/api/user/profile/transaction-history', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        }).then(function (response) {
+            $scope.transactions = response.data; // Lưu danh sách giao dịch vào scope
+        }).catch(function (error) {
+            console.error('Không thể tải lịch sử giao dịch:', error);
+            alert(error.data?.message || 'Đã xảy ra lỗi khi tải lịch sử giao dịch.');
+        });
+    };
 
-// Tải dữ liệu khi trang được khởi tạo
-$scope.loadTransactionHistory();
-$scope.viewTransactionDetail = function (transactionId) {
-    $http.get('http://localhost:9999/api/user/profile/transaction-detail/' + transactionId, {
-        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-    }).then(function (response) {
-        $scope.selectedTransaction = response.data; // Lưu thông tin giao dịch vào scope
-        $('#transactionDetailModal').modal('show'); // Hiển thị modal chi tiết
-    }).catch(function (error) {
-        console.error('Không thể tải chi tiết giao dịch:', error);
-        alert(error.data?.message || 'Đã xảy ra lỗi khi tải chi tiết giao dịch.');
-    });
-};
+    // Tải dữ liệu khi trang được khởi tạo
+    $scope.loadTransactionHistory();
+    $scope.viewTransactionDetail = function (transactionId) {
+        $http.get('http://localhost:9999/api/user/profile/transaction-detail/' + transactionId, {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        }).then(function (response) {
+            $scope.selectedTransaction = response.data; // Lưu thông tin giao dịch vào scope
+            $('#transactionDetailModal').modal('show'); // Hiển thị modal chi tiết
+        }).catch(function (error) {
+            console.error('Không thể tải chi tiết giao dịch:', error);
+            alert(error.data?.message || 'Đã xảy ra lỗi khi tải chi tiết giao dịch.');
+        });
+    };
 
 
 
@@ -1302,11 +1301,11 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
                     $window.location.href = "http://127.0.0.1:5501/user/html/login.html";
                 }
             });
-        
+
             // Ngăn người dùng truy cập tiếp
             return;
         }
-        
+
 
         $http.get('http://localhost:9999/api/user/giohang', {
             headers: { 'Authorization': 'Bearer ' + token }
@@ -1703,21 +1702,25 @@ app.controller('giohangCtrl', ['$scope', '$http', '$window', function ($scope, $
         };
 
         // Hàm sắp xếp theo giá
-        $scope.sortByPrice = function (order) {
+        $scope.sortByPrice = function () {
             var sortByPrice = $scope.selectedSort;
 
             // Kiểm tra xem loại đá có hợp lệ không trước khi lọc
             if (sortByPrice === undefined || sortByPrice === null || sortByPrice === '') {
-                $scope.filteredItems = $scope.items;  // Không lọc nếu giá trị không hợp lệ
+                $scope.filteredItems = angular.copy($scope.items);  // Quay về danh sách mặc định
             }
-            else if (order === 'asc') {
+            else if (sortByPrice === 'asc') {
                 $scope.filteredItems.sort((a, b) => a.gia - b.gia); // Sắp xếp giá tăng dần
-            } else if (order === 'desc') {
+            } else if (sortByPrice === 'desc') {
                 $scope.filteredItems.sort((a, b) => b.gia - a.gia); // Sắp xếp giá giảm dần
             }
+
+            // Cập nhật số trang và trang hiện tại
+            $scope.totalPages = Math.ceil($scope.filteredItems.length / $scope.itemsPerPage);
             $scope.currentPage = 1; // Reset về trang 1 sau khi sắp xếp
             $scope.updateFilteredItems(); // Cập nhật lại sản phẩm sau khi sắp xếp
         }
+
 
         // Chức năng tìm kiếm
         // $scope.searchItems = function () {

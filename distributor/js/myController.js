@@ -77,12 +77,16 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: '/distributor/html/baocao.html',
             controller: 'baocaoCtrl'
         })
+        .when('/distributor/xacnhan', {
+            templateUrl: '/distributor/html/xacnhan.html',
+            controller: 'confirmGoldCtrl'
+        })
         .otherwise({
             redirectTo: '/distributor/bangdieukhien'
         });
 }]);
 
-app.controller('bangdieukhienCtrl', function ($scope) {
+app.controller('bangdieukhienCtrl', function ($scope, $http) {
     // Vẽ biểu đồ doanh thu trên bảng điều khiển
     const ctx = document.getElementById('revenueChart').getContext('2d');
     const revenueChart = new Chart(ctx, {
@@ -105,6 +109,64 @@ app.controller('bangdieukhienCtrl', function ($scope) {
             }
         }
     });
+
+    // Khởi tạo biến lưu sản phẩm
+    $scope.products = [];
+
+    // Hàm lấy danh sách sản phẩm từ API
+    $scope.loadProducts = function () {
+        $http.get('http://localhost:9999/api/nppctrl/getsp', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            $scope.products = response.data;
+            console.log("Tổng số sản phẩm:", $scope.products.length);
+        }, function (error) {
+            console.log('Lỗi khi lấy danh sách sản phẩm:', error);
+        });
+    };
+
+    // Gọi hàm loadProducts khi khởi động controller
+    $scope.loadProducts();
+});
+app.controller('confirmGoldCtrl', function ($scope, $http) {
+    $scope.goldCode = ""; // Lưu mã vàng nhập vào
+    console.log(localStorage.getItem('token'));
+
+    $scope.confirmGold = function () {
+        if (!$scope.goldCode) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Mã vàng không được để trống!',
+                confirmButtonText: 'Đồng ý',
+            });
+            return;
+        }
+        console.log($scope.goldCode);
+        const token = localStorage.getItem('token'); // Lấy token từ localStorage
+        $http.post(`http://localhost:9999/api/nppctrl/confirm-gold/${$scope.goldCode}`, null, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(function (response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Xác nhận thành công!',
+                text: response.data,
+                confirmButtonText: 'Đóng',
+            });
+            $scope.goldCode = ""; // Reset input
+            $('#confirmGoldModal').modal('hide'); // Đóng modal
+        }).catch(function (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: error.data || 'Có lỗi xảy ra khi xác nhận mã vàng.',
+                confirmButtonText: 'Đóng',
+            });
+        });
+    };
 });
 
 app.directive('ngFileSelect', function () {
@@ -485,7 +547,7 @@ app.controller('baocaoCtrl', function ($scope, $http) {
     $scope.productDetails = []; // Dữ liệu chi tiết sản phẩm
     $scope.chart = null; // Biểu đồ
     $scope.selectedYear = ""; // Năm được chọn (mặc định là tất cả)
-
+    $scope.selectedMonth = ""; // Tháng được chọn
     // Hàm tính tổng doanh thu và lợi nhuận
     $scope.calculateTotalRevenueAndProfit = function () {
         let totalRevenue = 0;
@@ -513,6 +575,9 @@ app.controller('baocaoCtrl', function ($scope, $http) {
         let params = {};
         if ($scope.selectedYear) {
             params.year = $scope.selectedYear; // Thêm tham số năm nếu người dùng đã chọn
+        }
+        if ($scope.selectedMonth) {
+            params.month = $scope.selectedMonth; // Thêm tham số tháng nếu người dùng đã chọn
         }
 
         $http.get('http://localhost:9999/api/baocaonpp', {
@@ -559,11 +624,11 @@ app.controller('baocaoCtrl', function ($scope, $http) {
                 left: 'center',
                 textStyle: {
                     fontWeight: 'bold',
-                    fontSize: 12, // Giảm kích thước chữ tiêu đề xuống 18px
+                    fontSize: 14, // Giảm kích thước chữ tiêu đề xuống 18px
                     color: '#333'
                 },
                 subtextStyle: {
-                    fontSize: 12, // Kích thước chữ phụ
+                    fontSize: 30, // Kích thước chữ phụ
                     color: '#777'
                 }
             },
@@ -603,7 +668,7 @@ app.controller('baocaoCtrl', function ($scope, $http) {
                         alignWithLabel: true
                     },
                     axisLabel: {
-                        fontSize: 10, // Giảm kích thước chữ trục X xuống 10px
+                        fontSize: 8, // Giảm kích thước chữ trục X xuống 10px
                         color: '#333' // Màu sắc trục X
                     }
                 }
@@ -614,7 +679,7 @@ app.controller('baocaoCtrl', function ($scope, $http) {
                     nameLocation: 'middle',
                     nameGap: 25,
                     axisLabel: {
-                        fontSize: 10, // Giảm kích thước chữ trục Y xuống 10px
+                        fontSize: 12, // Giảm kích thước chữ trục Y xuống 10px
                         formatter: '{value} VND',
                         color: '#333' // Màu sắc trục Y
                     },
@@ -667,11 +732,17 @@ app.controller('baocaoCtrl', function ($scope, $http) {
     $scope.exportToPDF = function () {
         let filteredData = [];
 
-        // Kiểm tra nếu có chọn năm, lọc dữ liệu theo năm đó
         if ($scope.selectedYear) {
             filteredData = $scope.productDetails.filter(function (item) {
                 return item.thoiGian && item.thoiGian.includes($scope.selectedYear);
             });
+
+            // Lọc thêm theo tháng nếu có chọn tháng
+            if ($scope.selectedMonth) {
+                filteredData = filteredData.filter(function (item) {
+                    return item.thoiGian && item.thoiGian.includes($scope.selectedMonth);
+                });
+            }
         } else {
             // Nếu không chọn năm, xuất tất cả dữ liệu và sắp xếp theo thời gian mới nhất
             filteredData = [...$scope.productDetails].sort(function (a, b) {
@@ -681,9 +752,15 @@ app.controller('baocaoCtrl', function ($scope, $http) {
 
         // Kiểm tra nếu không có dữ liệu sau khi lọc
         if (filteredData.length === 0) {
-            alert('Không có dữ liệu để xuất!');
-            return;
+            var toast = document.getElementById("toast");
+            toast.className = "toast show"; // Hiển thị toast
+
+            // Ẩn toast sau 3 giây
+            setTimeout(function () {
+                toast.className = toast.className.replace("show", "");
+            }, 3000);
         }
+
         console.log(filteredData[0].manhaPhanphoi);
 
         // Tính tổng doanh thu và tổng lợi nhuận
@@ -716,13 +793,16 @@ app.controller('baocaoCtrl', function ($scope, $http) {
         </div>
         `;
 
-        // Thêm phần tiêu đề "Doanh Thu và Lợi Nhuận"
         let headerText = 'Doanh Thu và Lợi Nhuận Năm ';
         if ($scope.selectedYear) {
             headerText += `${$scope.selectedYear}`; // Thêm năm nếu đã chọn
-        } else {
-            headerText = 'Tất Cả Doanh Thu và Lợi Nhuận'; // Thêm chữ "Tất Cả" nếu không chọn năm
         }
+        if ($scope.selectedMonth) {
+            headerText += ` Tháng ${$scope.selectedMonth}`; // Thêm tháng nếu đã chọn
+        } else {
+            headerText = 'Tất Cả Doanh Thu và Lợi Nhuận';
+        }
+
         tableHTML += `<p style="font-size: 26px; color: #d4af37;">${headerText} ${filteredData[0].manhaPhanphoi ? filteredData[0].manhaPhanphoi.tenCuaHang : 'Chưa có thông tin'}</p>`;
         tableHTML += '</div>';
 
@@ -775,6 +855,7 @@ app.controller('baocaoCtrl', function ($scope, $http) {
             .then(() => {
                 // Xóa phần tử HTML sau khi xuất
                 document.body.removeChild(contentDiv);
+                showToast();
             })
             .catch((err) => {
                 console.error('Lỗi khi xuất PDF:', err);
@@ -786,11 +867,17 @@ app.controller('baocaoCtrl', function ($scope, $http) {
     $scope.exportToExcel = function () {
         let filteredData = [];
 
-        // Kiểm tra nếu có chọn năm, lọc dữ liệu theo năm đó
         if ($scope.selectedYear) {
             filteredData = $scope.productDetails.filter(function (item) {
                 return item.thoiGian && item.thoiGian.includes($scope.selectedYear);
             });
+
+            // Lọc thêm theo tháng nếu có chọn tháng
+            if ($scope.selectedMonth) {
+                filteredData = filteredData.filter(function (item) {
+                    return item.thoiGian && item.thoiGian.includes($scope.selectedMonth);
+                });
+            }
         } else {
             // Nếu không chọn năm, xuất tất cả dữ liệu và sắp xếp theo thời gian mới nhất
             filteredData = [...$scope.productDetails].sort(function (a, b) {
@@ -800,9 +887,15 @@ app.controller('baocaoCtrl', function ($scope, $http) {
 
         // Kiểm tra nếu không có dữ liệu sau khi lọc
         if (filteredData.length === 0) {
-            alert('Không có dữ liệu để xuất!');
-            return;
+            var toast = document.getElementById("toast");
+            toast.className = "toast show"; // Hiển thị toast
+
+            // Ẩn toast sau 3 giây
+            setTimeout(function () {
+                toast.className = toast.className.replace("show", "");
+            }, 1500);
         }
+
 
         // Tạo file Excel mới
         const workbook = new ExcelJS.Workbook();
@@ -830,14 +923,15 @@ app.controller('baocaoCtrl', function ($scope, $http) {
         worksheet.getCell('A3').alignment = { horizontal: 'center', vertical: 'middle' }; // Căn giữa
         worksheet.getCell('A3').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'E5E5E5' } };
 
-        // Tạo phần tiêu đề
         let headerText = 'Doanh Thu và Lợi Nhuận Năm ';
         if ($scope.selectedYear) {
-            headerText += `${$scope.selectedYear}`;
+            headerText += `${$scope.selectedYear}`; // Thêm năm nếu đã chọn
+        }
+        if ($scope.selectedMonth) {
+            headerText += ` Tháng ${$scope.selectedMonth}`; // Thêm tháng nếu đã chọn
         } else {
             headerText = 'Tất Cả Doanh Thu và Lợi Nhuận';
         }
-
         // Định dạng tiêu đề và thêm vào sheet
         worksheet.mergeCells('A4:F4');
         worksheet.getCell('A4').value = `${headerText} Của ${filteredData[0].manhaPhanphoi ? filteredData[0].manhaPhanphoi.tenCuaHang : 'Chưa có thông tin'}`;
@@ -941,39 +1035,9 @@ app.controller('baocaoCtrl', function ($scope, $http) {
             link.href = URL.createObjectURL(blob);
             link.download = `${headerText} Của ${filteredData[0].manhaPhanphoi ? filteredData[0].manhaPhanphoi.tenCuaHang : 'Chưa có thông tin'}, .xlsx`;
             link.click();
+            showToast();
         });
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     // Hàm xử lý khi người dùng chọn năm
@@ -981,6 +1045,26 @@ app.controller('baocaoCtrl', function ($scope, $http) {
         console.log('Năm đã chọn:', $scope.selectedYear); // Kiểm tra xem năm có thay đổi hay không
         $scope.getBaoCaoTongHop(); // Gọi lại API để lấy dữ liệu theo năm
     };
+    // Hàm xử lý khi người dùng chọn tháng
+    $scope.onMonthChange = function () {
+        console.log('Tháng đã chọn:', $scope.selectedMonth); // Kiểm tra xem năm có thay đổi hay không
+        $scope.getBaoCaoTongHop(); // Lấy lại báo cáo khi chọn tháng
+    };
+    function showToast() {
+        // Thực hiện trì hoãn hiển thị thông báo toast sau 3 giây
+        setTimeout(function () {
+            var toast = document.getElementById("toastdone");
+
+            // Hiển thị thông báo toast
+            toast.classList.add("show");
+
+            // Ẩn thông báo sau 3 giây (hoặc thời gian bạn muốn)
+            setTimeout(function () {
+                toast.classList.remove("show");
+            }, 3000); // Thời gian hiển thị toast (3 giây)
+        }, 3000); // Đặt thời gian trì hoãn (3 giây)
+    }
+
 
     // Gọi hàm để lấy dữ liệu báo cáo khi controller được khởi tạo
     $scope.getBaoCaoTongHop();

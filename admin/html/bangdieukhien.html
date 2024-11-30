@@ -1,4 +1,38 @@
+<style>
+    .pending-products {
+        max-height: 600px;
+        overflow-y: auto;
+        background-color: #fdfdfd;
+        border-radius: 8px;
+        padding: 10px;
+    }
 
+    .product-card {
+        background: #fff;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .img-fluid {
+        max-width: 80%;
+        max-height: 120px;
+        object-fit: contain;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .product-name, .product-id {
+        font-size: 14px;
+    }
+
+    .product-status {
+        font-size: 14px;
+        font-style: italic;
+    }
+</style>
 <div class="dashboard-content">
     <div class="row">
         <!-- Doanh thu card -->
@@ -50,17 +84,78 @@
 
                 <!-- Sản phẩm đợi duyệt -->
                 <div class="col-12">
-                    <h5 class="product-title">Sản phẩm đợi duyệt</h5>
-                    <div class="card p-3 mb-3" ng-repeat="d in SpDoiDuyet">
-                        <img ng-src="{{d.hinhAnh}}" alt="">
-                        <div class="card-body">
-                            <p><strong>Tên sản phẩm:</strong> {{d.tenSanPham}}</p>
-                            <p><strong>Mã sản phẩm:</strong> {{d.maSanPham}}</p>
-                            <p><strong>Trạng thái:</strong> {{d.trangThai ? 'Đã duyệt' : 'Chưa duyệt'}}</p>
+                    <h5 class="product-title text-center mb-4">Sản phẩm đợi duyệt</h5>
+                    <div class="pending-products">
+                        <div class="product-card mb-4 shadow-sm p-3 border rounded" ng-repeat="d in SpDoiDuyet">
+                            <div class="row align-items-center">
+                                <!-- Ảnh sản phẩm -->
+                                <div class="col-md-4 text-center">
+                                    <img ng-src="{{d.hinhAnh}}" alt="{{d.tenSanPham}}" class="img-fluid rounded">
+                                </div>
+                                <!-- Thông tin sản phẩm -->
+                                <div class="col-md-8">
+                                    <h6 class="product-name mb-2"><strong>Tên sản phẩm:</strong> {{d.tenSanPham}}</h6>
+                                    <p class="product-id mb-1"><strong>Mã sản phẩm:</strong> {{d.maSanPham}}</p>
+                                    <p class="product-status mb-1">
+                                        <strong>Trạng thái:</strong> 
+                                        <span class="text-warning" ng-if="!d.trangThai">Chưa duyệt</span>
+                                        <span class="text-success" ng-if="d.trangThai">Đã duyệt</span>
+                                    </p>
+                                    <!-- Nút hành động -->
+                                    <button class="btn btn-outline-primary btn-sm mt-2" ng-click="viewProductDetail(d)">Xem chi tiết</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal Chi Tiết Sản Phẩm -->
+<div class="modal fade" id="productDetailModal" tabindex="-1" role="dialog" aria-labelledby="productDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productDetailModalLabel">Chi tiết sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Ảnh sản phẩm -->
+                    <div class="col-md-4 text-center">
+                        <img ng-src="{{ productDetail.hinhAnh }}" alt="{{ productDetail.tenSanPham }}" class="img-fluid rounded border">
+                    </div>
+                    <!-- Thông tin sản phẩm -->
+                    <div class="col-md-8">
+                        <p><strong>Tên sản phẩm:</strong> {{ productDetail.tenSanPham }}</p>
+                        <p><strong>Mã sản phẩm:</strong> {{ productDetail.maSanPham }}</p>
+                        <p><strong>Loại vàng:</strong> {{ productDetail.loaiVang }}</p>
+                        <p><strong>Trọng lượng:</strong> {{ productDetail.trongLuong }} g</p>
+                        <p><strong>Kích thước:</strong> {{ productDetail.kichCo }}</p>
+                        <p><strong>Loại đá:</strong> {{ productDetail.loaiDa || 'Không có' }}</p>
+                        <p><strong>Số lượng:</strong> {{ productDetail.soLuong }}</p>
+                        <p><strong>Nhà phân phối:</strong> {{ productDetail.tenNhaPhanPhoi }}</p>
+                        <p><strong>Địa chỉ:</strong> {{ productDetail.diaChiNhaPhanPhoi }}</p>
+                        <p><strong>Trạng thái:</strong>
+                            <span class="text-warning" ng-if="!productDetail.trangThai">Chưa duyệt</span>
+                            <span class="text-success" ng-if="productDetail.trangThai">Đã duyệt</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

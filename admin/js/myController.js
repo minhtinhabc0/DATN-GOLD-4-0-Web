@@ -134,6 +134,7 @@ app.controller('bangdieukhienCtrl', function ($scope, $http) {
             console.error("Lỗi khi lấy danh sách người dùng:", error);
         });
     };
+
     $scope.UserAccountband = function () {
         $http.get('http://localhost:9999/api/adctrl/ngdungband', {
             headers: {
@@ -142,11 +143,11 @@ app.controller('bangdieukhienCtrl', function ($scope, $http) {
         }).then(function (response) {
             $scope.users1 = response.data;
             console.log($scope.users1.length);
-
         }, function (error) {
             console.log("Error fetching approved distributors:", error);
         });
-    }
+    };
+
     $scope.DonhangAccount = function () {
         $http.get('http://localhost:9999/api/adctrl/donhangall', {
             headers: {
@@ -155,8 +156,10 @@ app.controller('bangdieukhienCtrl', function ($scope, $http) {
         }).then(function (response) {
             $scope.orders = response.data; // Lưu dữ liệu người dùng vào scope
         }, function (error) {
+            console.log("Error fetching orders:", error);
         });
     };
+
     $scope.SpBanchay = function () {
         $http.get('http://localhost:9999/api/adctrl/spbanchay', {
             headers: {
@@ -165,11 +168,10 @@ app.controller('bangdieukhienCtrl', function ($scope, $http) {
         }).then(function (response) {
             $scope.SpBanchay = response.data;
             console.log($scope.SpBanchay);
-
         }, function (error) {
-            console.log("Error fetching approved distributors:", error);
+            console.log("Error fetching best-selling products:", error);
         });
-    }
+    };
 
     $scope.SpDoiDuyet = function () {
         $http.get('http://localhost:9999/api/adctrl/doiduyet', {
@@ -179,25 +181,43 @@ app.controller('bangdieukhienCtrl', function ($scope, $http) {
         }).then(function (response) {
             $scope.SpDoiDuyet = response.data;
             console.log($scope.SpDoiDuyet);
-
         }, function (error) {
-            console.log("Error fetching approved distributors:", error);
+            console.log("Error fetching pending products:", error);
         });
-    }
+    };
 
-
-
+    // Hàm xem chi tiết sản phẩm đợi duyệt
+    $scope.viewProductDetail = function (product) {
+        // Gọi API để lấy chi tiết sản phẩm dựa vào mã sản phẩm
+        $http.get(`http://localhost:9999/api/adctrl/sanpham/${product.maSanPham}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(function (response) {
+            // Lưu chi tiết sản phẩm vào scope
+            $scope.productDetail = response.data; 
+            console.log("Chi tiết sản phẩm:", $scope.productDetail);
     
-    // Gọi hàm để tải dữ liệu ngay khi khởi động controller
+            // Cập nhật thêm thông tin nhà phân phối từ productDetail nếu cần
+            $scope.productDetail.tenNhaPhanPhoi = $scope.productDetail.nhaPhanPhoi ? $scope.productDetail.nhaPhanPhoi.tenNhaPhanPhoi : "Chưa có thông tin nhà phân phối";
+            $scope.productDetail.diaChiNhaPhanPhoi = $scope.productDetail.nhaPhanPhoi ? $scope.productDetail.nhaPhanPhoi.diaChi : "Chưa có địa chỉ";
+    
+            // Hiển thị modal chi tiết sản phẩm
+            $('#productDetailModal').modal('show');
+        }, function (error) {
+            console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
+        });
+    };
+    
+
+    // Gọi các hàm để tải dữ liệu ngay khi khởi động controller
     $scope.UserAccount();
     $scope.UserAccountband();
     $scope.DonhangAccount();
     $scope.SpBanchay();
     $scope.SpDoiDuyet();
-
-    
-
 });
+
 
 
 app.controller('quanlysanphamCtrl', function ($scope, $http, $location) {
