@@ -228,17 +228,16 @@
     #three-d-viewer .d8s-viewer-ui button {
         display: none !important;
     }
- 
 </style>
 
 <body>
-    <div class="row" style="margin-top: 300px; margin-bottom: 200px;  background-color: #2c2b2b;">
+    <div class="row" style="margin-top: 140px;  background-color: #2c2b2b;">
         <!-- Phần Slogan -->
         <div class="col-md-7" style="margin-top: 100px; text-align: center;">
-            <p id="typing-effect-1" class="typing-text" style="font-size: 32px; font-weight: bold; color: #FFD700; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);">
+            <p id="typing-effect-1" class="typing-text" style="font-size: 35px; font-weight: bold; color: #FFD700; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);">
                 "Tích góp hôm nay, chạm tay vào vàng!"
             </p>
-            <p id="typing-effect-2" class="typing-text" style="font-size: 22px; font-style: italic; color: #e5ff52; margin-top: 10px; text-shadow: 1px 1px 3px rgba(255, 223, 0, 0.5);">
+            <p id="typing-effect-2" class="typing-text" style="font-size: 30px; font-style: italic; color: #e5ff52; margin-top: 10px; text-shadow: 1px 1px 3px rgba(255, 223, 0, 0.5);">
                 Mua vàng dễ dàng chỉ từ <span style="color: #FFD700; font-weight: bold;">100K</span>, đầu tư thông minh cho tương lai.
             </p>
         </div>
@@ -256,6 +255,26 @@
                  
         </div>    
         </div>
+    </div>
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 ">
+            <h3 style="color: #3645a5;">Sản phẩm bán chạy</h3>
+            <div class="product-carousel-container position-relative" style="margin-top: 30px;">
+                <button class="carousel-arrow left-arrow" ng-click="prevSlide()"><i
+                        class="fa-solid fa-angle-left"></i></button>
+
+                <div class="product-carousel-wrapper d-flex">
+                    <div class="product-card" ng-repeat="pro in items">
+                        <img class="product-image img-fluid" alt="Product Image" ng-src="{{pro.hinhAnh}}" />
+                    </div>
+                </div>
+
+                <button class="carousel-arrow right-arrow" ng-click="nextSlide()"><i
+                        class="fa-solid fa-angle-right"></i></button>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
     </div>
     
 
