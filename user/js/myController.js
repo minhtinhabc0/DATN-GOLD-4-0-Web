@@ -46,7 +46,8 @@
     });
 })();
 
-var app = angular.module("myapp", ['ngRoute']);
+
+var app = angular.module('myapp', ['ngRoute', 'pascalprecht.translate']);
 app.controller("MainController", '$scope', '$window', function ($scope, $location) {
     $scope.changeRoute = function (route) {
         $location.path(route);
@@ -112,66 +113,112 @@ app.config(['$routeProvider', function ($routeProvider) {
         .otherwise({
             redirectTo: '/user/home'
         });
+    // Cấu hình Angular Translate
+
 }])
-    //controller chính của website
-    //=====================================================================================================
-    .controller('MainController', function ($scope, $location, $window) {
 
-        const userInfo = localStorage.getItem('userInfo');
-        $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
-
-        $scope.logout = function () {
-            Swal.fire({
-                title: 'Bạn có chắc chắn muốn đăng xuất?',
-                text: "Bạn sẽ phải đăng nhập lại để tiếp tục sử dụng!",
-                icon: 'warning',
-                showCancelButton: true, // Hiển thị nút huỷ
-                confirmButtonText: 'Đăng xuất',
-                cancelButtonText: 'Hủy bỏ',
-                confirmButtonColor: '#f0b400', // Màu nút Đăng xuất
-                cancelButtonColor: '#d33', // Màu nút Hủy bỏ
-                reverseButtons: true, // Đảo ngược nút
-                position: 'top-end', // Vị trí thông báo góc trên bên phải
-                customClass: {
-                    popup: 'swal2-popup-small' // Đặt lớp CSS để chỉnh kích thước
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Xóa token và thông tin người dùng
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('userInfo');
-
-                    // Hiển thị thông báo đăng xuất thành công nhỏ
-                    Swal.fire({
-                        position: 'top-end', // Vị trí thông báo
-                        icon: 'success', // Loại thông báo thành công
-                        title: 'Đăng xuất thành công!', // Tiêu đề thông báo
-                        showConfirmButton: false, // Không có nút xác nhận
-                        confirmButtonText: 'OK',
-                        timer: 1500, // Thông báo sẽ tự động biến mất sau 1.5 giây
-                        position: 'center',
-                        customClass: {
-                            popup: 'swal2-popup-small' // Đặt lớp CSS để làm nhỏ thông báo
-                        }
-                    });
-
-                    // Sau khi thông báo biến mất, chuyển hướng
-                    setTimeout(() => {
-                        $window.location.href = '/user/index.html';
-                    }, 1500); // Đồng bộ với thời gian hiển thị thông báo
-                }
-            });
-        };
+app.service('LanguageService', ['$http', function ($http) {
+    this.getLanguage = function (lang) {
+        return $http.get('http://localhost:9999/api/language/' + lang).then(function (response) {
+            return response.data;  // Dữ liệu ngôn ngữ trả về từ API
+        });
+    };
+}]);
 
 
 
-        const imageUrl = "https://th.bing.com/th/id/OIP.xH_K_kDlIyvn8QfMLwYGiAHaJQ?rs=1&pid=ImgDetMain";
-        console.log("%c ", `font-size: 100px; background: url(${imageUrl}) no-repeat; background-size: cover; -webkit-background-clip: text; -webkit-text-fill-color: transparent;`);
-        console.log("nó KHÔNG phải là lỗi nó là tính năng")
+//controller chính của website
+//=====================================================================================================
+app.controller('MainController', ['$scope', '$location', '$window', 'LanguageService', function ($scope, $location, $window, LanguageService) {
 
-    })
+    const userInfo = localStorage.getItem('userInfo');
+    $scope.userInfo = userInfo ? JSON.parse(userInfo) : null;
+
+    $scope.logout = function () {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn đăng xuất?',
+            text: "Bạn sẽ phải đăng nhập lại để tiếp tục sử dụng!",
+            icon: 'warning',
+            showCancelButton: true, // Hiển thị nút huỷ
+            confirmButtonText: 'Đăng xuất',
+            cancelButtonText: 'Hủy bỏ',
+            confirmButtonColor: '#f0b400', // Màu nút Đăng xuất
+            cancelButtonColor: '#d33', // Màu nút Hủy bỏ
+            reverseButtons: true, // Đảo ngược nút
+            position: 'top-end', // Vị trí thông báo góc trên bên phải
+            customClass: {
+                popup: 'swal2-popup-small' // Đặt lớp CSS để chỉnh kích thước
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Xóa token và thông tin người dùng
+                localStorage.removeItem('token');
+                localStorage.removeItem('userInfo');
+
+                // Hiển thị thông báo đăng xuất thành công nhỏ
+                Swal.fire({
+                    position: 'top-end', // Vị trí thông báo
+                    icon: 'success', // Loại thông báo thành công
+                    title: 'Đăng xuất thành công!', // Tiêu đề thông báo
+                    showConfirmButton: false, // Không có nút xác nhận
+                    confirmButtonText: 'OK',
+                    timer: 1500, // Thông báo sẽ tự động biến mất sau 1.5 giây
+                    position: 'center',
+                    customClass: {
+                        popup: 'swal2-popup-small' // Đặt lớp CSS để làm nhỏ thông báo
+                    }
+                });
+
+                // Sau khi thông báo biến mất, chuyển hướng
+                setTimeout(() => {
+                    $window.location.href = '/user/index.html';
+                }, 1500); // Đồng bộ với thời gian hiển thị thông báo
+            }
+        });
+    };
+
+
+
+    const imageUrl = "https://th.bing.com/th/id/OIP.xH_K_kDlIyvn8QfMLwYGiAHaJQ?rs=1&pid=ImgDetMain";
+    console.log("%c ", `font-size: 100px; background: url(${imageUrl}) no-repeat; background-size: cover; -webkit-background-clip: text; -webkit-text-fill-color: transparent;`);
+    console.log("nó KHÔNG phải là lỗi nó là tính năng")
+
+
+    // Cập nhật thông tin ngôn ngữ mặc định
+    $scope.languageData = { name: 'Tiếng Việt', flag: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg' };
+    $scope.selectedFlag = $scope.languageData.flag; // Mặc định cờ Việt Nam
+    $scope.menuVisible = false;
+
+    // Hàm thay đổi ngôn ngữ
+    $scope.setLanguage = function (lang) {
+        $scope.menuVisible = false;
+
+        // Cập nhật tên ngôn ngữ và cờ
+        $scope.languageData.name = lang === 'vi' ? 'Tiếng Việt' : 'English';
+        $scope.selectedFlag = lang === 'vi'
+            ? 'https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg'
+            : 'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg';
+
+        // Lấy dữ liệu ngôn ngữ từ API
+        LanguageService.getLanguage(lang).then(function (data) {
+            $scope.languageData = data;
+        });
+    };
+
+    // Hàm điều khiển việc hiển thị menu ngôn ngữ
+    $scope.toggleMenu = function () {
+        $scope.menuVisible = !$scope.menuVisible;
+        console.log("Menu Visible: ", $scope.menuVisible);  // Kiểm tra giá trị của menuVisible trong console
+    };
+
+
+    // Mặc định ngôn ngữ là tiếng Việt
+    $scope.setLanguage('vi');
+
+}])
     //=====================================================================================================
     //controller home
+
 
     .controller('homeCtrl', function ($scope, $http, GoldPriceService) {
 

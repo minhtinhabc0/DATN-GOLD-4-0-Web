@@ -82,7 +82,7 @@
         display: flex;
         align-items: center;
         font-size: 16px;
-        margin-right: 33px;
+        margin-right: 13px;
     }
 
     .left-section {
@@ -111,10 +111,66 @@
             /* Xóa margin trên các thiết bị nhỏ */
         }
 
+    }
 
+    .language-selector {
+        position: relative;
+        display: inline-block;
+    }
 
+    .language-selector select {
+        display: none;
+    }
 
+    .language-selector .dropdown {
+        background-color: #000;
+        color: #fff;
 
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .language-selector .dropdown img {
+        width: 20px;
+        height: 14px;
+    }
+
+    .language-selector .dropdown-menu {
+        position: absolute;
+        background-color: #000;
+        border-radius: 5px;
+        margin-top: 5px;
+        display: none;
+        flex-direction: column;
+        width: 150px;
+
+    }
+
+    .language-selector .dropdown-menu[ng-show="menuVisible"] {
+        display: flex;
+        /* Khi menuVisible = true, hiển thị menu */
+    }
+
+    .language-selector .dropdown-menu .option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    .language-selector .dropdown-menu .option:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .language-selector .dropdown-menu .option img {
+        width: 20px;
+        height: 14px;
     }
 </style>
 
@@ -163,6 +219,24 @@
             <i class="fa-solid fa-bag-shopping ms-2"></i> Giỏ hàng
         </a>
     </div>
+    <div class="language-selector">
+        <div class="dropdown" ng-click="toggleMenu()">
+            <img id="selected-flag" ng-src="{{selectedFlag}}" alt="{{languageData.name}}">
+            <span id="selected-language">{{languageData.name}}</span>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" ng-show="menuVisible">
+            <div class="option" ng-click="setLanguage('vi')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+                    alt="Vietnamese Flag">
+                <span>Tiếng Việt</span>
+            </div>
+            <div class="option" ng-click="setLanguage('en')">
+                <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="US Flag">
+                <span>English</span>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -181,7 +255,7 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" style="color: white; font-family: 'Times New Roman', serif;"
-                        href="#!/user/home">TRANG CHỦ</a>
+                        href="#!/user/home">{{ languageData.home }}</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProduct" role="button"
