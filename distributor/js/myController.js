@@ -135,6 +135,9 @@ app.controller('confirmGoldCtrl', function ($scope, $http) {
     console.log(localStorage.getItem('token'));
 
     $scope.confirmGold = function () {
+        console.log("Token: ", localStorage.getItem('token'));
+        console.log("Mã vàng: ", $scope.goldCode);
+    
         if (!$scope.goldCode) {
             Swal.fire({
                 icon: 'warning',
@@ -143,30 +146,33 @@ app.controller('confirmGoldCtrl', function ($scope, $http) {
             });
             return;
         }
-        console.log($scope.goldCode);
-        const token = localStorage.getItem('token'); // Lấy token từ localStorage
+    
+        const token = localStorage.getItem('token');
         $http.post(`http://localhost:9999/api/nppctrl/confirm-gold/${$scope.goldCode}`, null, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
+            headers: { 'Authorization': `Bearer ${token}` }
         }).then(function (response) {
+            // Xử lý phản hồi JSON
+            console.log("Kết quả:", response.data);
             Swal.fire({
                 icon: 'success',
-                title: 'Xác nhận thành công!',
-                text: response.data,
+                title: 'Thành công!',
+                text: response.data.message, // Đọc thông báo từ JSON
                 confirmButtonText: 'Đóng',
             });
-            $scope.goldCode = ""; // Reset input
-            $('#confirmGoldModal').modal('hide'); // Đóng modal
+            $scope.goldCode = "";
+            $('#confirmGoldModal').modal('hide');
         }).catch(function (error) {
+            // Xử lý lỗi JSON
+            console.error("Lỗi:", error);
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi!',
-                text: error.data || 'Có lỗi xảy ra khi xác nhận mã vàng.',
+                text: error.data && error.data.message ? error.data.message : 'Đã xảy ra lỗi.',
                 confirmButtonText: 'Đóng',
             });
         });
     };
+    
 });
 
 app.directive('ngFileSelect', function () {
